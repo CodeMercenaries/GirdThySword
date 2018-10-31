@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">GirdThySword</string>
+    <string name="logo_cd">Logo that says Gird Thy Sword</string>
+    <string name="logo_path">logo_new.png</string>
+    <string name="login_tagline">Before you go out and live the Christian Life</string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="title_fragment_dailies">Dailies</string>
+    <string name="title_fragment_overview">Overview</string>
+    <string name="title_fragment_forge">Forge</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!--Content Descriptions-->
+    <string name="profile_header_cd">The app details of the user</string>
+    <string name="profile_image_cd">Profile Image of the user</string>
+
+    <!--Default Strings-->
+    <string name="default_display_name">Joel Kingsley</string>
+    <string name="default_level_description">Beginner (Level 1)</string>
+    <string name="default_font_path">fonts/Asket Condensed Extrabold.ttf</string>
+    <string name="default_font_name">Asket Condensed Extrabold</string>
+
+    <!--Fonts-->
+    <string name="gnuolane_rg_font_path">fonts/gnuolane_rg.ttf</string>
+    <string name="gnuolane_rg_font_name">Gnuolane</string>
+    <string name="carbon_bl_font_path">fonts/carbon_bl.ttf</string>
+    <string name="carbon_bl_font_name">Carbon Bold</string>
+    <string name="ashby_eb_font_path">fonts/ASHBEB__.ttf</string>
+    <string name="ashby_eb_font_name">Ashby Extra Bold</string>
+    <string name="asket_cdeb_font_path">fonts/Asket Condensed Extrabold.ttf</string>
+    <string name="asket_cdeb_font_name">Asket Condensed Extrabold</string>
+    <string name="asket_eb_font_path">fonts/Asket Extrabold.ttf</string>
+    <string name="asket_eb_font_name">Asket Extrabold</string>
+
+    <string name="hello_blank_fragment">Hello</string>
+    <string name="title_activity_stats">Stats</string>
+    <string name="title_activity_read">Read</string>
+    <string name="title_nav_social">Social</string>
+    <string name="title_activity_leaderboard">Leaderboard</string>
+    <string name="title_activity_tavern">Tavern</string>
+    <string name="title_nav_communicate">Communicate</string>
+    <string name="title_intent_share">Share</string>
+    <string name="title_nav_about">About</string>
+    <string name="title_activity_blog">Blog</string>
+    <string name="title_activity_help"><![CDATA[Help & FAQ]]></string>
+    <string name="title_activity_about">About</string>
+    <string name="default_profile_name">Joel Kingsley</string>
+</resources>
