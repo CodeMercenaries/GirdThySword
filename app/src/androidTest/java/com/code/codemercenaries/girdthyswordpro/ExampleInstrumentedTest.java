@@ -1,4 +1,4 @@
-package com.code.codemercenaries.girdthyswordui;
+package com.code.codemercenaries.girdthyswordpro;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.code.codemercenaries.girdthyswordui", appContext.getPackageName());
+        assertEquals("com.code.codemercenaries.girdthyswordpro", appContext.getPackageName());
     }
 }

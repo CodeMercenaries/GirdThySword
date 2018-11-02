@@ -1,8 +1,8 @@
-package com.code.codemercenaries.girdthyswordui.Utilities;
+package com.code.codemercenaries.girdthyswordpro.utilities;
 
 import android.app.Activity;
 
-import com.code.codemercenaries.girdthyswordui.R;
+import com.code.codemercenaries.girdthyswordpro.R;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;

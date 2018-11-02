@@ -1,4 +1,4 @@
-package com.code.codemercenaries.girdthyswordui;
+package com.code.codemercenaries.girdthyswordpro;
 
 import org.junit.Test;
 

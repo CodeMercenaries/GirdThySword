@@ -13,15 +13,16 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/display_image"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/profile_image_cd"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:srcCompat="@mipmap/defalt_profile_image" />
 
     <TextView
+        android:id="@+id/display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

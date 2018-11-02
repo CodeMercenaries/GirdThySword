@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.code.codemercenaries.girdthyswordui">
+    package="com.code.codemercenaries.girdthyswordpro">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,14 +19,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.HomeActivity"
+            android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.BlogActivity"
+            android:label="@string/title_activity_blog"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

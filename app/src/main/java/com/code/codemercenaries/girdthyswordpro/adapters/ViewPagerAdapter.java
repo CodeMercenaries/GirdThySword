@@ -1,4 +1,4 @@
-package com.code.codemercenaries.girdthyswordui.Adapters;
+package com.code.codemercenaries.girdthyswordpro.adapters;
 
 
 import android.support.v4.app.Fragment;

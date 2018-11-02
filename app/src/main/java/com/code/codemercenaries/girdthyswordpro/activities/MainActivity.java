@@ -1,4 +1,4 @@
-package com.code.codemercenaries.girdthyswordui.Activities;
+package com.code.codemercenaries.girdthyswordpro.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
-import com.code.codemercenaries.girdthyswordui.R;
+import com.code.codemercenaries.girdthyswordpro.R;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 

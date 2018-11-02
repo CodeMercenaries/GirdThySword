@@ -4,20 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context="com.code.codemercenaries.girdthyswordpro.activities.MainActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.code.codemercenaries.girdthyswordpro.activities.BlogActivity"
+    tools:showIn="@layout/app_bar_blog">
 
-    <VideoView
-        android:id="@+id/videoView"
+
+    <WebView
+        android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/splash_video_height"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
-package com.code.codemercenaries.girdthyswordui.Activities;
+package com.code.codemercenaries.girdthyswordpro.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,13 +18,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.code.codemercenaries.girdthyswordui.Adapters.ViewPagerAdapter;
-import com.code.codemercenaries.girdthyswordui.Fragments.DailiesFragment;
-import com.code.codemercenaries.girdthyswordui.Fragments.ForgeFragment;
-import com.code.codemercenaries.girdthyswordui.Fragments.OverviewFragment;
-import com.code.codemercenaries.girdthyswordui.R;
-import com.code.codemercenaries.girdthyswordui.Utilities.FontHelper;
+import com.bumptech.glide.Glide;
+import com.code.codemercenaries.girdthyswordpro.R;
+import com.code.codemercenaries.girdthyswordpro.adapters.ViewPagerAdapter;
+import com.code.codemercenaries.girdthyswordpro.fragments.DailiesFragment;
+import com.code.codemercenaries.girdthyswordpro.fragments.ForgeFragment;
+import com.code.codemercenaries.girdthyswordpro.fragments.OverviewFragment;
+import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
+import com.google.firebase.auth.FirebaseAuth;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
@@ -32,6 +37,8 @@ public class HomeActivity extends AppCompatActivity
         DailiesFragment.OnFragmentInteractionListener,
         OverviewFragment.OnFragmentInteractionListener,
         ForgeFragment.OnFragmentInteractionListener {
+
+    FirebaseAuth mAuth;
 
     FontHelper fontHelper;
     ViewPagerAdapter viewPagerAdapter;
@@ -42,6 +49,8 @@ public class HomeActivity extends AppCompatActivity
     ForgeFragment forgeFragment;
 
     MenuItem prevMenuItem;
+    TextView displayName;
+    ImageView displayImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +132,17 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
+        displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
+
+        if(mAuth != null && mAuth.getCurrentUser() != null){
+            displayName.setText(mAuth.getCurrentUser().getDisplayName());
+            Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
+        }
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -188,6 +208,11 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_leaderboard:
                 break;
             case R.id.nav_tavern:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_blog:
+                startActivity(new Intent(HomeActivity.this,BlogActivity.class));
                 break;
         }
 

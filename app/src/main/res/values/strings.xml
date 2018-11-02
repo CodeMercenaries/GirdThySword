@@ -19,7 +19,7 @@
     <string name="profile_image_cd">Profile Image of the user</string>
 
     <!--Default Strings-->
-    <string name="default_display_name">Joel Kingsley</string>
+    <string name="default_display_name">Anonymous</string>
     <string name="default_level_description">Beginner (Level 1)</string>
     <string name="default_font_path">fonts/Asket Condensed Extrabold.ttf</string>
     <string name="default_font_name">Asket Condensed Extrabold</string>
@@ -49,4 +49,10 @@
     <string name="title_activity_help"><![CDATA[Help & FAQ]]></string>
     <string name="title_activity_about">About</string>
     <string name="default_profile_name">Joel Kingsley</string>
+
+    <string name="graphql_base_url">https://girdthysword.herokuapp.com/v1alpha1/graphql</string>
+
+    <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="error_authorization_went_wrong">Authorization went wrong</string>
+    <string name="info_logging_in">Logging in</string>
 </resources>
