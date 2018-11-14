@@ -28,7 +28,20 @@
         <activity
             android:name=".activities.BlogActivity"
             android:label="@string/title_activity_blog"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ReadActivity"
+            android:label="@string/title_activity_read"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.BibleActivity"
+            android:label="@string/title_activity_bible"
+            android:parentActivityName=".activities.ReadActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.code.codemercenaries.girdthyswordpro.activities.ReadActivity" />
+        </activity>
     </application>
 
 </manifest>

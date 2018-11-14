@@ -1,0 +1,96 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.code.codemercenaries.girdthyswordpro.fragments.ReaderFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/selectPrimaryVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textSize="25sp"
+                android:text="@string/select_primary_version" />
+
+            <Spinner
+                android:id="@+id/primary_version"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/selectPrimaryVersion"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="15dp"
+                android:layout_below="@+id/primary_version"
+                android:textSize="20sp"
+                android:text="@string/and" />
+
+            <TextView
+                android:id="@+id/selectSecondaryVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_below="@+id/textView"
+                android:textSize="25sp"
+                android:text="@string/select_secondary_version" />
+
+            <TextView
+                android:id="@+id/secondaryDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/selectSecondaryVersion"
+                android:textStyle="italic"
+                android:textSize="15sp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:text="@string/used_for_parallel_reference"/>
+
+            <Spinner
+                android:id="@+id/secondary_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_below="@+id/secondaryDescription" />
+
+            <Button
+                android:id="@+id/read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/secondary_version"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
+                android:text="@string/read" />
+
+        </RelativeLayout>
+
+
+
+</FrameLayout>

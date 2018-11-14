@@ -1,4 +1,4 @@
-package com.code.codemercenaries.girdthyswordpro.beans;
+package com.code.codemercenaries.girdthyswordpro.beans.remote;
 
 /**
  * Created by Joel Kingsley on 02-11-2018.
@@ -8,28 +8,25 @@ public class User {
     String uuid;
     String displayName;
     String email;
-    String phoneNumber;
     Integer level;
     Long versesMemorized;
     String createdBy;
     String lastUpdatedBy;
 
-    public User(String uuid, String displayName, String email, String phoneNumber, String createdBy, String lastUpdatedBy) {
+    public User(String uuid, String displayName, String email, String createdBy, String lastUpdatedBy) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.level = 0;
         this.versesMemorized = 0L;
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public User(String uuid, String displayName, String email, String phoneNumber, Integer level, Long versesMemorized, String createdBy, String lastUpdatedBy) {
+    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, String createdBy, String lastUpdatedBy) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.level = level;
         this.versesMemorized = versesMemorized;
         this.createdBy = createdBy;
@@ -58,14 +55,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public Integer getLevel() {
@@ -98,5 +87,18 @@ public class User {
 
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uuid='" + uuid + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", email='" + email + '\'' +
+                ", level=" + level +
+                ", versesMemorized=" + versesMemorized +
+                ", createdBy='" + createdBy + '\'' +
+                ", lastUpdatedBy='" + lastUpdatedBy + '\'' +
+                '}';
     }
 }

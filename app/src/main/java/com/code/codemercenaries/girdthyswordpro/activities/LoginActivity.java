@@ -3,6 +3,7 @@ package com.code.codemercenaries.girdthyswordpro.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,7 +17,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.code.codemercenaries.girdthyswordpro.R;
-import com.code.codemercenaries.girdthyswordpro.beans.User;
+import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
+import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -44,6 +46,7 @@ import java.util.Date;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private final static String SYSTEM_PREF = "system";
     private final static String TAG = "LoginActivity";
     private final static int RC_SIGN_IN = 2;
 
@@ -52,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     GoogleApiClient mGoogleApiClient;
     FirebaseAuth.AuthStateListener mAuthListener;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         signInButton = findViewById(R.id.sign_in_button);
 
         mAuth = FirebaseAuth.getInstance();
+
+        sharedPreferences = getSharedPreferences(SYSTEM_PREF,0);
 
         InputStream inputStream;
         try {
@@ -91,9 +98,9 @@ public class LoginActivity extends AppCompatActivity {
                         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
                         progressDialog.setMessage("Downloading Data");
 
-                        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(mAuth.getCurrentUser().getUid());
+                        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(mAuth.getCurrentUser().getUid());
 
-                        if(isNetworkAvailable()) {
+                        if(isNetworkAvailable() && !sharedPreferences.getBoolean("logged_in",false)) {
                             progressDialog.show();
                         }
 
@@ -106,6 +113,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                     progressDialog.dismiss();
 
+                                    sharedPreferences.edit().putBoolean("logged_in",true).apply();
+
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -115,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                                     long time = date.getTime();
                                     Timestamp timestamp = new Timestamp(time);
 
-                                    User user = new User(mAuth.getCurrentUser().getUid(),mAuth.getCurrentUser().getDisplayName(),mAuth.getCurrentUser().getEmail(),mAuth.getCurrentUser().getPhoneNumber(),timestamp.toString(),timestamp.toString());
+                                    User user = new User(mAuth.getCurrentUser().getUid(),mAuth.getCurrentUser().getDisplayName(),mAuth.getCurrentUser().getEmail(),timestamp.toString(),timestamp.toString());
                                     dataSnapshot.getRef().setValue(user);
 
                                     progressDialog.dismiss();

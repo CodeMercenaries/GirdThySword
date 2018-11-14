@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.code.codemercenaries.girdthyswordpro.fragments.ProgressFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/selectVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"/>
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/circleProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selectVersion"
+            android:layout_centerHorizontal="true">
+
+            <ProgressBar
+                android:id="@+id/totalChaptersProgress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:text="@string/_97" />
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <TextView
+            android:id="@+id/readChapters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/circleProgress"
+            android:layout_centerHorizontal="true"
+            android:text="@string/_1158_1189_read_chapters" />
+
+    </RelativeLayout>
+
+</FrameLayout>
