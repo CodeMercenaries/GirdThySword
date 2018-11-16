@@ -45,7 +45,8 @@ public class ViewPagerStateAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        return super.getItemPosition(object);
+        return POSITION_NONE;
+        /*return super.getItemPosition(object);*/
     }
 
     @Override

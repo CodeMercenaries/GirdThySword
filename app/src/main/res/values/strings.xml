@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GirdThySword</string>
+    <string name="app_name">GirdThySword Pro</string>
     <string name="logo_cd">Logo that says Gird Thy Sword</string>
     <string name="logo_path">logo_new.png</string>
     <string name="login_tagline">Before you go out and live the Christian Life</string>
@@ -74,5 +74,16 @@
     <string name="_1158_1189_read_chapters">1158/1189 Read Chapters</string>
     <string name="_97">97%</string>
     <string name="read">Read</string>
+
+    <string name="default_verse_num">196</string>
+    <string name="default_verse">And I sought for a man among them, that should make up the hedge, and stand in the gap before me for the land, that I should not destroy it: but I found none.</string>
+    <string name="default_chapter_title">Joel 1:1</string>
+    <string name="default_book">Revelation</string>
+
+    <string name="book_name_with_chap_num">%1$s %2$d</string>
+
+    <string name="memorized">Memorized</string>
+    <string name="book_name">Book Name</string>
+    <string name="_21_22">21/22</string>
 
 </resources>

@@ -9,7 +9,7 @@ import com.code.codemercenaries.girdthyswordpro.beans.local.Version;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Joel Kingsley on 31-10-2018.
@@ -29,9 +29,9 @@ public class DBHandler extends SQLiteAssetHelper{
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public List<Version> getAllVersions() {
+    public ArrayList<Version> getAllVersions() {
         Log.d("getAllVersions:", "Entered");
-        List<Version> versions = new ArrayList<>();
+        ArrayList<Version> versions = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = DBQueries.GET_ALL_VERSIONS;
         Cursor cursor = db.rawQuery(query, null);
@@ -46,12 +46,12 @@ public class DBHandler extends SQLiteAssetHelper{
         return versions;
     }
 
-    public List<String> getBookNames(String version) {
+    public ArrayList<String> getBookNames(String version) {
         Log.d("getBookNames:", "Entered");
         SQLiteDatabase db = this.getWritableDatabase();
         String query = String.format(DBQueries.GET_ALL_BOOK_NAMES, version);
         Cursor cursor = db.rawQuery(query, null);
-        List<String> bookNames = new ArrayList<String>();
+        ArrayList<String> bookNames = new ArrayList<String>();
         if (cursor.moveToFirst()) {
             do {
                 bookNames.add(cursor.getString(0));
@@ -71,5 +71,50 @@ public class DBHandler extends SQLiteAssetHelper{
         cursor.close();
         Log.d("getNumOfChap:", "Left");
         return count-1;
+    }
+
+    public int getNumOfVerse(String version, String bookName, int chapNum) {
+        Log.d("getNumOfVerse:", "Entered");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format(Locale.getDefault(),DBQueries.GET_VERSE_NUMS, version, bookName, chapNum);
+        Cursor cursor = db.rawQuery(query, null);
+        int count = cursor.getCount();
+        Log.d("getNumOfVerse:", "Left");
+        cursor.close();
+        return count - 1;
+    }
+
+    public ArrayList<String> getAllVersesOfChap(String version, String bookName, int chapNum) {
+        Log.d("getAllVersesOfChap:", "Entered");
+        ArrayList<String> verses = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format(Locale.getDefault(),DBQueries.GET_VERSE_TEXT_OF_CHAP, version, bookName, chapNum);
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToNext();
+
+            do {
+                verses.add(cursor.getString(0));
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        Log.d("getAllVersesOfChap:", "Left");
+        return verses;
+    }
+
+    public String getVerse(String version, String bookName, int chapNum, int verseNum) {
+        Log.d("getVerse:", "Entered");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format(Locale.getDefault(),DBQueries.GET_VERSE_TEXT, version, bookName, chapNum, verseNum);
+        Cursor cursor = db.rawQuery(query, null);
+        String string = "NA";
+        if (cursor.moveToFirst()) {
+            string = cursor.getString(0);
+        }
+        cursor.close();
+        Log.d("getVerse:", "Left");
+        return string;
     }
 }

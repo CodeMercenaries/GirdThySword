@@ -1,19 +1,26 @@
 package com.code.codemercenaries.girdthyswordpro.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.code.codemercenaries.girdthyswordpro.R;
+import com.code.codemercenaries.girdthyswordpro.adapters.BookRecycleListAdapter;
+import com.code.codemercenaries.girdthyswordpro.beans.local.BookWithStats;
 import com.code.codemercenaries.girdthyswordpro.beans.local.Version;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBHandler;
 
@@ -31,8 +38,15 @@ import java.util.List;
 public class ProgressFragment extends Fragment {
 
     Spinner selectVersion;
+    RecyclerView bookList;
+    BookRecycleListAdapter bookRecycleListAdapter;
 
     Activity mActivity;
+
+    ArrayList<BookWithStats> bookWithStatsList;
+    List<Version> versions;
+    int currVersionPos;
+    DisplayBooks task1;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,10 +104,11 @@ public class ProgressFragment extends Fragment {
         mActivity = getActivity();
 
         selectVersion = view.findViewById(R.id.selectVersion);
+        bookList = view.findViewById(R.id.bookList);
 
-        DBHandler dbHandler = new DBHandler(mActivity);
+        final DBHandler dbHandler = new DBHandler(mActivity);
 
-        List<Version> versions = dbHandler.getAllVersions();
+        versions = dbHandler.getAllVersions();
         List<String> versionsList = new ArrayList<>();
         for(Version version: versions) {
             versionsList.add(version.get_name() + " (" +  version.get_lang() + ")");
@@ -102,6 +117,59 @@ public class ProgressFragment extends Fragment {
         ArrayAdapter<String> versionAdapter = new ArrayAdapter<String>(mActivity,android.R.layout.simple_spinner_item,versionsList);
         versionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectVersion.setAdapter(versionAdapter);
+
+        bookWithStatsList = new ArrayList<>();
+
+        bookRecycleListAdapter = new BookRecycleListAdapter(bookWithStatsList);
+
+        bookList.setLayoutManager(new LinearLayoutManager(mActivity));
+        bookList.setHasFixedSize(true);
+        bookList.setAdapter(bookRecycleListAdapter);
+
+        selectVersion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bookWithStatsList.clear();
+                currVersionPos = position;
+                task1 = new DisplayBooks();
+                task1.execute();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public class DisplayBooks extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(mActivity);
+            progressDialog.setMessage("Loading Stats");
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            DBHandler dbHandler = new DBHandler(mActivity);
+            List<String> bookNames = dbHandler.getBookNames(versions.get(currVersionPos).get_id());
+            for(int i=0;i<bookNames.size();i++) {
+                bookWithStatsList.add(new BookWithStats(bookNames.get(i),dbHandler.getNumOfChap(versions.get(currVersionPos).get_id(),bookNames.get(i))));
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            bookRecycleListAdapter.notifyDataSetChanged();
+            progressDialog.dismiss();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
