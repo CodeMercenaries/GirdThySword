@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -46,7 +45,6 @@ import java.util.Date;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private final static String SYSTEM_PREF = "system";
     private final static String TAG = "LoginActivity";
     private final static int RC_SIGN_IN = 2;
 
@@ -61,8 +59,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -71,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        sharedPreferences = getSharedPreferences(SYSTEM_PREF,0);
+        sharedPreferences = getSharedPreferences(DBConstants.SYSTEM_PREF,0);
 
         InputStream inputStream;
         try {

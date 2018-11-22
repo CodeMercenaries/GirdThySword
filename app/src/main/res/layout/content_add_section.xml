@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.code.codemercenaries.girdthyswordpro.activities.AddSectionActivity"
+    tools:showIn="@layout/activity_add_section">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/setBookName"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/version"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/setVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignStart="@+id/startVerse"
+                    android:layout_below="@+id/version"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="30dp" />
+
+                <TextView
+                    android:id="@+id/bookName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/setBookName"
+                    android:layout_below="@+id/setVersion"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/book_name"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/setEndVerse"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_alignEnd="@+id/endVerse"
+                    android:layout_alignStart="@+id/endVerse"
+
+                    android:layout_below="@+id/startVerse" />
+
+                <Spinner
+                    android:id="@+id/setChapNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignStart="@+id/chapNum"
+                    android:layout_below="@+id/chapNum"
+                    android:layout_marginEnd="30dp" />
+
+                <TextView
+                    android:id="@+id/endVerse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/startVerse"
+                    android:layout_marginEnd="30dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/end_verse"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/chapNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/setBookName"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/chapter_number"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/startVerse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/setChapNum"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/start_verse"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/setBookName"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignStart="@id/startVerse"
+                    android:layout_below="@+id/bookName"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="30dp" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/setStartVerse"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="Add" />
+
+                <Spinner
+                    android:id="@+id/setStartVerse"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_alignEnd="@id/startVerse"
+                    android:layout_alignStart="@+id/startVerse"
+                    android:layout_below="@+id/startVerse" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

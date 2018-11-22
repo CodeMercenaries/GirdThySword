@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -13,11 +14,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,11 +52,16 @@ public class HomeActivity extends AppCompatActivity
     MenuItem prevMenuItem;
     TextView displayName;
     ImageView displayImage;
+    FloatingActionButton fab;
+    FloatingActionButton addSectionFab;
+    FloatingActionButton removeSectionFab;
+    TextView addSectionText;
+    TextView removeSectionText;
+
+    boolean fabStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         super.onCreate(savedInstanceState);
 
@@ -79,6 +85,14 @@ public class HomeActivity extends AppCompatActivity
 
         final ViewPager viewPager = findViewById(R.id.view_pager);
         setupViewPager(viewPager);
+
+        fab = findViewById(R.id.fab);
+        addSectionFab = findViewById(R.id.addSectionFab);
+        removeSectionFab = findViewById(R.id.removeSectionFab);
+        addSectionText = findViewById(R.id.addSectionText);
+        removeSectionText = findViewById(R.id.removeSectionText);
+
+        setupFabs();
 
         bottomNavigationView = findViewById(R.id.navigation);
 
@@ -143,6 +157,55 @@ public class HomeActivity extends AppCompatActivity
             Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
         }
 
+    }
+
+    private void setupFabs() {
+        fabStatus = false;
+        fabHide();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!fabStatus) {
+                    fabShow();
+                    fabStatus = true;
+                } else {
+                    fabHide();
+                    fabStatus = false;
+                }
+            }
+
+
+        });
+
+        addSectionFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,AddSectionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        removeSectionFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    private void fabShow() {
+        addSectionFab.show();
+        removeSectionFab.show();
+        addSectionText.setVisibility(View.VISIBLE);
+        removeSectionText.setVisibility(View.VISIBLE);
+    }
+
+    private void fabHide() {
+        addSectionFab.hide();
+        removeSectionFab.hide();
+        addSectionText.setVisibility(View.INVISIBLE);
+        removeSectionText.setVisibility(View.INVISIBLE);
     }
 
     private void setupViewPager(ViewPager viewPager) {

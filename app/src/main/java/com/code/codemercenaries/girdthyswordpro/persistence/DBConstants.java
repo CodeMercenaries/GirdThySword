@@ -34,4 +34,18 @@ public class DBConstants {
 
     //Remote Database
     public static final String FIREBASE_TABLE_USERS = "users";
+    public static final String FIREBASE_TABLE_CHUNKS = "chunks";
+    public static final String FIREBASE_TABLE_SECTIONS = "sections";
+    public static final String FIREBASE_TABLE_USER_BIBLE = "user_bible";
+    public static final String FIREBASE_TABLE_EN_KJV = "en_kjv";
+
+    public static final String FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW = "nextDateOfReview";
+    public static final String FIREBASE_UB_KEY_MEMORY = "memory";
+
+    public static final String DATE_FORMAT = "yyyy/MM/dd";
+
+    //SharedPreferences
+    public final static String SYSTEM_PREF = "system";
+    public final static String SETTINGS_PREF = "settings";
+    public final static String SET_CHUNK_SIZE = "chunk_size";
 }

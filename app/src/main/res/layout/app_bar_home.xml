@@ -23,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
-                android:textColor="@color/colorAccent"
                 android:text="@string/title_activity_home"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/app_bar_title"
                 android:textStyle="bold" />
 
@@ -33,5 +33,59 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_home" />
+
+    <TextView
+        android:id="@+id/addSectionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="215dp"
+        android:layout_marginEnd="80dp"
+        android:background="@color/colorPrimary"
+        android:padding="5dp"
+        android:text="@string/add_section"/>
+
+    <TextView
+        android:id="@+id/removeSectionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="165dp"
+        android:layout_marginEnd="80dp"
+        android:background="@color/colorPrimary"
+        android:padding="5dp"
+        android:text="@string/remove_section"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addSectionFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="210dp"
+        android:layout_marginEnd="28dp"
+        android:src="@drawable/ic_add_circle"
+        android:tint="@color/colorPrimary"
+        app:fabSize="mini"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/removeSectionFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="160dp"
+        android:layout_marginEnd="28dp"
+        android:src="@drawable/ic_remove_circle"
+        android:tint="@color/colorPrimary"
+        app:fabSize="mini" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="90dp"
+        android:layout_marginEnd="20dp"
+        android:src="@android:drawable/ic_input_add"
+        app:fabSize="normal"/>
 
 </android.support.design.widget.CoordinatorLayout>

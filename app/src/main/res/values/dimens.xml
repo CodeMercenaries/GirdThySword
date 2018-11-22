@@ -8,4 +8,6 @@
     <dimen name="nav_header_height">100dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_title">20sp</dimen>
+    <dimen name="dailies_fab_end_offset">28dp</dimen>
+    <dimen name="dailies_normal_fab_end_offset">20dp</dimen>
 </resources>

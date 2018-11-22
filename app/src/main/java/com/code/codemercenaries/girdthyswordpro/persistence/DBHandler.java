@@ -117,4 +117,5 @@ public class DBHandler extends SQLiteAssetHelper{
         Log.d("getVerse:", "Left");
         return string;
     }
+
 }
