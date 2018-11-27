@@ -1,15 +1,16 @@
 package com.code.codemercenaries.girdthyswordpro.adapters;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.beans.local.BookWithStats;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -23,10 +24,13 @@ public class BookRecycleListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private ArrayList<BookWithStats> bookWithStatsList;
+    private Activity activity;
     private int headerResource;
     private int itemResource;
+    private int totalChaptersRead;
 
-    public BookRecycleListAdapter(ArrayList<BookWithStats> bookWithStatsList) {
+    public BookRecycleListAdapter(Activity activity, ArrayList<BookWithStats> bookWithStatsList) {
+        this.activity = activity;
         this.bookWithStatsList = bookWithStatsList;
         this.headerResource = R.layout.custom_progress_item;
         this.itemResource = R.layout.custom_book_list;
@@ -60,7 +64,14 @@ public class BookRecycleListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             builder2.append(bookWithStatsList.get(position-1).getTotalChapters());
             ((VHItem) holder).readChapters.setText(builder2);
         } else if (holder instanceof VHHeader) {
+            this.totalChaptersRead = 0;
+            for(BookWithStats bookWithStats: bookWithStatsList) {
+                this.totalChaptersRead += bookWithStats.getReadOrMemorizedChapters();
+            }
 
+            ((VHHeader) holder).progressBar.setDonut_progress(Integer.toString((totalChaptersRead*100)/1189));
+            ((VHHeader) holder).readOrMemorizedChapters.setText(activity.
+                    getString(R.string.of_1189_read_chapters,totalChaptersRead));
         }
     }
 
@@ -82,15 +93,13 @@ public class BookRecycleListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public static class VHHeader extends RecyclerView.ViewHolder {
-        ProgressBar progressBar;
-        TextView percent;
+        DonutProgress progressBar;
         TextView readOrMemorizedChapters;
 
         public VHHeader(View itemView) {
             super(itemView);
 
             progressBar = itemView.findViewById(R.id.totalChaptersProgress);
-            percent = itemView.findViewById(R.id.percent);
             readOrMemorizedChapters = itemView.findViewById(R.id.readOrMemorizedChapters);
         }
     }

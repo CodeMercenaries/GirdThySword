@@ -2,6 +2,7 @@ package com.code.codemercenaries.girdthyswordpro.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,40 +12,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
-import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class BlogActivity extends AppCompatActivity
+public class StatsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FontHelper fontHelper;
-    WebView webView;
+    ImageView badge5;
+    ImageView badge20;
+    ImageView badge40;
+    ImageView badge70;
+    ImageView badge100;
+    ImageView badge150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         fontHelper = new FontHelper();
         fontHelper.initialize(this);
 
-        setContentView(R.layout.activity_blog);
+        setContentView(R.layout.activity_stats);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -55,20 +53,55 @@ public class BlogActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    }
 
-        TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
-        ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        if(mAuth != null && mAuth.getCurrentUser() != null){
-            displayName.setText(mAuth.getCurrentUser().getDisplayName());
-            Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
+        badge5 = findViewById(R.id.badge5);
+        badge20 = findViewById(R.id.badge20);
+        badge40 = findViewById(R.id.badge40);
+        badge70 = findViewById(R.id.badge70);
+        badge100 = findViewById(R.id.badge100);
+        badge150 = findViewById(R.id.badge150);
+
+        InputStream inputStream = null;
+        Drawable drawable = null;
+        try {
+            inputStream = getAssets().open("images/badges/5.png");
+            drawable = Drawable.createFromStream(inputStream,null);
+            badge5.setImageDrawable(drawable);
+            inputStream.close();
+
+            inputStream = getAssets().open("images/badges/20.png");
+            drawable = Drawable.createFromStream(inputStream,null);
+            badge20.setImageDrawable(drawable);
+            inputStream.close();
+
+            inputStream = getAssets().open("images/badges/40_hide.png");
+            drawable = Drawable.createFromStream(inputStream,null);
+            badge40.setImageDrawable(drawable);
+            inputStream.close();
+
+            inputStream = getAssets().open("images/badges/70_hide.png");
+            drawable = Drawable.createFromStream(inputStream,null);
+            badge70.setImageDrawable(drawable);
+            inputStream.close();
+
+            inputStream = getAssets().open("images/badges/100_hide.png");
+            drawable = Drawable.createFromStream(inputStream,null);
+            badge100.setImageDrawable(drawable);
+            inputStream.close();
+
+            inputStream = getAssets().open("images/badges/150_hide.png");
+            drawable = Drawable.createFromStream(inputStream,null);
+            badge150.setImageDrawable(drawable);
+            inputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        webView = findViewById(R.id.web_view);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("https://joelkingsley.wordpress.com");
     }
 
     @Override
@@ -89,7 +122,7 @@ public class BlogActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.blog, menu);
+        getMenuInflater().inflate(R.menu.stats, menu);
         return true;
     }
 
@@ -102,7 +135,6 @@ public class BlogActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            webView.reload();
             return true;
         }
 
@@ -117,13 +149,12 @@ public class BlogActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_home:
-                startActivity(new Intent(BlogActivity.this,HomeActivity.class));
+                startActivity(new Intent(StatsActivity.this,HomeActivity.class));
                 break;
             case R.id.nav_stats:
-                startActivity(new Intent(BlogActivity.this,StatsActivity.class));
                 break;
             case R.id.nav_read:
-                startActivity(new Intent(BlogActivity.this,ReadActivity.class));
+                startActivity(new Intent(StatsActivity.this,ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
                 break;
@@ -132,6 +163,7 @@ public class BlogActivity extends AppCompatActivity
             case R.id.nav_share:
                 break;
             case R.id.nav_blog:
+                startActivity(new Intent(StatsActivity.this,BlogActivity.class));
                 break;
         }
 

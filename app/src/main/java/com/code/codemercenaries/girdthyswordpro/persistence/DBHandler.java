@@ -1,5 +1,6 @@
 package com.code.codemercenaries.girdthyswordpro.persistence;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -118,4 +119,100 @@ public class DBHandler extends SQLiteAssetHelper{
         return string;
     }
 
+    public void setReadChapter(String version, String bookName, int chapNum) {
+        Log.d("setReadChapter:", "book " + bookName + " chap" + chapNum + " entered");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        String selectQuery = String.format(Locale.getDefault(),DBQueries.GET_CHAP_REP_ID,version,bookName,chapNum);
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        cursor.moveToFirst();
+        String id = cursor.getString(0);
+
+        cv.put(DBConstants.B_KEY_READ, DBConstants.CODE_READ);
+        db.update(version, cv, "id=" + id, null);
+
+        cursor.close();
+        Log.d("setReadChapter:", "book " + bookName + " chap" + chapNum + " left");
+    }
+
+    public void setNotReadChapter(String version, String bookName, int chapNum) {
+        Log.d("setNotReadChapter:", "book " + bookName + " chap" + chapNum + " entered");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        String selectQuery = String.format(Locale.getDefault(),DBQueries.GET_CHAP_REP_ID,version,bookName,chapNum);
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        cursor.moveToFirst();
+        String id = cursor.getString(0);
+
+        cv.put(DBConstants.B_KEY_READ, DBConstants.CODE_NOT_READ);
+        db.update(version, cv, "id=" + id, null);
+
+        cursor.close();
+        Log.d("setNotReadChapter:", "book " + bookName + " chap" + chapNum + " left");
+    }
+
+    public void setNotReadVersion(String version) {
+        Log.d("setNotReadVersion:", "version " + version + " entered");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(DBConstants.B_KEY_READ, DBConstants.CODE_NOT_READ);
+        db.update(version, cv, null, null);
+
+        Log.d("setNotReadVersion:", "version " + version + " left");
+    }
+
+    public int getTotalChaptersReadInVersion(String version) {
+        Log.d("getTChaptersReadInV:", "version " + version + " entered");
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = String.format(Locale.getDefault(),DBQueries.GET_TOTAL_CHAPTERS_READ_IN_VERSION,version);
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+        Log.d("getTChaptersReadInV:", "version " + version + " left");
+        Log.d("getTChaptersReadInV:", Integer.toString(count));
+        return count;
+    }
+
+    public int getTotalChaptersReadInBook(String version, String bookName) {
+        Log.d("getTChaptersReadInB:", "version " + version + "bookName " + bookName + " entered");
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = String.format(Locale.getDefault(),DBQueries.GET_TOTAL_CHAPTERS_READ_IN_BOOK,version,bookName);
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+        Log.d("getTChaptersReadInB:", "version " + version + "bookName " + bookName + " left");
+        Log.d("getTChaptersReadInB:", Integer.toString(count));
+        return count;
+    }
+
+    public boolean isReadChapter(String version, String bookName, int chapNum) {
+        Log.d("isReadChapter:", "version " + version + "bookName " + bookName + "chapNum " + chapNum + " entered");
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = String.format(Locale.getDefault(),DBQueries.GET_CHAP_READ_STATUS,version,bookName,chapNum);
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        cursor.moveToFirst();
+
+        int readStatus = cursor.getInt(0);
+
+        cursor.close();
+        Log.d("isReadChapter:", "version " + version + "bookName " + bookName + "chapNum " + chapNum +  " left");
+        Log.d("isReadChapter:", Boolean.toString(readStatus == DBConstants.CODE_READ));
+        return readStatus == DBConstants.CODE_READ;
+    }
 }

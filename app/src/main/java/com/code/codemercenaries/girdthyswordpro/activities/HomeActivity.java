@@ -265,6 +265,7 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_home:
                 break;
             case R.id.nav_stats:
+                startActivity(new Intent(HomeActivity.this,StatsActivity.class));
                 break;
             case R.id.nav_read:
                 startActivity(new Intent(HomeActivity.this,ReadActivity.class));

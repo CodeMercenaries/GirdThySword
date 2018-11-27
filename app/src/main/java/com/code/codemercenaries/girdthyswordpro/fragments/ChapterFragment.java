@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,20 +42,17 @@ public class ChapterFragment extends Fragment{
     private static final String ARG_PARAM3 = "chap_num";
 
     Activity mActivity;
-
-    private String version;
-    private String bookName;
-    private int chapNum;
-
     RecyclerView verseList;
     VerseRecycleListAdapter verseRecycleListAdapter;
     TextView chapterTitle;
-
-    private int numOfVerse;
+    FloatingActionButton fab;
+    FloatingActionButton fabNot;
     List<Verse> verses;
-
     DisplayVerses task1;
-
+    private String version;
+    private String bookName;
+    private int chapNum;
+    private int numOfVerse;
     private OnFragmentInteractionListener mListener;
 
     public ChapterFragment() {
@@ -104,6 +103,40 @@ public class ChapterFragment extends Fragment{
 
         chapterTitle = view.findViewById(R.id.chapterTitle);
         verseList = view.findViewById(R.id.verseList);
+        fab = view.findViewById(R.id.fab);
+        fabNot = view.findViewById(R.id.fabNot);
+
+        DBHandler dbHandler = new DBHandler(mActivity);
+        if(dbHandler.isReadChapter(version,bookName,chapNum)) {
+            fab.setVisibility(View.INVISIBLE);
+            fabNot.setVisibility(View.VISIBLE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+            fabNot.setVisibility(View.INVISIBLE);
+        }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleFab();
+                Snackbar.make(view, "Marked Chapter as Read", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                DBHandler dbHandler = new DBHandler(mActivity);
+                dbHandler.setReadChapter(version,bookName,chapNum);
+            }
+        });
+
+        fabNot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFab();
+                Snackbar.make(v, "Marked Chapter as Unread", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                DBHandler dbHandler = new DBHandler(mActivity);
+                dbHandler.setNotReadChapter(version,bookName,chapNum);
+            }
+        });
+
 
         verses = new ArrayList<>();
 
@@ -113,10 +146,21 @@ public class ChapterFragment extends Fragment{
         builder.append(Integer.toString(chapNum));
         chapterTitle.setText(builder.toString());
 
-        DBHandler dbHandler = new DBHandler(mActivity);
         numOfVerse = dbHandler.getNumOfVerse(version,bookName,chapNum);
 
         setupList();
+    }
+
+    private void toggleFab() {
+        if(fab.getVisibility() == View.VISIBLE)
+            fab.setVisibility(View.INVISIBLE);
+        else
+            fab.setVisibility(View.VISIBLE);
+
+        if(fabNot.getVisibility() == View.VISIBLE)
+            fabNot.setVisibility(View.INVISIBLE);
+        else
+            fabNot.setVisibility(View.VISIBLE);
     }
 
     private void setupList() {
@@ -134,6 +178,32 @@ public class ChapterFragment extends Fragment{
         Log.d("setupList:","Left");
     }
 
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+    }
 
     private class DisplayVerses extends AsyncTask<Void, Void, Void> {
 
@@ -171,34 +241,6 @@ public class ChapterFragment extends Fragment{
             progressDialog.dismiss();
             Log.d("DisplayVerses:","onPostExecute left");
         }
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 
 

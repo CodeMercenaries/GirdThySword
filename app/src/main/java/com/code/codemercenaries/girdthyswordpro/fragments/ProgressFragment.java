@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,22 +38,19 @@ import java.util.List;
  */
 public class ProgressFragment extends Fragment {
 
-    Spinner selectVersion;
-    RecyclerView bookList;
-    BookRecycleListAdapter bookRecycleListAdapter;
-
-    Activity mActivity;
-
-    ArrayList<BookWithStats> bookWithStatsList;
-    List<Version> versions;
-    int currVersionPos;
-    DisplayBooks task1;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    Spinner selectVersion;
+    RecyclerView bookList;
+    BookRecycleListAdapter bookRecycleListAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
+    Activity mActivity;
+    ArrayList<BookWithStats> bookWithStatsList;
+    List<Version> versions;
+    int currVersionPos;
+    DisplayBooks task1;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -63,15 +61,6 @@ public class ProgressFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProgressFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProgressFragment newInstance(String param1, String param2) {
         ProgressFragment fragment = new ProgressFragment();
         Bundle args = new Bundle();
@@ -105,6 +94,7 @@ public class ProgressFragment extends Fragment {
 
         selectVersion = view.findViewById(R.id.selectVersion);
         bookList = view.findViewById(R.id.bookList);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         final DBHandler dbHandler = new DBHandler(mActivity);
 
@@ -114,13 +104,14 @@ public class ProgressFragment extends Fragment {
             versionsList.add(version.get_name() + " (" +  version.get_lang() + ")");
         }
 
+
         ArrayAdapter<String> versionAdapter = new ArrayAdapter<String>(mActivity,android.R.layout.simple_spinner_item,versionsList);
         versionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectVersion.setAdapter(versionAdapter);
 
         bookWithStatsList = new ArrayList<>();
 
-        bookRecycleListAdapter = new BookRecycleListAdapter(bookWithStatsList);
+        bookRecycleListAdapter = new BookRecycleListAdapter(mActivity,bookWithStatsList);
 
         bookList.setLayoutManager(new LinearLayoutManager(mActivity));
         bookList.setHasFixedSize(true);
@@ -131,8 +122,20 @@ public class ProgressFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 bookWithStatsList.clear();
                 currVersionPos = position;
-                task1 = new DisplayBooks();
-                task1.execute();
+                /*task1 = new DisplayBooks();
+                task1.execute();*/
+
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+
+                        task1 = new DisplayBooks();
+                        task1.execute();
+
+                        bookRecycleListAdapter.notifyDataSetChanged();
+                    }
+                });
             }
 
             @Override
@@ -140,36 +143,18 @@ public class ProgressFragment extends Fragment {
 
             }
         });
-    }
 
-    public class DisplayBooks extends AsyncTask<Void, Void, Void> {
-
-        ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(mActivity);
-            progressDialog.setMessage("Loading Stats");
-            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            DBHandler dbHandler = new DBHandler(mActivity);
-            List<String> bookNames = dbHandler.getBookNames(versions.get(currVersionPos).get_id());
-            for(int i=0;i<bookNames.size();i++) {
-                bookWithStatsList.add(new BookWithStats(bookNames.get(i),dbHandler.getNumOfChap(versions.get(currVersionPos).get_id(),bookNames.get(i))));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bookWithStatsList.clear();
+                bookRecycleListAdapter.notifyDataSetChanged();
+                task1 = new DisplayBooks();
+                task1.execute();
+                bookRecycleListAdapter.notifyDataSetChanged();
             }
-            return null;
-        }
+        });
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            bookRecycleListAdapter.notifyDataSetChanged();
-            progressDialog.dismiss();
-        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -196,18 +181,43 @@ public class ProgressFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public class DisplayBooks extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            /*progressDialog = new ProgressDialog(mActivity);
+            progressDialog.setMessage("Loading Stats");
+            progressDialog.show();*/
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            DBHandler dbHandler = new DBHandler(mActivity);
+            List<String> bookNames = dbHandler.getBookNames(versions.get(currVersionPos).get_id());
+            bookWithStatsList.clear();
+            for(int i=0;i<bookNames.size();i++) {
+                int totalChapters = dbHandler.getNumOfChap(versions.get(currVersionPos).get_id(),bookNames.get(i));
+                int readChapters = dbHandler.getTotalChaptersReadInBook(versions.get(currVersionPos).get_id(),bookNames.get(i));
+                BookWithStats bookWithStats = new BookWithStats(bookNames.get(i), readChapters*100 /totalChapters,readChapters,totalChapters);
+                bookWithStatsList.add(bookWithStats);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            bookRecycleListAdapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+            /*progressDialog.dismiss();*/
+        }
     }
 }

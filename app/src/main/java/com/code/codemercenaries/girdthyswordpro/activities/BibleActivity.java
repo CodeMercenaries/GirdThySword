@@ -5,8 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -66,15 +64,6 @@ public class BibleActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         primaryVersePos = getIntent().getIntExtra(getString(R.string.title_intent_primary),0);
@@ -114,6 +103,7 @@ public class BibleActivity extends AppCompatActivity
             }
         });
         selectVersion.setSelection(primaryVersePos,true);
+
     }
 
     private void addItemsOnBookSpinner() {
@@ -181,8 +171,8 @@ public class BibleActivity extends AppCompatActivity
     private void setupViewPager(final ViewPager viewPager) {
         viewPagerStateAdapter = new ViewPagerStateAdapter(getSupportFragmentManager());
 
-        PopulateViewPager populateViewPager = new PopulateViewPager();
-        populateViewPager.execute();
+        task1 = new PopulateViewPager();
+        task1.execute();
 
         viewPager.setAdapter(viewPagerStateAdapter);
         currViewPagerPos = 0;

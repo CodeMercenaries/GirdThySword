@@ -1,15 +1,436 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.code.codemercenaries.girdthyswordpro.fragments.ForgeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/title_fragment_forge"
-        android:textAlignment="center" />
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/versesToUse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/memorizedVerses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_memorized_verses"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/out_of"
+                    android:textSize="30sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_verses"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/versesMemorizedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/versesToUse"
+                android:layout_centerHorizontal="true"
+                android:text="@string/verses_memorized"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/yourSword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/versesMemorizedText"
+                android:layout_centerHorizontal="true"
+                android:text="@string/your_sword"
+                android:textSize="17sp"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/equippedSwordCard"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/yourSword"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/equippedSword"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:contentDescription="@string/equipped_sword"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/equippedSwordTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/equippedSwordCard"
+                android:layout_centerHorizontal="true"
+                android:text="@string/bronze_sword"
+                android:textSize="20sp"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sword2Card"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_below="@+id/equippedSwordTitle"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/sword2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/sword_1"/>
+
+                    <TextView
+                        android:id="@+id/sword2Status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword2"
+                        android:text="@string/equipped"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/sword2CardFooter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword2"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sword2VerseIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/verse_icon"
+                            android:src="@drawable/ic_lock"/>
+
+                        <TextView
+                            android:id="@+id/sword2VerseCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verse_cost"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sword1Card"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_below="@+id/equippedSwordTitle"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toStartOf="@+id/sword2Card"
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/sword1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/sword_1"/>
+
+                    <TextView
+                        android:id="@+id/sword1Status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword1"
+                        android:text="@string/equipped"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/sword1CardFooter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sword1VerseIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/verse_icon"
+                            android:src="@drawable/ic_lock"/>
+
+                        <TextView
+                            android:id="@+id/sword1VerseCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verse_cost"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sword3Card"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_below="@+id/equippedSwordTitle"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/sword2Card"
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/sword3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/sword_1"/>
+
+                    <TextView
+                        android:id="@+id/sword3Status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword3"
+                        android:text="@string/equipped"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/sword3CardFooter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword3"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sword3VerseIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/verse_icon"
+                            android:src="@drawable/ic_lock"/>
+
+                        <TextView
+                            android:id="@+id/sword3VerseCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verse_cost"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sword5Card"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_below="@+id/sword2Card"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/sword5"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/sword_1"/>
+
+                    <TextView
+                        android:id="@+id/sword5Status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword5"
+                        android:text="@string/equipped"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/sword5CardFooter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword5"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sword5VerseIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/verse_icon"
+                            android:src="@drawable/ic_lock"/>
+
+                        <TextView
+                            android:id="@+id/sword5VerseCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verse_cost"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sword4Card"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_alignTop="@+id/sword5Card"
+                android:layout_below="@+id/equippedSwordTitle"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/sword5Card"
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/sword4"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/sword_1"/>
+
+                    <TextView
+                        android:id="@+id/sword4Status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword4"
+                        android:text="@string/equipped"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/sword4CardFooter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword4"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sword4VerseIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/verse_icon"
+                            android:src="@drawable/ic_lock"/>
+
+                        <TextView
+                            android:id="@+id/sword4VerseCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verse_cost"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sword6Card"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_alignTop="@+id/sword5Card"
+                android:layout_below="@+id/equippedSwordTitle"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/sword5Card"
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/sword6"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/sword_1"/>
+
+                    <TextView
+                        android:id="@+id/sword6Status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword6"
+                        android:text="@string/equipped"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/sword6CardFooter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sword6"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sword6VerseIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/verse_icon"
+                            android:src="@drawable/ic_lock"/>
+
+                        <TextView
+                            android:id="@+id/sword6VerseCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verse_cost"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </FrameLayout>

@@ -94,7 +94,9 @@ public class LoginActivity extends AppCompatActivity {
                         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
                         progressDialog.setMessage("Downloading Data");
 
-                        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(mAuth.getCurrentUser().getUid());
+                        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().
+                                getReference(DBConstants.FIREBASE_TABLE_USERS).
+                                child(mAuth.getCurrentUser().getUid());
 
                         if(isNetworkAvailable() && !sharedPreferences.getBoolean("logged_in",false)) {
                             progressDialog.show();
@@ -120,7 +122,11 @@ public class LoginActivity extends AppCompatActivity {
                                     long time = date.getTime();
                                     Timestamp timestamp = new Timestamp(time);
 
-                                    User user = new User(mAuth.getCurrentUser().getUid(),mAuth.getCurrentUser().getDisplayName(),mAuth.getCurrentUser().getEmail(),timestamp.toString(),timestamp.toString());
+                                    User user = new User(mAuth.getCurrentUser().getUid(),
+                                            mAuth.getCurrentUser().getDisplayName(),
+                                            mAuth.getCurrentUser().getEmail(),
+                                            timestamp.toString(),
+                                            timestamp.toString());
                                     dataSnapshot.getRef().setValue(user);
 
                                     progressDialog.dismiss();

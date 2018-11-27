@@ -120,6 +120,7 @@ public class ReadActivity extends AppCompatActivity
                 startActivity(new Intent(ReadActivity.this,HomeActivity.class));
                 break;
             case R.id.nav_stats:
+                startActivity(new Intent(ReadActivity.this,StatsActivity.class));
                 break;
             case R.id.nav_read:
                 break;

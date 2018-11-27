@@ -2,6 +2,7 @@ package com.code.codemercenaries.girdthyswordpro.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.code.codemercenaries.girdthyswordpro.adapters.OverviewRecycleListAdap
 import com.code.codemercenaries.girdthyswordpro.beans.remote.Chunk;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -206,9 +209,19 @@ public class OverviewFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allChunks.clear();
                 chunks.clear();
+                compactCalendarView.removeAllEvents();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
                     Chunk chunk = snapshot.getValue(Chunk.class);
                     allChunks.add(chunk);
+
+                    try {
+                        if(chunk != null) {
+                            compactCalendarView.addEvent(new Event(Color.BLUE, df.parse(chunk.getNextDateOfReview()).getTime()));
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     if(chunk != null && chunk.getNextDateOfReview().equals(df.format(currDate))) {
                         chunks.add(chunk);
                     }

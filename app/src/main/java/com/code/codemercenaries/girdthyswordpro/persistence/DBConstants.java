@@ -41,6 +41,8 @@ public class DBConstants {
 
     public static final String FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW = "nextDateOfReview";
     public static final String FIREBASE_UB_KEY_MEMORY = "memory";
+    public static final String FIREBASE_U_KEY_EQUIPPED_SWORD = "equippedSword";
+    public static final String FIREBASE_U_KEY_VERSES_MEMORIZED = "versesMemorized";
 
     public static final String DATE_FORMAT = "yyyy/MM/dd";
 
@@ -48,4 +50,5 @@ public class DBConstants {
     public final static String SYSTEM_PREF = "system";
     public final static String SETTINGS_PREF = "settings";
     public final static String SET_CHUNK_SIZE = "chunk_size";
+
 }

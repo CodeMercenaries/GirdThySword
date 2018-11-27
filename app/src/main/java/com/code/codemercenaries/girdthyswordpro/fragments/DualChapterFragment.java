@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,26 +36,23 @@ import java.util.List;
  */
 public class DualChapterFragment extends Fragment {
 
-    Activity mActivity;
-    TextView chapterTitle;
-    RecyclerView verseList;
-    VerseRecycleListAdapter verseRecycleListAdapter;
-    ProgressDialog progressDialog;
-
-    DisplayPrimaryVerses task1;
-    DisplaySecondaryVerses task2;
-
-    List<Verse> verses1;
-    List<Verse> verses2;
-
-    int numOfVerse;
-
     private static final String ARG_PARAM1 = "version1";
     private static final String ARG_PARAM2 = "version2";
     private static final String ARG_PARAM3 = "bookName1";
     private static final String ARG_PARAM4 = "bookName2";
     private static final String ARG_PARAM5 = "chapNum";
-
+    Activity mActivity;
+    TextView chapterTitle;
+    RecyclerView verseList;
+    VerseRecycleListAdapter verseRecycleListAdapter;
+    ProgressDialog progressDialog;
+    FloatingActionButton fab;
+    FloatingActionButton fabNot;
+    DisplayPrimaryVerses task1;
+    DisplaySecondaryVerses task2;
+    List<Verse> verses1;
+    List<Verse> verses2;
+    int numOfVerse;
     // TODO: Rename and change types of parameters
     private String version1;
     private String version2;
@@ -116,6 +115,39 @@ public class DualChapterFragment extends Fragment {
 
         chapterTitle = view.findViewById(R.id.chapterTitle);
         verseList = view.findViewById(R.id.verseList);
+        fab = view.findViewById(R.id.fab);
+        fabNot = view.findViewById(R.id.fabNot);
+
+        DBHandler dbHandler = new DBHandler(mActivity);
+        if(dbHandler.isReadChapter(version1,bookName1,chapNum)) {
+            fab.setVisibility(View.INVISIBLE);
+            fabNot.setVisibility(View.VISIBLE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+            fabNot.setVisibility(View.INVISIBLE);
+        }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleFab();
+                Snackbar.make(view, "Marked Chapter as Read", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                DBHandler dbHandler = new DBHandler(mActivity);
+                dbHandler.setReadChapter(version1,bookName1,chapNum);
+            }
+        });
+
+        fabNot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFab();
+                Snackbar.make(v, "Marked Chapter as Unread", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                DBHandler dbHandler = new DBHandler(mActivity);
+                dbHandler.setNotReadChapter(version1,bookName1,chapNum);
+            }
+        });
 
         verses1 = new ArrayList<>();
         verses2 = new ArrayList<>();
@@ -126,10 +158,21 @@ public class DualChapterFragment extends Fragment {
         builder.append(Integer.toString(chapNum));
         chapterTitle.setText(builder.toString());
 
-        DBHandler dbHandler = new DBHandler(mActivity);
         numOfVerse = dbHandler.getNumOfVerse(version1,bookName1,chapNum);
 
         setupList();
+    }
+
+    private void toggleFab() {
+        if(fab.getVisibility() == View.VISIBLE)
+            fab.setVisibility(View.INVISIBLE);
+        else
+            fab.setVisibility(View.VISIBLE);
+
+        if(fabNot.getVisibility() == View.VISIBLE)
+            fabNot.setVisibility(View.INVISIBLE);
+        else
+            fabNot.setVisibility(View.VISIBLE);
     }
 
     private void setupList() {
@@ -139,6 +182,45 @@ public class DualChapterFragment extends Fragment {
         task1.execute();
 
         Log.d("setupList:","Left");
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 
     private class DisplayPrimaryVerses extends AsyncTask<Void, Void, Void> {
@@ -218,44 +300,5 @@ public class DualChapterFragment extends Fragment {
 
             Log.d("DisplaySecondaryVerses:","onPostExecute left");
         }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

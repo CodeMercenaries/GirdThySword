@@ -71,8 +71,8 @@
     <string name="select_secondary_version">Select Secondary Version</string>
     <string name="select_primary_version">Select Primary Version</string>
     <string name="used_for_parallel_reference">(Used for Parallel Reference)</string>
-    <string name="_1158_1189_read_chapters">1158/1189 Read Chapters</string>
-    <string name="_97">97%</string>
+    <string name="of_1189_read_chapters">%1$d/1189 Read Chapters</string>
+    <string name="percentage">%1$d%%</string>
     <string name="read">Read</string>
 
     <string name="default_verse_num">196</string>
@@ -114,5 +114,21 @@
     <string name="default_next_date_of_review">2018/11/24</string>
     <string name="show_of_selected_date">Show of Selected Date</string>
     <string name="show_all">Show All</string>
+    <string name="default_memorized_verses">0</string>
+    <string name="total_verses">217714</string>
+    <string name="out_of">/</string>
+    <string name="verses_memorized">Verses Memorized</string>
+    <string name="equipped_sword">Equipped Sword</string>
+    <string name="sword_1">Sword 1</string>
+    <string name="sword_2">Sword 2</string>
+    <string name="bronze_sword">Bronze Sword</string>
+    <string name="verse_icon">Verse Icon</string>
+    <string name="verse_cost">20</string>
+    <string name="equipped">Equipped</string>
+    <string name="equip">Equip</string>
+    <string name="your_sword">Your Sword</string>
+    <string name="memorized_verses">Memorized Verses</string>
+    <string name="added_verses">Added Verses</string>
+    <string name="badges">Badges</string>
 
 </resources>

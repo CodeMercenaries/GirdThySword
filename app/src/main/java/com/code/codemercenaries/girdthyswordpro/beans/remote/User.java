@@ -12,18 +12,9 @@ public class User {
     Long versesMemorized;
     String createdBy;
     String lastUpdatedBy;
+    String equippedSword;
 
-    public User(String uuid, String displayName, String email, String createdBy, String lastUpdatedBy) {
-        this.uuid = uuid;
-        this.displayName = displayName;
-        this.email = email;
-        this.level = 0;
-        this.versesMemorized = 0L;
-        this.createdBy = createdBy;
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, String createdBy, String lastUpdatedBy) {
+    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, String createdBy, String lastUpdatedBy, String equippedSword) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
@@ -31,6 +22,26 @@ public class User {
         this.versesMemorized = versesMemorized;
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
+        this.equippedSword = equippedSword;
+    }
+
+    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized) {
+        this.uuid = uuid;
+        this.displayName = displayName;
+        this.email = email;
+        this.level = level;
+        this.versesMemorized = versesMemorized;
+    }
+
+    public User(String uuid, String displayName, String email, String createdBy, String lastUpdatedBy) {
+        this.uuid = uuid;
+        this.displayName = displayName;
+        this.email = email;
+        this.createdBy = createdBy;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.level = 0;
+        this.versesMemorized = 0L;
+        this.equippedSword = "bronze_sword";
     }
 
     public String getUuid() {
@@ -89,6 +100,14 @@ public class User {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    public String getEquippedSword() {
+        return equippedSword;
+    }
+
+    public void setEquippedSword(String equippedSword) {
+        this.equippedSword = equippedSword;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -99,6 +118,7 @@ public class User {
                 ", versesMemorized=" + versesMemorized +
                 ", createdBy='" + createdBy + '\'' +
                 ", lastUpdatedBy='" + lastUpdatedBy + '\'' +
+                ", equippedSword='" + equippedSword + '\'' +
                 '}';
     }
 }
