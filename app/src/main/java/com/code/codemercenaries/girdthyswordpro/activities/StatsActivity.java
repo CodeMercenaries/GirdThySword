@@ -4,26 +4,39 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.code.codemercenaries.girdthyswordpro.R;
+import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class StatsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private final String TAG = "StatsActivity";
 
     FontHelper fontHelper;
     ImageView badge5;
@@ -32,6 +45,11 @@ public class StatsActivity extends AppCompatActivity
     ImageView badge70;
     ImageView badge100;
     ImageView badge150;
+    TextView versesMemorizedTextView;
+    Integer versesMemorized;
+
+    DatabaseReference usersReference;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +83,17 @@ public class StatsActivity extends AppCompatActivity
         badge70 = findViewById(R.id.badge70);
         badge100 = findViewById(R.id.badge100);
         badge150 = findViewById(R.id.badge150);
+        versesMemorizedTextView = findViewById(R.id.memorizedVerses);
 
         InputStream inputStream = null;
         Drawable drawable = null;
         try {
-            inputStream = getAssets().open("images/badges/5.png");
+            inputStream = getAssets().open("images/badges/5_hide.png");
             drawable = Drawable.createFromStream(inputStream,null);
             badge5.setImageDrawable(drawable);
             inputStream.close();
 
-            inputStream = getAssets().open("images/badges/20.png");
+            inputStream = getAssets().open("images/badges/20_hide.png");
             drawable = Drawable.createFromStream(inputStream,null);
             badge20.setImageDrawable(drawable);
             inputStream.close();
@@ -98,6 +117,192 @@ public class StatsActivity extends AppCompatActivity
             drawable = Drawable.createFromStream(inputStream,null);
             badge150.setImageDrawable(drawable);
             inputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        versesMemorized = 0;
+        versesMemorizedTextView.setText(String.format(Locale.getDefault(),"%d",versesMemorized));
+
+        mAuth = FirebaseAuth.getInstance();
+        usersReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(mAuth.getCurrentUser().getUid());
+        usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).getValue() != null) {
+                    versesMemorized = dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).getValue(Integer.class);
+                    if(versesMemorized != null) {
+                        versesMemorizedTextView.setText(String.format(Locale.getDefault(),"%d",versesMemorized));
+                        updateBadges();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.toString());
+            }
+        });
+    }
+
+    private void updateBadges() {
+        InputStream inputStream = null;
+        Drawable drawable = null;
+        try {
+
+            if(versesMemorized >= 5) {
+                inputStream = getAssets().open("images/badges/5.png");
+                drawable = Drawable.createFromStream(inputStream,null);
+                badge5.setImageDrawable(drawable);
+                inputStream.close();
+
+                if(versesMemorized >= 20) {
+                    inputStream = getAssets().open("images/badges/20.png");
+                    drawable = Drawable.createFromStream(inputStream,null);
+                    badge20.setImageDrawable(drawable);
+                    inputStream.close();
+
+                    if(versesMemorized >= 40) {
+                        inputStream = getAssets().open("images/badges/40.png");
+                        drawable = Drawable.createFromStream(inputStream,null);
+                        badge40.setImageDrawable(drawable);
+                        inputStream.close();
+
+                        if(versesMemorized >= 70) {
+                            inputStream = getAssets().open("images/badges/70.png");
+                            drawable = Drawable.createFromStream(inputStream,null);
+                            badge70.setImageDrawable(drawable);
+                            inputStream.close();
+
+                            if(versesMemorized >= 100) {
+                                inputStream = getAssets().open("images/badges/100.png");
+                                drawable = Drawable.createFromStream(inputStream,null);
+                                badge100.setImageDrawable(drawable);
+                                inputStream.close();
+
+                                if(versesMemorized >= 150) {
+                                    inputStream = getAssets().open("images/badges/150.png");
+                                    drawable = Drawable.createFromStream(inputStream,null);
+                                    badge150.setImageDrawable(drawable);
+                                    inputStream.close();
+
+                                } else {
+                                    inputStream = getAssets().open("images/badges/150_hide.png");
+                                    drawable = Drawable.createFromStream(inputStream,null);
+                                    badge150.setImageDrawable(drawable);
+                                    inputStream.close();
+                                }
+
+                            } else {
+                                inputStream = getAssets().open("images/badges/100_hide.png");
+                                drawable = Drawable.createFromStream(inputStream,null);
+                                badge100.setImageDrawable(drawable);
+                                inputStream.close();
+
+                                inputStream = getAssets().open("images/badges/150_hide.png");
+                                drawable = Drawable.createFromStream(inputStream,null);
+                                badge150.setImageDrawable(drawable);
+                                inputStream.close();
+                            }
+
+                        } else {
+                            inputStream = getAssets().open("images/badges/70_hide.png");
+                            drawable = Drawable.createFromStream(inputStream,null);
+                            badge70.setImageDrawable(drawable);
+                            inputStream.close();
+
+                            inputStream = getAssets().open("images/badges/100_hide.png");
+                            drawable = Drawable.createFromStream(inputStream,null);
+                            badge100.setImageDrawable(drawable);
+                            inputStream.close();
+
+                            inputStream = getAssets().open("images/badges/150_hide.png");
+                            drawable = Drawable.createFromStream(inputStream,null);
+                            badge150.setImageDrawable(drawable);
+                            inputStream.close();
+                        }
+
+                    } else {
+                        inputStream = getAssets().open("images/badges/40_hide.png");
+                        drawable = Drawable.createFromStream(inputStream,null);
+                        badge40.setImageDrawable(drawable);
+                        inputStream.close();
+
+                        inputStream = getAssets().open("images/badges/70_hide.png");
+                        drawable = Drawable.createFromStream(inputStream,null);
+                        badge70.setImageDrawable(drawable);
+                        inputStream.close();
+
+                        inputStream = getAssets().open("images/badges/100_hide.png");
+                        drawable = Drawable.createFromStream(inputStream,null);
+                        badge100.setImageDrawable(drawable);
+                        inputStream.close();
+
+                        inputStream = getAssets().open("images/badges/150_hide.png");
+                        drawable = Drawable.createFromStream(inputStream,null);
+                        badge150.setImageDrawable(drawable);
+                        inputStream.close();
+                    }
+
+                } else {
+                    inputStream = getAssets().open("images/badges/20_hide.png");
+                    drawable = Drawable.createFromStream(inputStream,null);
+                    badge20.setImageDrawable(drawable);
+                    inputStream.close();
+
+                    inputStream = getAssets().open("images/badges/40_hide.png");
+                    drawable = Drawable.createFromStream(inputStream,null);
+                    badge40.setImageDrawable(drawable);
+                    inputStream.close();
+
+                    inputStream = getAssets().open("images/badges/70_hide.png");
+                    drawable = Drawable.createFromStream(inputStream,null);
+                    badge70.setImageDrawable(drawable);
+                    inputStream.close();
+
+                    inputStream = getAssets().open("images/badges/100_hide.png");
+                    drawable = Drawable.createFromStream(inputStream,null);
+                    badge100.setImageDrawable(drawable);
+                    inputStream.close();
+
+                    inputStream = getAssets().open("images/badges/150_hide.png");
+                    drawable = Drawable.createFromStream(inputStream,null);
+                    badge150.setImageDrawable(drawable);
+                    inputStream.close();
+                }
+
+            } else {
+                inputStream = getAssets().open("images/badges/5_hide.png");
+                drawable = Drawable.createFromStream(inputStream,null);
+                badge5.setImageDrawable(drawable);
+                inputStream.close();
+
+                inputStream = getAssets().open("images/badges/20_hide.png");
+                drawable = Drawable.createFromStream(inputStream,null);
+                badge20.setImageDrawable(drawable);
+                inputStream.close();
+
+                inputStream = getAssets().open("images/badges/40_hide.png");
+                drawable = Drawable.createFromStream(inputStream,null);
+                badge40.setImageDrawable(drawable);
+                inputStream.close();
+
+                inputStream = getAssets().open("images/badges/70_hide.png");
+                drawable = Drawable.createFromStream(inputStream,null);
+                badge70.setImageDrawable(drawable);
+                inputStream.close();
+
+                inputStream = getAssets().open("images/badges/100_hide.png");
+                drawable = Drawable.createFromStream(inputStream,null);
+                badge100.setImageDrawable(drawable);
+                inputStream.close();
+
+                inputStream = getAssets().open("images/badges/150_hide.png");
+                drawable = Drawable.createFromStream(inputStream,null);
+                badge150.setImageDrawable(drawable);
+                inputStream.close();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
