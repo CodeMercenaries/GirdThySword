@@ -29,7 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -213,6 +215,7 @@ public class ForgeFragment extends Fragment {
         }
 
         usersReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(mAuth.getCurrentUser().getUid());
+
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -251,6 +254,11 @@ public class ForgeFragment extends Fragment {
             public void onClick(View v) {
                 setEquippedSword(sword);
                 showEquipStatusTextView(sword.getStatusResourceID(), sword.getCostResourceID(), true);
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp timestamp = new Timestamp(time);
+
+                usersReference.child(DBConstants.FIREBASE_U_KEY_LAST_UPDATED_BY).setValue(timestamp.toString());
             }
         });
     }

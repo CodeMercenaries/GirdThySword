@@ -19,14 +19,14 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <!--<TextView
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
+            android:text=""
             android:textColor="@color/colorAccent"
-            android:text="@string/title_activity_bible"
             android:textSize="@dimen/app_bar_title"
-            android:textStyle="bold" />-->
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/selectVersion"

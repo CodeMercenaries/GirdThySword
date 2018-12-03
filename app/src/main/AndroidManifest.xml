@@ -59,7 +59,16 @@
         <activity
             android:name=".activities.StatsActivity"
             android:label="@string/title_activity_stats"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.RemoveSectionActivity"
+            android:label="@string/title_activity_remove_section"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.code.codemercenaries.girdthyswordpro.activities.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

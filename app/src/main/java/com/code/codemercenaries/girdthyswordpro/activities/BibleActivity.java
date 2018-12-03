@@ -65,6 +65,7 @@ public class BibleActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         primaryVersePos = getIntent().getIntExtra(getString(R.string.title_intent_primary),0);
         secondaryVersePos = getIntent().getIntExtra(getString(R.string.title_intent_secondary),-1);

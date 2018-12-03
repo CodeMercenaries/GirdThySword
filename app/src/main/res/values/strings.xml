@@ -130,5 +130,6 @@
     <string name="memorized_verses">Memorized Verses</string>
     <string name="added_verses">Added Verses</string>
     <string name="badges">Badges</string>
+    <string name="title_activity_remove_section">Remove Section</string>
 
 </resources>

@@ -21,6 +21,9 @@ public class Section {
         this.endVerseNum = endVerseNum;
     }
 
+    public Section() {
+    }
+
     public String getSectionID() {
         return sectionID;
     }

@@ -189,7 +189,8 @@ public class HomeActivity extends AppCompatActivity
         removeSectionFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(HomeActivity.this,RemoveSectionActivity.class);
+                startActivity(intent);
             }
         });
     }

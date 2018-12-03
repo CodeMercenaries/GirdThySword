@@ -29,9 +29,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,6 +55,7 @@ public class AddSectionActivity extends AppCompatActivity {
     Button submit;
 
     int chunkSize = 3;
+    Integer currentVersesAdded;
     List<String> bookItems = new ArrayList<>();
     ArrayList<Version> allVersions;
     ArrayList<String> availVersions;
@@ -72,6 +75,7 @@ public class AddSectionActivity extends AppCompatActivity {
     DatabaseReference userBibleVerses;
     DatabaseReference chunksReference;
     DatabaseReference sectionsReference;
+    DatabaseReference usersReference;
 
 
     @Override
@@ -88,6 +92,22 @@ public class AddSectionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAuth = FirebaseAuth.getInstance();
+
+        currentVersesAdded = 0;
+
+        usersReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(mAuth.getCurrentUser().getUid());
+        usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED).getValue(Integer.class) != null)
+                    currentVersesAdded = dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED).getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.toString());
+            }
+        });
 
         submit = findViewById(R.id.button);
         addItemsOnVersionSpinner();
@@ -411,6 +431,14 @@ public class AddSectionActivity extends AppCompatActivity {
                 userBibleBooks.child("0").setValue(DBConstants.CODE_ADDED);
             }
         }
+
+        usersReference.child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED).setValue(currentVersesAdded + (selectedEndVerse - selectedStartVerse + 1));
+
+        Date date = new Date();
+        long time = date.getTime();
+        Timestamp timestamp = new Timestamp(time);
+
+        usersReference.child(DBConstants.FIREBASE_U_KEY_LAST_UPDATED_BY).setValue(timestamp.toString());
 
         Toast.makeText(AddSectionActivity.this, section.getBookName() + " "
                         + section.getChapterNum() + " "

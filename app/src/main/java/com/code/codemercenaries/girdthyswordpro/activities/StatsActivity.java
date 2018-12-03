@@ -47,6 +47,8 @@ public class StatsActivity extends AppCompatActivity
     ImageView badge150;
     TextView versesMemorizedTextView;
     Integer versesMemorized;
+    TextView versesAddedTextView;
+    Integer versesAdded;
 
     DatabaseReference usersReference;
     FirebaseAuth mAuth;
@@ -84,6 +86,7 @@ public class StatsActivity extends AppCompatActivity
         badge100 = findViewById(R.id.badge100);
         badge150 = findViewById(R.id.badge150);
         versesMemorizedTextView = findViewById(R.id.memorizedVerses);
+        versesAddedTextView = findViewById(R.id.addedVerses);
 
         InputStream inputStream = null;
         Drawable drawable = null;
@@ -125,6 +128,9 @@ public class StatsActivity extends AppCompatActivity
         versesMemorized = 0;
         versesMemorizedTextView.setText(String.format(Locale.getDefault(),"%d",versesMemorized));
 
+        versesAdded = 0;
+        versesAddedTextView.setText(String.format(Locale.getDefault(),"%d",versesAdded));
+
         mAuth = FirebaseAuth.getInstance();
         usersReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(mAuth.getCurrentUser().getUid());
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -135,6 +141,12 @@ public class StatsActivity extends AppCompatActivity
                     if(versesMemorized != null) {
                         versesMemorizedTextView.setText(String.format(Locale.getDefault(),"%d",versesMemorized));
                         updateBadges();
+                    }
+                }
+                if(dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED).getValue() != null) {
+                    versesAdded = dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED).getValue(Integer.class);
+                    if(versesAdded != null) {
+                        versesAddedTextView.setText(String.format(Locale.getDefault(),"%d",versesAdded));
                     }
                 }
             }

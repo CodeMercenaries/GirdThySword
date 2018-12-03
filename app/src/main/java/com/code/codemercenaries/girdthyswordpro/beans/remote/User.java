@@ -5,32 +5,35 @@ package com.code.codemercenaries.girdthyswordpro.beans.remote;
  */
 
 public class User {
-    String uuid;
-    String displayName;
-    String email;
-    Integer level;
-    Long versesMemorized;
-    String createdBy;
-    String lastUpdatedBy;
-    String equippedSword;
+    private String uuid;
+    private String displayName;
+    private String email;
+    private Integer level;
+    private Long versesMemorized;
+    private Long versesAdded;
+    private String createdBy;
+    private String lastUpdatedBy;
+    private String equippedSword;
 
-    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, String createdBy, String lastUpdatedBy, String equippedSword) {
+    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, Long versesAdded, String createdBy, String lastUpdatedBy, String equippedSword) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
         this.level = level;
         this.versesMemorized = versesMemorized;
+        this.versesAdded = versesAdded;
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
         this.equippedSword = equippedSword;
     }
 
-    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized) {
+    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, Long versesAdded) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
         this.level = level;
         this.versesMemorized = versesMemorized;
+        this.versesAdded = versesAdded;
     }
 
     public User(String uuid, String displayName, String email, String createdBy, String lastUpdatedBy) {
@@ -41,6 +44,7 @@ public class User {
         this.lastUpdatedBy = lastUpdatedBy;
         this.level = 0;
         this.versesMemorized = 0L;
+        this.versesAdded = 0L;
         this.equippedSword = "bronze_sword";
     }
 
@@ -84,6 +88,14 @@ public class User {
         this.versesMemorized = versesMemorized;
     }
 
+    public Long getVersesAdded() {
+        return versesAdded;
+    }
+
+    public void setVersesAdded(Long versesAdded) {
+        this.versesAdded = versesAdded;
+    }
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -116,6 +128,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", level=" + level +
                 ", versesMemorized=" + versesMemorized +
+                ", versesAdded=" + versesAdded +
                 ", createdBy='" + createdBy + '\'' +
                 ", lastUpdatedBy='" + lastUpdatedBy + '\'' +
                 ", equippedSword='" + equippedSword + '\'' +
