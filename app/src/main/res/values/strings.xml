@@ -19,7 +19,7 @@
     <string name="profile_image_cd">Profile Image of the user</string>
 
     <!--Default Strings-->
-    <string name="default_display_name">Anonymous</string>
+    <string name="default_display_name">Anonymous User with a Very Long Name</string>
     <string name="default_level_description">Beginner (Level 1)</string>
     <string name="default_font_path">fonts/Asket Condensed Extrabold.ttf</string>
     <string name="default_font_name">Asket Condensed Extrabold</string>
@@ -66,6 +66,8 @@
 
     <string name="title_fragment_reader">Reader</string>
     <string name="title_fragment_progress">Progress</string>
+    <string name="title_fragment_global">Global</string>
+    <string name="title_fragment_admin">Admin</string>
 
     <string name="and">AND</string>
     <string name="select_secondary_version">Select Secondary Version</string>
@@ -131,5 +133,6 @@
     <string name="added_verses">Added Verses</string>
     <string name="badges">Badges</string>
     <string name="title_activity_remove_section">Remove Section</string>
+    <string name="default_rank">1000</string>
 
 </resources>

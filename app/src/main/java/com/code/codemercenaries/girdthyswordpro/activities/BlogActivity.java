@@ -126,8 +126,10 @@ public class BlogActivity extends AppCompatActivity
                 startActivity(new Intent(BlogActivity.this,ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
+                startActivity(new Intent(BlogActivity.this,LeaderboardActivity.class));
                 break;
             case R.id.nav_tavern:
+                startActivity(new Intent(BlogActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
                 break;

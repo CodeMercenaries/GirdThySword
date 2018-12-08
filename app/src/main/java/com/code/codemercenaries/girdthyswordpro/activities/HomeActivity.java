@@ -272,8 +272,10 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(HomeActivity.this,ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
+                startActivity(new Intent(HomeActivity.this,LeaderboardActivity.class));
                 break;
             case R.id.nav_tavern:
+                startActivity(new Intent(HomeActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
                 break;

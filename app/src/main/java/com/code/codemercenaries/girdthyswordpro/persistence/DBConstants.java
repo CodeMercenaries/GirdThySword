@@ -53,4 +53,12 @@ public class DBConstants {
     public final static String SYSTEM_PREF = "system";
     public final static String SETTINGS_PREF = "settings";
     public final static String SET_CHUNK_SIZE = "chunk_size";
+
+    //Swords
+    public static final String BRONZE_SWORD = "bronze_sword";
+    public static final String SOLDIER_SWORD = "soldier_sword";
+    public static final String PIRATE_SWORD = "pirate_sword";
+    public static final String GLASS_SWORD = "glass_sword";
+    public static final String GOLD_SWORD = "gold_sword";
+    public static final String DIAMOND_SWORD = "diamond_sword";
 }

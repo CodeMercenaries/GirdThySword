@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
+import com.code.codemercenaries.girdthyswordpro.persistence.DBHandler;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -94,6 +95,9 @@ public class LoginActivity extends AppCompatActivity {
                         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
                         progressDialog.setMessage("Downloading Data");
 
+                        DBHandler dbHandler = new DBHandler(LoginActivity.this);
+                        dbHandler.getAllVersions();
+
                         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().
                                 getReference(DBConstants.FIREBASE_TABLE_USERS).
                                 child(mAuth.getCurrentUser().getUid());
@@ -101,6 +105,12 @@ public class LoginActivity extends AppCompatActivity {
                         if(isNetworkAvailable() && !sharedPreferences.getBoolean("logged_in",false)) {
                             progressDialog.show();
                         }
+
+                        Date date = new Date();
+                        long time = date.getTime();
+                        Timestamp timestamp = new Timestamp(time);
+
+                        databaseReference.child(DBConstants.FIREBASE_U_KEY_LAST_UPDATED_BY).setValue(timestamp.toString());
 
                         databaseReference.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -125,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                                     User user = new User(mAuth.getCurrentUser().getUid(),
                                             mAuth.getCurrentUser().getDisplayName(),
                                             mAuth.getCurrentUser().getEmail(),
+                                            mAuth.getCurrentUser().getPhotoUrl().toString(),
                                             timestamp.toString(),
                                             timestamp.toString());
                                     dataSnapshot.getRef().setValue(user);

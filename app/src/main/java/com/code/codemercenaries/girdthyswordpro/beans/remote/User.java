@@ -9,17 +9,19 @@ public class User {
     private String displayName;
     private String email;
     private Integer level;
+    private String photoURL;
     private Long versesMemorized;
     private Long versesAdded;
     private String createdBy;
     private String lastUpdatedBy;
     private String equippedSword;
 
-    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, Long versesAdded, String createdBy, String lastUpdatedBy, String equippedSword) {
+    public User(String uuid, String displayName, String email, Integer level, String photoURL , Long versesMemorized, Long versesAdded, String createdBy, String lastUpdatedBy, String equippedSword) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
         this.level = level;
+        this.photoURL = photoURL;
         this.versesMemorized = versesMemorized;
         this.versesAdded = versesAdded;
         this.createdBy = createdBy;
@@ -27,25 +29,30 @@ public class User {
         this.equippedSword = equippedSword;
     }
 
-    public User(String uuid, String displayName, String email, Integer level, Long versesMemorized, Long versesAdded) {
+    public User(String uuid, String displayName, String email, Integer level, String photoURL , Long versesMemorized, Long versesAdded) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
         this.level = level;
+        this.photoURL = photoURL;
         this.versesMemorized = versesMemorized;
         this.versesAdded = versesAdded;
     }
 
-    public User(String uuid, String displayName, String email, String createdBy, String lastUpdatedBy) {
+    public User(String uuid, String displayName, String email, String photoURL , String createdBy, String lastUpdatedBy) {
         this.uuid = uuid;
         this.displayName = displayName;
         this.email = email;
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
         this.level = 0;
+        this.photoURL = photoURL;
         this.versesMemorized = 0L;
         this.versesAdded = 0L;
         this.equippedSword = "bronze_sword";
+    }
+
+    public User() {
     }
 
     public String getUuid() {
@@ -78,6 +85,14 @@ public class User {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public Long getVersesMemorized() {
@@ -127,6 +142,7 @@ public class User {
                 ", displayName='" + displayName + '\'' +
                 ", email='" + email + '\'' +
                 ", level=" + level +
+                ", photoURL='" + photoURL + '\'' +
                 ", versesMemorized=" + versesMemorized +
                 ", versesAdded=" + versesAdded +
                 ", createdBy='" + createdBy + '\'' +

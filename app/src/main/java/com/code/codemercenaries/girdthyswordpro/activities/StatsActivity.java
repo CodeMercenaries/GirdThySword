@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
@@ -73,6 +74,15 @@ public class StatsActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
+        ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
+
+        if(mAuth != null && mAuth.getCurrentUser() != null){
+            displayName.setText(mAuth.getCurrentUser().getDisplayName());
+            Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
+        }
     }
 
     @Override
@@ -374,8 +384,10 @@ public class StatsActivity extends AppCompatActivity
                 startActivity(new Intent(StatsActivity.this,ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
+                startActivity(new Intent(StatsActivity.this,LeaderboardActivity.class));
                 break;
             case R.id.nav_tavern:
+                startActivity(new Intent(StatsActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
                 break;

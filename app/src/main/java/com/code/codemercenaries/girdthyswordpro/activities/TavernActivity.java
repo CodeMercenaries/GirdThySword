@@ -20,34 +20,33 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.adapters.ViewPagerAdapter;
-import com.code.codemercenaries.girdthyswordpro.fragments.ProgressFragment;
-import com.code.codemercenaries.girdthyswordpro.fragments.ReaderFragment;
+import com.code.codemercenaries.girdthyswordpro.fragments.AdminFragment;
+import com.code.codemercenaries.girdthyswordpro.fragments.GlobalFragment;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class ReadActivity extends AppCompatActivity
+public class TavernActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ReaderFragment.OnFragmentInteractionListener,
-        ProgressFragment.OnFragmentInteractionListener {
+        GlobalFragment.OnFragmentInteractionListener,
+        AdminFragment.OnFragmentInteractionListener{
 
     FontHelper fontHelper;
+    FirebaseAuth mAuth;
+    AdminFragment adminFragment;
+    GlobalFragment globalFragment;
     ViewPager viewPager;
     TabLayout tabLayout;
 
-    ReaderFragment readerFragment;
-    ProgressFragment progressFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         fontHelper = new FontHelper();
         fontHelper.initialize(this);
 
-        setContentView(R.layout.activity_read);
+        setContentView(R.layout.activity_tavern);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,7 +59,7 @@ public class ReadActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
         ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
@@ -79,16 +78,11 @@ public class ReadActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        readerFragment = new ReaderFragment();
-        progressFragment = new ProgressFragment();
-        adapter.addFragment(readerFragment, getString(R.string.title_fragment_reader));
-        adapter.addFragment(progressFragment, getString(R.string.title_fragment_progress));
+        globalFragment = new GlobalFragment();
+        adminFragment = new AdminFragment();
+        adapter.addFragment(globalFragment, getString(R.string.title_fragment_global));
+        adapter.addFragment(adminFragment, getString(R.string.title_fragment_admin));
         viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -104,7 +98,7 @@ public class ReadActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.read, menu);
+        getMenuInflater().inflate(R.menu.tavern, menu);
         return true;
     }
 
@@ -131,23 +125,23 @@ public class ReadActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_home:
-                startActivity(new Intent(ReadActivity.this,HomeActivity.class));
+                startActivity(new Intent(TavernActivity.this,HomeActivity.class));
                 break;
             case R.id.nav_stats:
-                startActivity(new Intent(ReadActivity.this,StatsActivity.class));
+                startActivity(new Intent(TavernActivity.this,StatsActivity.class));
                 break;
             case R.id.nav_read:
+                startActivity(new Intent(TavernActivity.this,ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
-                startActivity(new Intent(ReadActivity.this,LeaderboardActivity.class));
+                startActivity(new Intent(TavernActivity.this,LeaderboardActivity.class));
                 break;
             case R.id.nav_tavern:
-                startActivity(new Intent(ReadActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
                 break;
             case R.id.nav_blog:
-                startActivity(new Intent(ReadActivity.this,BlogActivity.class));
+                startActivity(new Intent(TavernActivity.this,BlogActivity.class));
                 break;
         }
 
@@ -156,6 +150,10 @@ public class ReadActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {

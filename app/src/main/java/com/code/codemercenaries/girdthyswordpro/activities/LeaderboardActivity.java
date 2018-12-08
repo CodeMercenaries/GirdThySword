@@ -2,16 +2,18 @@ package com.code.codemercenaries.girdthyswordpro.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -19,35 +21,42 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.code.codemercenaries.girdthyswordpro.R;
-import com.code.codemercenaries.girdthyswordpro.adapters.ViewPagerAdapter;
-import com.code.codemercenaries.girdthyswordpro.fragments.ProgressFragment;
-import com.code.codemercenaries.girdthyswordpro.fragments.ReaderFragment;
+import com.code.codemercenaries.girdthyswordpro.adapters.LeaderboardRecycleListAdapter;
+import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
+import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class ReadActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        ReaderFragment.OnFragmentInteractionListener,
-        ProgressFragment.OnFragmentInteractionListener {
+public class LeaderboardActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "LeaderboardActivity";
     FontHelper fontHelper;
-    ViewPager viewPager;
-    TabLayout tabLayout;
+    RecyclerView list;
+    LeaderboardRecycleListAdapter adapter;
 
-    ReaderFragment readerFragment;
-    ProgressFragment progressFragment;
+    FirebaseAuth mAuth;
+    Query usersQuery;
+    ArrayList<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         fontHelper = new FontHelper();
         fontHelper.initialize(this);
 
-        setContentView(R.layout.activity_read);
+        setContentView(R.layout.activity_leaderboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,7 +69,7 @@ public class ReadActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
         ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
@@ -70,25 +79,39 @@ public class ReadActivity extends AppCompatActivity
             Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
         }
 
-        viewPager = findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(2);
-        setupViewPager(viewPager);
-        tabLayout = findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-    }
+        list = findViewById(R.id.list);
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        readerFragment = new ReaderFragment();
-        progressFragment = new ProgressFragment();
-        adapter.addFragment(readerFragment, getString(R.string.title_fragment_reader));
-        adapter.addFragment(progressFragment, getString(R.string.title_fragment_progress));
-        viewPager.setAdapter(adapter);
-    }
+        users = new ArrayList<>();
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+        adapter = new LeaderboardRecycleListAdapter(this,users);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        list.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(list.getContext(),linearLayoutManager.getOrientation());
+        list.addItemDecoration(dividerItemDecoration);
+        list.setHasFixedSize(true);
+        list.setAdapter(adapter);
+
+        usersQuery = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).orderByChild(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED);
+
+        usersQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                users.clear();
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    users.add(user);
+                    Log.d(TAG, "Downloaded User " + user.getUuid());
+                }
+                Collections.reverse(users);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.toString());
+            }
+        });
     }
 
     @Override
@@ -104,7 +127,7 @@ public class ReadActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.read, menu);
+        getMenuInflater().inflate(R.menu.leaderboard, menu);
         return true;
     }
 
@@ -131,23 +154,23 @@ public class ReadActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_home:
-                startActivity(new Intent(ReadActivity.this,HomeActivity.class));
+                startActivity(new Intent(LeaderboardActivity.this,HomeActivity.class));
                 break;
             case R.id.nav_stats:
-                startActivity(new Intent(ReadActivity.this,StatsActivity.class));
+                startActivity(new Intent(LeaderboardActivity.this,StatsActivity.class));
                 break;
             case R.id.nav_read:
+                startActivity(new Intent(LeaderboardActivity.this,ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
-                startActivity(new Intent(ReadActivity.this,LeaderboardActivity.class));
                 break;
             case R.id.nav_tavern:
-                startActivity(new Intent(ReadActivity.this,TavernActivity.class));
+                startActivity(new Intent(LeaderboardActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
                 break;
             case R.id.nav_blog:
-                startActivity(new Intent(ReadActivity.this,BlogActivity.class));
+                startActivity(new Intent(LeaderboardActivity.this,BlogActivity.class));
                 break;
         }
 
@@ -156,9 +179,8 @@ public class ReadActivity extends AppCompatActivity
         return true;
     }
 
-
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 }

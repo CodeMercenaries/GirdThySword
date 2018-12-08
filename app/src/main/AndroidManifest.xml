@@ -69,6 +69,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.code.codemercenaries.girdthyswordpro.activities.HomeActivity" />
         </activity>
+        <activity
+            android:name=".activities.LeaderboardActivity"
+            android:label="@string/title_activity_leaderboard"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.TavernActivity"
+            android:label="@string/title_activity_tavern"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
