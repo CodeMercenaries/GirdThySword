@@ -38,6 +38,9 @@ public class DBConstants {
     public static final String FIREBASE_TABLE_SECTIONS = "sections";
     public static final String FIREBASE_TABLE_USER_BIBLE = "user_bible";
     public static final String FIREBASE_TABLE_EN_KJV = "en_kjv";
+    public static final String FIREBASE_TABLE_GLOBAL_MESSAGES = "global_messages";
+    public static final String FIREBASE_TABLE_GLOBAL_REPORTS = "global_reports";
+    public static final String FIREBASE_TABLE_ADMIN_MESSAGES = "admin_messages";
 
     public static final String FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW = "nextDateOfReview";
     public static final String FIREBASE_UB_KEY_MEMORY = "memory";
@@ -45,7 +48,11 @@ public class DBConstants {
     public static final String FIREBASE_U_KEY_VERSES_MEMORIZED = "versesMemorized";
     public static final String FIREBASE_U_KEY_VERSES_ADDED = "versesAdded";
     public static final String FIREBASE_U_KEY_LAST_UPDATED_BY = "lastUpdatedBy";
-    public static final String FIREBASE_S_VERSION_ID = "versionID";
+    public static final String FIREBASE_S_KEY_VERSION_ID = "versionID";
+    public static final String FIREBASE_GM_KEY_MESSAGE_ID = "messageID";
+    public static final String FIREBASE_GM_KEY_MESSAGE_TEXT = "text";
+    public static final String FIREBASE_GM_KEY_SOURCE_USER_ID = "sourceUserID";
+    public static final String FIREBASE_GM_KEY_TIMESTAMP = "timestamp";
 
     public static final String DATE_FORMAT = "yyyy/MM/dd";
 

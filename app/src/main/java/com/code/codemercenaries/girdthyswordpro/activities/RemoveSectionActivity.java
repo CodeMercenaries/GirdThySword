@@ -166,7 +166,7 @@ public class RemoveSectionActivity extends AppCompatActivity {
             }
         });
 
-        sectionsReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_SECTIONS).child(mAuth.getCurrentUser().getUid()).orderByChild(DBConstants.FIREBASE_S_VERSION_ID);
+        sectionsReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_SECTIONS).child(mAuth.getCurrentUser().getUid()).orderByChild(DBConstants.FIREBASE_S_KEY_VERSION_ID);
         sectionsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -134,5 +134,7 @@
     <string name="badges">Badges</string>
     <string name="title_activity_remove_section">Remove Section</string>
     <string name="default_rank">1000</string>
+    <string name="default_text_message">Welcome to GirdThySword Pro! I am Joel Kingsley, creator and lead developer of the GirdThySword app series.</string>
+    <string name="type_a_message">Type a message</string>
 
 </resources>
