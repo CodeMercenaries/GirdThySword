@@ -91,6 +91,7 @@ public class AdminFragment extends Fragment {
 
         list = view.findViewById(R.id.list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        linearLayoutManager.setStackFromEnd(true);
         list.setLayoutManager(linearLayoutManager);
         list.setHasFixedSize(true);
         list.setAdapter(adapter);
@@ -109,6 +110,7 @@ public class AdminFragment extends Fragment {
                     }
                 }
                 adapter.notifyDataSetChanged();
+                list.scrollToPosition(chatMessages.size()-1);
             }
 
             @Override

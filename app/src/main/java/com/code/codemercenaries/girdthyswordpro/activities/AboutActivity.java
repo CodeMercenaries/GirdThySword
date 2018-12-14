@@ -2,53 +2,37 @@ package com.code.codemercenaries.girdthyswordpro.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
-import com.bumptech.glide.Glide;
 import com.code.codemercenaries.girdthyswordpro.R;
-import com.code.codemercenaries.girdthyswordpro.adapters.LeaderboardRecycleListAdapter;
-import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
-import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.IOException;
+import java.io.InputStream;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class LeaderboardActivity extends AppCompatActivity
+public class AboutActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "LeaderboardActivity";
     FontHelper fontHelper;
-    RecyclerView list;
-    LeaderboardRecycleListAdapter adapter;
-
-    FirebaseAuth mAuth;
-    Query usersQuery;
-    ArrayList<User> users;
+    ImageButton facebook;
+    ImageButton instagram;
+    ImageButton twitter;
+    ImageButton wordpress;
+    ImageButton linkedin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +41,7 @@ public class LeaderboardActivity extends AppCompatActivity
         fontHelper = new FontHelper();
         fontHelper.initialize(this);
 
-        setContentView(R.layout.activity_leaderboard);
+        setContentView(R.layout.activity_about);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,55 +54,91 @@ public class LeaderboardActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mAuth = FirebaseAuth.getInstance();
+        facebook = findViewById(R.id.facebook);
+        instagram = findViewById(R.id.instagram);
+        twitter = findViewById(R.id.twitter);
+        wordpress = findViewById(R.id.wordpress);
+        linkedin = findViewById(R.id.linkedin);
 
-        TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
-        ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
+        InputStream inputStream;
+        Drawable drawable = null;
+        try {
+            inputStream = getAssets().open(getString(R.string.facebook_image));
+            drawable = Drawable.createFromStream(inputStream,null);
+            facebook.setImageDrawable(drawable);
 
-        if(mAuth != null && mAuth.getCurrentUser() != null){
-            displayName.setText(mAuth.getCurrentUser().getDisplayName());
-            Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
+            inputStream = getAssets().open(getString(R.string.twitter_image));
+            drawable = Drawable.createFromStream(inputStream,null);
+            twitter.setImageDrawable(drawable);
+
+            inputStream = getAssets().open(getString(R.string.instagram_image));
+            drawable = Drawable.createFromStream(inputStream,null);
+            instagram.setImageDrawable(drawable);
+
+            inputStream = getAssets().open(getString(R.string.wordpress_image));
+            drawable = Drawable.createFromStream(inputStream,null);
+            wordpress.setImageDrawable(drawable);
+
+            inputStream = getAssets().open(getString(R.string.linkedin_image));
+            drawable = Drawable.createFromStream(inputStream,null);
+            linkedin.setImageDrawable(drawable);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        ImageView settingsIcon = navigationView.getHeaderView(0).findViewById(R.id.settings_icon);
-        settingsIcon.setOnClickListener(new View.OnClickListener() {
+        facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LeaderboardActivity.this,SettingsActivity.class));
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://www.facebook.com/joelkingsley.r"));
+                startActivity(intent);
             }
         });
 
-        list = findViewById(R.id.list);
-
-        users = new ArrayList<>();
-
-        adapter = new LeaderboardRecycleListAdapter(this,users);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        list.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(list.getContext(),linearLayoutManager.getOrientation());
-        list.addItemDecoration(dividerItemDecoration);
-        list.setHasFixedSize(true);
-        list.setAdapter(adapter);
-
-        usersQuery = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).orderByChild(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED);
-
-        usersQuery.addValueEventListener(new ValueEventListener() {
+        twitter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                users.clear();
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    users.add(user);
-                    Log.d(TAG, "Downloaded User " + user.getUuid());
-                }
-                Collections.reverse(users);
-                adapter.notifyDataSetChanged();
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://twitter.com/JoelKingsley"));
+                startActivity(intent);
             }
+        });
 
+        instagram.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d(TAG, databaseError.toString());
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://www.instagram.com/joelkingsleyr/"));
+                startActivity(intent);
+            }
+        });
+
+        wordpress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://joelkingsley.wordpress.com/"));
+                startActivity(intent);
+            }
+        });
+
+        linkedin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://www.linkedin.com/in/joelkingsleyr/"));
+                startActivity(intent);
             }
         });
     }
@@ -136,7 +156,7 @@ public class LeaderboardActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.leaderboard, menu);
+        getMenuInflater().inflate(R.menu.about, menu);
         return true;
     }
 
@@ -163,18 +183,18 @@ public class LeaderboardActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_home:
-                startActivity(new Intent(LeaderboardActivity.this,HomeActivity.class));
                 break;
             case R.id.nav_stats:
-                startActivity(new Intent(LeaderboardActivity.this,StatsActivity.class));
+                startActivity(new Intent(AboutActivity.this,StatsActivity.class));
                 break;
             case R.id.nav_read:
-                startActivity(new Intent(LeaderboardActivity.this,ReadActivity.class));
+                startActivity(new Intent(AboutActivity.this,ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
+                startActivity(new Intent(AboutActivity.this,LeaderboardActivity.class));
                 break;
             case R.id.nav_tavern:
-                startActivity(new Intent(LeaderboardActivity.this,TavernActivity.class));
+                startActivity(new Intent(AboutActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
                 Intent shareIntent = new Intent();
@@ -185,12 +205,11 @@ public class LeaderboardActivity extends AppCompatActivity
                 startActivity(shareIntent);
                 break;
             case R.id.nav_blog:
-                startActivity(new Intent(LeaderboardActivity.this,BlogActivity.class));
+                startActivity(new Intent(AboutActivity.this,BlogActivity.class));
                 break;
             case R.id.nav_help:
                 break;
             case R.id.nav_about:
-                startActivity(new Intent(LeaderboardActivity.this,AboutActivity.class));
                 break;
         }
 

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.code.codemercenaries.girdthyswordpro.activities.AboutActivity"
+    tools:showIn="@layout/app_bar_about">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/developedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/developed_by"/>
+
+            <TextView
+                android:id="@+id/codemercenariesTextLogo"
+                fontPath="@string/modia_non_commercial_font_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/developedBy"
+                android:layout_centerHorizontal="true"
+                android:text="@string/codemercenaries"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/joelkingsley"
+                fontPath="@string/modia_non_commercial_font_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/codemercenariesTextLogo"
+                android:layout_centerHorizontal="true"
+                android:text="@string/joel_kingsley"
+                android:textSize="25sp"
+                tools:ignore="MissingPrefix" />
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_below="@+id/joelkingsley"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                app:srcCompat="@mipmap/defalt_profile_image" />
+
+            <LinearLayout
+                android:id="@+id/socialIcons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/instagram"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/common_google_signin_btn_icon_dark"/>
+
+                <ImageButton
+                    android:id="@+id/facebook"
+                    android:layout_width="68dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/common_google_signin_btn_icon_dark"/>
+
+                <ImageButton
+                    android:id="@+id/twitter"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/common_google_signin_btn_icon_dark"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/socialIcons2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/socialIcons"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/wordpress"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/common_google_signin_btn_icon_dark"/>
+
+                <ImageButton
+                    android:id="@+id/linkedin"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/common_google_signin_btn_icon_dark"/>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+</RelativeLayout>

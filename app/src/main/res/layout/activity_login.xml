@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/logo_cd"
         android:scaleX="0.9"
         android:scaleY="0.9"
@@ -21,9 +22,9 @@
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
     </com.google.android.gms.common.SignInButton>

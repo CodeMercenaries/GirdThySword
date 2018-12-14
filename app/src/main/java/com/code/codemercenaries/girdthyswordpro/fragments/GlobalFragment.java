@@ -29,7 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 public class GlobalFragment extends Fragment {
@@ -87,14 +86,13 @@ public class GlobalFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mActivity = getActivity();
 
-        chatMessages = new ArrayList<>(Arrays.asList(
-                new GlobalChatMessage("","",mAuth.getUid(),""),
-                new GlobalChatMessage("","","","")));
+        chatMessages = new ArrayList<>();
 
         adapter = new GlobalChatRecycleListAdapter(mActivity,chatMessages,mAuth.getCurrentUser().getUid());
 
         list = view.findViewById(R.id.list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        linearLayoutManager.setStackFromEnd(true);
         list.setLayoutManager(linearLayoutManager);
         list.setHasFixedSize(true);
         list.setAdapter(adapter);
@@ -113,6 +111,7 @@ public class GlobalFragment extends Fragment {
                     }
                 }
                 adapter.notifyDataSetChanged();
+                list.scrollToPosition(chatMessages.size()-1);
             }
 
             @Override

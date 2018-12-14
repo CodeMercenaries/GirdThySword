@@ -157,6 +157,14 @@ public class HomeActivity extends AppCompatActivity
             Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
         }
 
+        ImageView settingsIcon = navigationView.getHeaderView(0).findViewById(R.id.settings_icon);
+        settingsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this,SettingsActivity.class));
+            }
+        });
+
     }
 
     private void setupFabs() {
@@ -278,9 +286,20 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(HomeActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hey, check out this cool Bible Memorization app that I found. It uses advanced algorithms and speech recognition to help you memorize Bible verses. It also has a leaderboard where you can compare your progress with other users. And guess what, it's absolutely free!!\n\nhttps://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en");
+                shareIntent.setType("text/plain");
+                startActivity(shareIntent);
                 break;
             case R.id.nav_blog:
                 startActivity(new Intent(HomeActivity.this,BlogActivity.class));
+                break;
+            case R.id.nav_help:
+                break;
+            case R.id.nav_about:
+                startActivity(new Intent(HomeActivity.this,AboutActivity.class));
                 break;
         }
 

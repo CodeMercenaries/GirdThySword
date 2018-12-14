@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,6 +84,14 @@ public class StatsActivity extends AppCompatActivity
             displayName.setText(mAuth.getCurrentUser().getDisplayName());
             Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
         }
+
+        ImageView settingsIcon = navigationView.getHeaderView(0).findViewById(R.id.settings_icon);
+        settingsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StatsActivity.this,SettingsActivity.class));
+            }
+        });
     }
 
     @Override
@@ -390,9 +399,20 @@ public class StatsActivity extends AppCompatActivity
                 startActivity(new Intent(StatsActivity.this,TavernActivity.class));
                 break;
             case R.id.nav_share:
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hey, check out this cool Bible Memorization app that I found. It uses advanced algorithms and speech recognition to help you memorize Bible verses. It also has a leaderboard where you can compare your progress with other users. And guess what, it's absolutely free!!\n\nhttps://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en");
+                shareIntent.setType("text/plain");
+                startActivity(shareIntent);
                 break;
             case R.id.nav_blog:
                 startActivity(new Intent(StatsActivity.this,BlogActivity.class));
+                break;
+            case R.id.nav_help:
+                break;
+            case R.id.nav_about:
+                startActivity(new Intent(StatsActivity.this,AboutActivity.class));
                 break;
         }
 

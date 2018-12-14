@@ -2,6 +2,7 @@ package com.code.codemercenaries.girdthyswordpro.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.adapters.ChunkRecycleListAdapter;
@@ -50,6 +52,8 @@ public class DailiesFragment extends Fragment {
     Activity mActivity;
     FirebaseAuth mAuth;
     RecyclerView chunkList;
+    TextView nothingLeftToReview;
+    TextView addSectionsToMemorize;
     ChunkRecycleListAdapter chunkRecycleListAdapter;
     Query chunksQuery;
     DatabaseReference sectionsReference;
@@ -108,6 +112,11 @@ public class DailiesFragment extends Fragment {
         Date currDate = new Date();
         String currDateString = df.format(currDate);
 
+        nothingLeftToReview = view.findViewById(R.id.nothingLeftToReview);
+        nothingLeftToReview.setTypeface(Typeface.createFromAsset(mActivity.getAssets(), mActivity.getString(R.string.modia_non_commercial_font_path)));
+
+        addSectionsToMemorize = view.findViewById(R.id.addSectionsToMemorize);
+
         chunksForToday = new ArrayList<>();
 
         chunkRecycleListAdapter = new ChunkRecycleListAdapter(mActivity,chunksForToday);
@@ -136,6 +145,12 @@ public class DailiesFragment extends Fragment {
                 }
                 chunkRecycleListAdapter.notifyDataSetChanged();
                 Log.d(TAG,"chunksQuery done");
+
+                if(chunksForToday.isEmpty()) {
+                    showNothingLeftToReview();
+                } else {
+                    hideNothingLeftToReview();
+                }
             }
 
             @Override
@@ -143,6 +158,16 @@ public class DailiesFragment extends Fragment {
                 Log.d(TAG,"chunksQuery cancelled");
             }
         });
+    }
+
+    public void showNothingLeftToReview() {
+        nothingLeftToReview.setVisibility(View.VISIBLE);
+        addSectionsToMemorize.setVisibility(View.VISIBLE);
+    }
+
+    public void hideNothingLeftToReview() {
+        nothingLeftToReview.setVisibility(View.GONE);
+        addSectionsToMemorize.setVisibility(View.GONE);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

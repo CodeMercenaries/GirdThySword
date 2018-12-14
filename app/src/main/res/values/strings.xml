@@ -5,9 +5,19 @@
     <string name="login_tagline">Before you go out and live the Christian Life</string>
     <string name="title_activity_home">Home</string>
 
+    <string name="facebook_image">images/social/facebook.png</string>
+    <string name="instagram_image">images/social/instagram.png</string>
+    <string name="twitter_image">images/social/twitter.png</string>
+    <string name="wordpress_image">images/social/wordpress.png</string>
+    <string name="linkedin_image">images/social/linkedin.png</string>
+
     <string name="title_fragment_dailies">Dailies</string>
     <string name="title_fragment_overview">Overview</string>
     <string name="title_fragment_forge">Forge</string>
+    <string name="title_fragment_reader">Reader</string>
+    <string name="title_fragment_progress">Progress</string>
+    <string name="title_fragment_global">Global</string>
+    <string name="title_fragment_admin">Admin</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -35,6 +45,8 @@
     <string name="asket_cdeb_font_name">Asket Condensed Extrabold</string>
     <string name="asket_eb_font_path">fonts/Asket Extrabold.ttf</string>
     <string name="asket_eb_font_name">Asket Extrabold</string>
+    <string name="modia_non_commercial_font_path">fonts/Modia-NonCommercial.otf</string>
+    <string name="modia_non_commercial_font_name">Modia NonCommercial</string>
 
     <string name="hello_blank_fragment">Hello</string>
 
@@ -57,17 +69,14 @@
     <string name="title_activity_help"><![CDATA[Help & FAQ]]></string>
     <string name="title_activity_about">About</string>
     <string name="title_activity_bible">Bible</string>
+    <string name="title_activity_remove_section">Remove Section</string>
+    <string name="title_activity_settings">Settings</string>
 
     <string name="default_profile_name">Joel Kingsley</string>
 
     <string name="error_something_went_wrong">Something went wrong</string>
     <string name="error_authorization_went_wrong">Authorization went wrong</string>
     <string name="info_logging_in">Logging in</string>
-
-    <string name="title_fragment_reader">Reader</string>
-    <string name="title_fragment_progress">Progress</string>
-    <string name="title_fragment_global">Global</string>
-    <string name="title_fragment_admin">Admin</string>
 
     <string name="and">AND</string>
     <string name="select_secondary_version">Select Secondary Version</string>
@@ -132,9 +141,14 @@
     <string name="memorized_verses">Memorized Verses</string>
     <string name="added_verses">Added Verses</string>
     <string name="badges">Badges</string>
-    <string name="title_activity_remove_section">Remove Section</string>
     <string name="default_rank">1000</string>
     <string name="default_text_message">Welcome to GirdThySword Pro! I am Joel Kingsley, creator and lead developer of the GirdThySword app series.</string>
     <string name="type_a_message">Type a message</string>
+    <string name="nothing_left_to_review">Nothing Left To Review</string>
+    <string name="add_sections_by_clicking_the_icon">Add Sections By Clicking the + icon</string>
+    <string name="codemercenaries">CodeMercenaries</string>
+    <string name="developed_by">Developed By</string>
+    <string name="joel_kingsley">Joel Kingsley</string>
+    <string name="blog_link">https://joelkingsley.wordpress.com</string>
 
 </resources>
