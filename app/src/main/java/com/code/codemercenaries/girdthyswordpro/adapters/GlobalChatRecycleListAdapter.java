@@ -49,10 +49,10 @@ public class GlobalChatRecycleListAdapter extends RecyclerView.Adapter<RecyclerV
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == TYPE_SENT_MESSAGE) {
             View rootView = LayoutInflater.from(parent.getContext()).inflate(sentMessageResource,parent,false);
-            return new ReceivedMessageHolder(rootView);
+            return new SentMessageHolder(rootView);
         } else if(viewType == TYPE_RECEIVED_MESSAGE) {
             View rootView = LayoutInflater.from(parent.getContext()).inflate(receivedMessageResource,parent,false);
-            return new SentMessageHolder(rootView);
+            return new ReceivedMessageHolder(rootView);
         }
         throw new RuntimeException("There is no type that matches the type" + viewType + " make sure you're using types correctly");
     }

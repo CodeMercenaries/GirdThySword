@@ -150,5 +150,7 @@
     <string name="developed_by">Developed By</string>
     <string name="joel_kingsley">Joel Kingsley</string>
     <string name="blog_link">https://joelkingsley.wordpress.com</string>
+    <string name="skips_your_profile_in_the_leaderboard">Skips your profile in the Leaderboard</string>
+    <string name="opt_out_of_leaderboard">Opt-out of Leaderboard</string>
 
 </resources>

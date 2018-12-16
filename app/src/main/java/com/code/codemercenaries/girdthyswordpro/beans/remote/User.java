@@ -15,6 +15,7 @@ public class User {
     private String createdBy;
     private String lastUpdatedBy;
     private String equippedSword;
+    private boolean optOutOfLB;
 
     public User(String uuid, String displayName, String email, Integer level, String photoURL , Long versesMemorized, Long versesAdded, String createdBy, String lastUpdatedBy, String equippedSword) {
         this.uuid = uuid;
@@ -27,6 +28,7 @@ public class User {
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
         this.equippedSword = equippedSword;
+        this.optOutOfLB = false;
     }
 
     public User(String uuid, String displayName, String email, Integer level, String photoURL , Long versesMemorized, Long versesAdded) {
@@ -37,6 +39,7 @@ public class User {
         this.photoURL = photoURL;
         this.versesMemorized = versesMemorized;
         this.versesAdded = versesAdded;
+        this.optOutOfLB = false;
     }
 
     public User(String uuid, String displayName, String email, String photoURL , String createdBy, String lastUpdatedBy) {
@@ -50,6 +53,7 @@ public class User {
         this.versesMemorized = 0L;
         this.versesAdded = 0L;
         this.equippedSword = "bronze_sword";
+        this.optOutOfLB = false;
     }
 
     public User() {
@@ -135,6 +139,14 @@ public class User {
         this.equippedSword = equippedSword;
     }
 
+    public boolean isOptOutOfLB() {
+        return optOutOfLB;
+    }
+
+    public void setOptOutOfLB(boolean optOutOfLB) {
+        this.optOutOfLB = optOutOfLB;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -148,6 +160,7 @@ public class User {
                 ", createdBy='" + createdBy + '\'' +
                 ", lastUpdatedBy='" + lastUpdatedBy + '\'' +
                 ", equippedSword='" + equippedSword + '\'' +
+                ", optOutOfLB=" + optOutOfLB +
                 '}';
     }
 }

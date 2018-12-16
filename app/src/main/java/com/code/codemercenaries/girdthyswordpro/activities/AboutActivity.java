@@ -183,6 +183,7 @@ public class AboutActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_home:
+                startActivity(new Intent(AboutActivity.this,HomeActivity.class));
                 break;
             case R.id.nav_stats:
                 startActivity(new Intent(AboutActivity.this,StatsActivity.class));

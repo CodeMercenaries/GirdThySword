@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     GoogleApiClient mGoogleApiClient;
     FirebaseAuth.AuthStateListener mAuthListener;
+    ProgressDialog progressDialog;
 
     SharedPreferences sharedPreferences;
 
@@ -69,6 +70,9 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         sharedPreferences = getSharedPreferences(DBConstants.SYSTEM_PREF,0);
+
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage("Setting up the App");
 
         InputStream inputStream;
         try {
@@ -92,8 +96,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null) {
                     if(mAuth.getCurrentUser() != null) {
-                        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-                        progressDialog.setMessage("Downloading Data");
 
                         DBHandler dbHandler = new DBHandler(LoginActivity.this);
                         dbHandler.getAllVersions();
@@ -101,10 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().
                                 getReference(DBConstants.FIREBASE_TABLE_USERS).
                                 child(mAuth.getCurrentUser().getUid());
-
-                        if(isNetworkAvailable() && !sharedPreferences.getBoolean("logged_in",false)) {
-                            progressDialog.show();
-                        }
 
                         Date date = new Date();
                         long time = date.getTime();
@@ -194,6 +192,11 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
                 Toast.makeText(this, getString(R.string.info_logging_in), Toast.LENGTH_LONG).show();
+
+                if(isNetworkAvailable() && !sharedPreferences.getBoolean("logged_in",false)) {
+                    progressDialog.show();
+                }
+
                 Log.d(TAG, "First time");
             } else {
                 Toast.makeText(LoginActivity.this, getString(R.string.error_authorization_went_wrong), Toast.LENGTH_LONG).show();

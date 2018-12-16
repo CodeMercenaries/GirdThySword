@@ -68,4 +68,7 @@ public class DBConstants {
     public static final String GLASS_SWORD = "glass_sword";
     public static final String GOLD_SWORD = "gold_sword";
     public static final String DIAMOND_SWORD = "diamond_sword";
+
+    //Settings Items
+    public static final int OPT_OUT_OF_LEADERBOARD = 0;
 }
