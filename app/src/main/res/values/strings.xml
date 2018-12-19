@@ -71,6 +71,7 @@
     <string name="title_activity_bible">Bible</string>
     <string name="title_activity_remove_section">Remove Section</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_select_review_type">Select Review Type</string>
 
     <string name="default_profile_name">Joel Kingsley</string>
 
@@ -152,5 +153,6 @@
     <string name="blog_link">https://joelkingsley.wordpress.com</string>
     <string name="skips_your_profile_in_the_leaderboard">Skips your profile in the Leaderboard</string>
     <string name="opt_out_of_leaderboard">Opt-out of Leaderboard</string>
+    <string name="default_chunk_text">8 Write ye also for the Jews, as it liketh you, in the king\'s name, and seal it with the king\'s ring: for the writing which is written in the king\'s name, and sealed with the king\'s ring, may no man reverse.\n\n 9 Then were the king\'s scribes called at that time in the third month, that is, the month Sivan, on the three and twentieth day thereof; and it was written according to all that Mordecai commanded unto the Jews, and to the lieutenants, and the deputies and rulers of the provinces which are from India unto Ethiopia, an hundred twenty and seven provinces, unto every province according to the writing thereof, and unto every people after their language, and to the Jews according to their writing, and according to their language.\n\n  10 And he wrote in the king Ahasuerus\' name, and sealed it with the king\'s ring, and sent letters by posts on horseback, and riders on mules, camels, and young dromedaries:</string>
 
 </resources>

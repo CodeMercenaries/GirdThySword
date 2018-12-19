@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
@@ -139,6 +140,14 @@ public class AboutActivity extends AppCompatActivity
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
                 intent.setData(Uri.parse("https://www.linkedin.com/in/joelkingsleyr/"));
                 startActivity(intent);
+            }
+        });
+
+        ImageView settingsIcon = navigationView.getHeaderView(0).findViewById(R.id.settings_icon);
+        settingsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AboutActivity.this,SettingsActivity.class));
             }
         });
     }

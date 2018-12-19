@@ -85,7 +85,16 @@
         <activity
             android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.SelectReviewTypeActivity"
+            android:label="@string/title_activity_select_review_type"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.code.codemercenaries.girdthyswordpro.activities.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.code.codemercenaries.girdthyswordpro.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code.codemercenaries.girdthyswordpro.R;
+import com.code.codemercenaries.girdthyswordpro.activities.SelectReviewTypeActivity;
 import com.code.codemercenaries.girdthyswordpro.beans.remote.Chunk;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 
@@ -39,6 +41,12 @@ public class ChunkRecycleListAdapter extends RecyclerView.Adapter<ChunkRecycleLi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rootView = LayoutInflater.from(parent.getContext()).inflate(resource,parent,false);
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.startActivity(new Intent(activity, SelectReviewTypeActivity.class));
+            }
+        });
         return new ViewHolder(rootView);
     }
 
