@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.code.codemercenaries.girdthyswordpro.activities.SelectReviewTypeActivity">
+    android:theme="@style/AppTheme.NoActionBar"
+    tools:context="com.code.codemercenaries.girdthyswordpro.activities.ReviewActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
-                android:text="@string/title_activity_select_review_type"
+                android:text="@string/title_activity_review"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/app_bar_title"
                 android:textStyle="bold" />
@@ -30,6 +31,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_select_review_type" />
+    <include layout="@layout/content_review" />
 
 </android.support.design.widget.CoordinatorLayout>

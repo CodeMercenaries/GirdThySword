@@ -54,7 +54,7 @@ public class AddSectionActivity extends AppCompatActivity {
     Spinner setEndVerse;
     Button submit;
 
-    int chunkSize = 3;
+    int chunkSize;
     Integer currentVersesAdded;
     List<String> bookItems = new ArrayList<>();
     ArrayList<Version> allVersions;
@@ -371,7 +371,7 @@ public class AddSectionActivity extends AppCompatActivity {
         }
 
         systemPreferences = getSharedPreferences(DBConstants.SETTINGS_PREF, 0);
-        chunkSize = systemPreferences.getInt(DBConstants.SET_CHUNK_SIZE,3);
+        chunkSize = systemPreferences.getInt(DBConstants.SET_CHUNK_SIZE,6);
 
         List<Chunk> chunkList = chunkize(section,chunkSize);
         chunksReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_CHUNKS).

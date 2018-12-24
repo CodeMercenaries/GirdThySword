@@ -60,6 +60,14 @@ public class DBConstants {
     public final static String SYSTEM_PREF = "system";
     public final static String SETTINGS_PREF = "settings";
     public final static String SET_CHUNK_SIZE = "chunk_size";
+    public static final String REVIEW_TYPE = "review_type";
+    public static final String MANUAL_REVIEW_TYPE = "manual";
+    public static final String SPEECH_REVIEW_TYPE = "speech";
+    public static final String REVIEW_VERSION = "review_version";
+    public static final String REVIEW_BOOK_NAME = "review_book_name";
+    public static final String REVIEW_CHAP_NUM = "review_chap_num";
+    public static final String REVIEW_START_VERSE_NUM = "review_start_verse_num";
+    public static final String REVIEW_END_VERSE_NUM = "review_end_verse_num";
 
     //Swords
     public static final String BRONZE_SWORD = "bronze_sword";

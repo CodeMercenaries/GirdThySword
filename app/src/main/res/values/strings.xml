@@ -89,8 +89,8 @@
 
     <string name="default_verse_num">196</string>
     <string name="default_verse">And I sought for a man among them, that should make up the hedge, and stand in the gap before me for the land, that I should not destroy it: but I found none.</string>
-    <string name="default_chapter_title">Joel 1:1</string>
-    <string name="default_book">Revelation</string>
+    <string name="default_chapter_title">Jeremiah 1:1</string>
+    <string name="default_book">Jeremiah</string>
 
     <string name="book_name_with_chap_num">%1$s %2$d</string>
 
@@ -154,5 +154,16 @@
     <string name="skips_your_profile_in_the_leaderboard">Skips your profile in the Leaderboard</string>
     <string name="opt_out_of_leaderboard">Opt-out of Leaderboard</string>
     <string name="default_chunk_text">8 Write ye also for the Jews, as it liketh you, in the king\'s name, and seal it with the king\'s ring: for the writing which is written in the king\'s name, and sealed with the king\'s ring, may no man reverse.\n\n 9 Then were the king\'s scribes called at that time in the third month, that is, the month Sivan, on the three and twentieth day thereof; and it was written according to all that Mordecai commanded unto the Jews, and to the lieutenants, and the deputies and rulers of the provinces which are from India unto Ethiopia, an hundred twenty and seven provinces, unto every province according to the writing thereof, and unto every people after their language, and to the Jews according to their writing, and according to their language.\n\n  10 And he wrote in the king Ahasuerus\' name, and sealed it with the king\'s ring, and sent letters by posts on horseback, and riders on mules, camels, and young dromedaries:</string>
+    <string name="manual">Manual</string>
+    <string name="speech">Speech</string>
+    <string name="title_activity_review">Review</string>
+    <string name="title_fragment_speech_review">Speech Review</string>
+    <string name="title_fragment_manual_review">Manual Review</string>
+    <string name="default_chunk_title">Jeremiah 1:1-10</string>
+    <string name="default_chunk_verse_title">Jeremiah 1:1</string>
+    <string name="default_chunk_verse_text">And I sought for a man among them, that should make up the hedge, and stand in the gap before me for the land, that I should not destroy it: but I found none.</string>
+    <string name="hard">Hard</string>
+    <string name="easy">Easy</string>
+    <string name="mastered">Mastered</string>
 
 </resources>

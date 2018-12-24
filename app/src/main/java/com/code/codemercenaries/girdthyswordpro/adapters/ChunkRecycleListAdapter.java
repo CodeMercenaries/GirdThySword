@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.code.codemercenaries.girdthyswordpro.R;
@@ -41,17 +42,11 @@ public class ChunkRecycleListAdapter extends RecyclerView.Adapter<ChunkRecycleLi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rootView = LayoutInflater.from(parent.getContext()).inflate(resource,parent,false);
-        rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.startActivity(new Intent(activity, SelectReviewTypeActivity.class));
-            }
-        });
         return new ViewHolder(rootView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         StringBuilder builder1 = new StringBuilder();
         builder1.append(chunks.get(position).getBookName());
         builder1.append(" ");
@@ -78,6 +73,19 @@ public class ChunkRecycleListAdapter extends RecyclerView.Adapter<ChunkRecycleLi
         } else {
             holder.scheduledDate.setText(chunks.get(position).getNextDateOfReview());
         }
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, SelectReviewTypeActivity.class);
+                intent.putExtra(DBConstants.REVIEW_VERSION,chunks.get(position).getVersionID());
+                intent.putExtra(DBConstants.REVIEW_BOOK_NAME,chunks.get(position).getBookName());
+                intent.putExtra(DBConstants.REVIEW_CHAP_NUM,chunks.get(position).getChapterNum());
+                intent.putExtra(DBConstants.REVIEW_START_VERSE_NUM,chunks.get(position).getStartVerseNum());
+                intent.putExtra(DBConstants.REVIEW_END_VERSE_NUM,chunks.get(position).getEndVerseNum());
+                activity.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -87,12 +95,14 @@ public class ChunkRecycleListAdapter extends RecyclerView.Adapter<ChunkRecycleLi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        RelativeLayout parentLayout;
         TextView chunkTitle;
         TextView sectionTitle;
         TextView scheduledDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            parentLayout = itemView.findViewById(R.id.parentLayout);
             chunkTitle = itemView.findViewById(R.id.chunkTitle);
             sectionTitle = itemView.findViewById(R.id.sectionTitle);
             scheduledDate = itemView.findViewById(R.id.scheduledDate);

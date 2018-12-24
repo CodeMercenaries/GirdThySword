@@ -8,50 +8,53 @@
     tools:context="com.code.codemercenaries.girdthyswordpro.activities.SelectReviewTypeActivity"
     tools:showIn="@layout/activity_select_review_type">
 
-    <TextView
-        android:id="@+id/chunkTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:text="@string/default_chapter_title"
-        android:textSize="20sp" />
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttons"
-        android:layout_below="@+id/chunkTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        app:cardCornerRadius="5dp">
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-        <ScrollView
+        <TextView
+            android:id="@+id/chunkTitle"
+            fontPath="@string/modia_non_commercial_font_path"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/default_chapter_title"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            tools:ignore="MissingPrefix" />
 
-            <LinearLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="5dp">
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/chunkText"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/default_chunk_text"/>
+                    android:layout_height="wrap_content">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/chunkText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/default_verse"/>
 
-        </ScrollView>
+                </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+            </ScrollView>
 
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttons"
@@ -60,21 +63,54 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/selfReview"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_send"
-            app:fabSize="normal" />
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/speechReview"
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/selfReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_manual_review"
+                android:tint="@color/colorPrimary"
+                app:fabSize="normal" />
+
+            <TextView
+                fontPath="@string/modia_non_commercial_font_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/manual"
+                tools:ignore="MissingPrefix" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_send"
-            app:fabSize="normal" />
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/speechReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_speech_review"
+                android:tint="@color/colorPrimary"
+                app:fabSize="normal" />
+
+            <TextView
+                fontPath="@string/modia_non_commercial_font_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speech"
+                tools:ignore="MissingPrefix"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
