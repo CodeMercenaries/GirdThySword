@@ -165,5 +165,15 @@
     <string name="hard">Hard</string>
     <string name="easy">Easy</string>
     <string name="mastered">Mastered</string>
+    <string name="verses_completed">3/3</string>
+    <string name="continue_text">Continue</string>
+    <string name="you_aced_it">You Aced It!</string>
+    <string name="title_activity_result">Result</string>
+    <string name="final_score_num">97</string>
+    <string name="final_score">Final Score</string>
+    <string name="genesis_1_1_7">Genesis 1:1-7</string>
+    <string name="calculated_space">Calculated Space</string>
+    <string name="next_date_of_review">Next Date of Review</string>
+    <string name="done">Done</string>
 
 </resources>

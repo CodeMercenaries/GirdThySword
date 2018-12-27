@@ -98,12 +98,16 @@
         <activity
             android:name=".activities.ReviewActivity"
             android:label="@string/title_activity_review"
-            android:parentActivityName=".activities.SelectReviewTypeActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.code.codemercenaries.girdthyswordpro.activities.SelectReviewTypeActivity" />
         </activity>
+        <activity
+            android:name=".activities.ResultActivity"
+            android:label="@string/title_activity_result"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

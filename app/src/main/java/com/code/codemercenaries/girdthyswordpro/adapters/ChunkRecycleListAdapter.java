@@ -78,11 +78,7 @@ public class ChunkRecycleListAdapter extends RecyclerView.Adapter<ChunkRecycleLi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, SelectReviewTypeActivity.class);
-                intent.putExtra(DBConstants.REVIEW_VERSION,chunks.get(position).getVersionID());
-                intent.putExtra(DBConstants.REVIEW_BOOK_NAME,chunks.get(position).getBookName());
-                intent.putExtra(DBConstants.REVIEW_CHAP_NUM,chunks.get(position).getChapterNum());
-                intent.putExtra(DBConstants.REVIEW_START_VERSE_NUM,chunks.get(position).getStartVerseNum());
-                intent.putExtra(DBConstants.REVIEW_END_VERSE_NUM,chunks.get(position).getEndVerseNum());
+                intent.putExtra(DBConstants.REVIEW_CHUNK_ID,chunks.get(position).getChunkID());
                 activity.startActivity(intent);
             }
         });
@@ -103,7 +99,7 @@ public class ChunkRecycleListAdapter extends RecyclerView.Adapter<ChunkRecycleLi
         public ViewHolder(View itemView) {
             super(itemView);
             parentLayout = itemView.findViewById(R.id.parentLayout);
-            chunkTitle = itemView.findViewById(R.id.chunkTitle);
+            chunkTitle = itemView.findViewById(R.id.chunk_title);
             sectionTitle = itemView.findViewById(R.id.sectionTitle);
             scheduledDate = itemView.findViewById(R.id.scheduledDate);
         }

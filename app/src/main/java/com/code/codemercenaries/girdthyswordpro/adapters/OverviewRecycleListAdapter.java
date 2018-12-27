@@ -76,7 +76,7 @@ public class OverviewRecycleListAdapter extends RecyclerView.Adapter<OverviewRec
 
         public ViewHolder(View itemView) {
             super(itemView);
-            chunkTitle = itemView.findViewById(R.id.chunkTitle);
+            chunkTitle = itemView.findViewById(R.id.chunk_title);
             sectionTitle = itemView.findViewById(R.id.sectionTitle);
             nextDateOfReview = itemView.findViewById(R.id.nextDateOfReview);
         }

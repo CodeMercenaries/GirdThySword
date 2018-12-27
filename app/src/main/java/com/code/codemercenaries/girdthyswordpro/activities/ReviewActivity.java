@@ -45,8 +45,10 @@ public class ReviewActivity extends AppCompatActivity
         Log.d(TAG, "Initialized");
 
         String reviewType = getIntent().getStringExtra(DBConstants.REVIEW_TYPE);
+        String chunkID = getIntent().getStringExtra(DBConstants.REVIEW_CHUNK_ID);
+
         if(Objects.equals(reviewType, DBConstants.MANUAL_REVIEW_TYPE)) {
-            ManualReviewFragment manualReviewFragment = new ManualReviewFragment();
+            ManualReviewFragment manualReviewFragment = ManualReviewFragment.newInstance(chunkID);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_holder, manualReviewFragment);
             fragmentTransaction.commit();

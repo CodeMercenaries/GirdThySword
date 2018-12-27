@@ -32,6 +32,9 @@ public class DBConstants {
     public static final int CODE_NOT_READ = 0;
     public static final int CODE_READ = 1;
 
+    public static final int MASTERED_MIN_THRESHOLD = 85;
+    public static final int MAINTAIN_MIN_THRESHOLD = 65;
+
     //Remote Database
     public static final String FIREBASE_TABLE_USERS = "users";
     public static final String FIREBASE_TABLE_CHUNKS = "chunks";
@@ -43,6 +46,8 @@ public class DBConstants {
     public static final String FIREBASE_TABLE_ADMIN_MESSAGES = "admin_messages";
 
     public static final String FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW = "nextDateOfReview";
+    public static final String FIREBASE_C_KEY_SPACE = "space";
+    public static final String FIREBASE_C_MASTERED = "mastered";
     public static final String FIREBASE_UB_KEY_MEMORY = "memory";
     public static final String FIREBASE_U_KEY_EQUIPPED_SWORD = "equippedSword";
     public static final String FIREBASE_U_KEY_VERSES_MEMORIZED = "versesMemorized";
@@ -63,11 +68,8 @@ public class DBConstants {
     public static final String REVIEW_TYPE = "review_type";
     public static final String MANUAL_REVIEW_TYPE = "manual";
     public static final String SPEECH_REVIEW_TYPE = "speech";
-    public static final String REVIEW_VERSION = "review_version";
-    public static final String REVIEW_BOOK_NAME = "review_book_name";
-    public static final String REVIEW_CHAP_NUM = "review_chap_num";
-    public static final String REVIEW_START_VERSE_NUM = "review_start_verse_num";
-    public static final String REVIEW_END_VERSE_NUM = "review_end_verse_num";
+    public static final String REVIEW_CHUNK_ID = "review_chunk_id";
+    public static final String REVIEW_FINAL_SCORE = "review_final_score";
 
     //Swords
     public static final String BRONZE_SWORD = "bronze_sword";

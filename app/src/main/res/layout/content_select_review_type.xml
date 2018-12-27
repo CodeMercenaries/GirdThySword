@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/chunkTitle"
+            android:id="@+id/chunk_title"
             fontPath="@string/modia_non_commercial_font_path"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

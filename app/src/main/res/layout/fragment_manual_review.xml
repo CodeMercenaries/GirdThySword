@@ -15,6 +15,14 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/verses_completed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/verses_completed"
+            android:textAlignment="center"
+            android:textSize="15sp"/>
+
+        <TextView
             android:id="@+id/chunk_verse_title"
             fontPath="@string/modia_non_commercial_font_path"
             android:layout_width="match_parent"
@@ -54,6 +62,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/responseMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/continue_button"
+        android:text="@string/you_aced_it"
+        android:textAlignment="center"
+        android:textSize="25sp"/>
+
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="match_parent"
@@ -88,5 +105,16 @@
             android:textColor="@android:color/white"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/continue_button"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/continue_text"
+        android:textColor="@color/colorPrimary"/>
 
 </RelativeLayout>
