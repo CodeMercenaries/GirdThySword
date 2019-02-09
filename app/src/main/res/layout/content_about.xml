@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/codemercenariesTextLogo"
-                fontPath="@string/modia_non_commercial_font_path"
+                fontPath="@string/asket_cdeb_font_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/developedBy"
@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/joelkingsley"
-                fontPath="@string/modia_non_commercial_font_path"
+                fontPath="@string/qualio_font_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/codemercenariesTextLogo"
@@ -51,8 +51,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_below="@+id/joelkingsley"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"

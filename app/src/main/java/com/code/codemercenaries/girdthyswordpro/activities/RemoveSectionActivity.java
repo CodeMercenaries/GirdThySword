@@ -49,6 +49,7 @@ public class RemoveSectionActivity extends AppCompatActivity {
     ArrayList<Section> sections;
     ArrayList<Chunk> chunks;
     Integer currAddedVerses;
+    Integer currMemorizedVerses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +81,13 @@ public class RemoveSectionActivity extends AppCompatActivity {
         userBible = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USER_BIBLE).
                 child(mAuth.getCurrentUser().getUid());
         usersReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).
-                child(mAuth.getCurrentUser().getUid()).child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED);
+                child(mAuth.getCurrentUser().getUid());
 
-        usersReference.addValueEventListener(new ValueEventListener() {
+        usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                currAddedVerses = dataSnapshot.getValue(Integer.class);
+                currAddedVerses = dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED).getValue(Integer.class);
+                currMemorizedVerses = dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).getValue(Integer.class);
             }
 
             @Override
@@ -151,9 +153,14 @@ public class RemoveSectionActivity extends AppCompatActivity {
                                 for(Chunk chunk: chunks) {
                                     if(chunk.getSectionID().equals(sections.get(position).getSectionID())) {
                                         chunksChange.child(chunk.getChunkID()).setValue(null);
+                                        if (chunk.isMastered()) {
+                                            currMemorizedVerses -= (chunk.getEndVerseNum() - chunk.getStartVerseNum() + 1);
+                                            Log.d(TAG, String.valueOf(currMemorizedVerses));
+                                        }
                                     }
                                 }
-                                usersReference.setValue(currAddedVerses - (sections.get(position).getEndVerseNum() - sections.get(position).getStartVerseNum() + 1));
+                                usersReference.child(DBConstants.FIREBASE_U_KEY_VERSES_ADDED).setValue(currAddedVerses - (sections.get(position).getEndVerseNum() - sections.get(position).getStartVerseNum() + 1));
+                                usersReference.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).setValue(currMemorizedVerses);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

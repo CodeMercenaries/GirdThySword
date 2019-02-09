@@ -47,6 +47,8 @@
     <string name="asket_eb_font_name">Asket Extrabold</string>
     <string name="modia_non_commercial_font_path">fonts/Modia-NonCommercial.otf</string>
     <string name="modia_non_commercial_font_name">Modia NonCommercial</string>
+    <string name="qualio_font_path">fonts/Qualio.ttf</string>
+    <string name="qualio_font_name">Qualio</string>
 
     <string name="hello_blank_fragment">Hello</string>
 
@@ -175,5 +177,6 @@
     <string name="calculated_space">Calculated Space</string>
     <string name="next_date_of_review">Next Date of Review</string>
     <string name="done">Done</string>
+    <string name="press_and_speak"><![CDATA[Press & Speak]]></string>
 
 </resources>

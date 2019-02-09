@@ -43,7 +43,6 @@ public class GlobalFragment extends Fragment {
     FloatingActionButton sendButton;
     EditText editText;
     DatabaseReference globalMessagesReference;
-    DatabaseReference globalReportsReference;
     ArrayList<GlobalChatMessage> chatMessages;
     private String mParam1;
     private String mParam2;
@@ -170,7 +169,6 @@ public class GlobalFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

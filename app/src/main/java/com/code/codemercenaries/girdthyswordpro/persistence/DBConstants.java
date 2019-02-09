@@ -53,6 +53,7 @@ public class DBConstants {
     public static final String FIREBASE_U_KEY_VERSES_MEMORIZED = "versesMemorized";
     public static final String FIREBASE_U_KEY_VERSES_ADDED = "versesAdded";
     public static final String FIREBASE_U_KEY_LAST_UPDATED_BY = "lastUpdatedBy";
+    public static final String FIREBASE_U_OPT_OUT_OF_LB = "optOutOfLB";
     public static final String FIREBASE_S_KEY_VERSION_ID = "versionID";
     public static final String FIREBASE_GM_KEY_MESSAGE_ID = "messageID";
     public static final String FIREBASE_GM_KEY_MESSAGE_TEXT = "text";

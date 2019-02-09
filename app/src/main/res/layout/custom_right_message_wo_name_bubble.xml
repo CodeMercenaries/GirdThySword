@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textMessage"
+        fontPath="@string/gnuolane_rg_font_path"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -20,6 +22,7 @@
         android:paddingTop="20dp"
         android:text="@string/default_text_message"
         android:textColor="@android:color/white"
-        android:textColorLink="@android:color/holo_blue_dark"/>
+        android:textColorLink="@android:color/holo_blue_dark"
+        tools:ignore="MissingPrefix" />
 
 </RelativeLayout>

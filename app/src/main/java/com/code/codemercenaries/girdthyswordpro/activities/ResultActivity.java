@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class ResultActivity extends AppCompatActivity {
     DatabaseReference chunkReference;
     DatabaseReference sectionReference;
     DatabaseReference userBibleReference;
+    DatabaseReference userReference;
     FirebaseAuth mAuth;
 
     TextView finalScoreTV;
@@ -49,9 +51,12 @@ public class ResultActivity extends AppCompatActivity {
     Button done;
 
     int finalScore;
+    int newSpace;
     String chunkID;
     Section mSection;
     Chunk mChunk;
+    Date newDate;
+    Long versesMemorized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,9 @@ public class ResultActivity extends AppCompatActivity {
                 child(mAuth.getCurrentUser().getUid()).child(chunkID);
         userBibleReference = FirebaseDatabase.getInstance().
                 getReference(DBConstants.FIREBASE_TABLE_USER_BIBLE).
+                child(mAuth.getCurrentUser().getUid());
+        userReference = FirebaseDatabase.getInstance().
+                getReference(DBConstants.FIREBASE_TABLE_USERS).
                 child(mAuth.getCurrentUser().getUid());
 
         chunkReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,34 +122,37 @@ public class ResultActivity extends AppCompatActivity {
                     builder.append(mChunk.getEndVerseNum());
                     chunkTitle.setText(builder.toString());
 
-                    int newSpace = mChunk.getSpace()*calculateSpaceMultiplyingFactor();
+                    newSpace = mChunk.getSpace() * calculateSpaceMultiplyingFactor();
                     if(newSpace < 1){
                         newSpace = 1;
                     }
                     spaceTV.setText(String.format(Locale.getDefault(),"%d",newSpace));
-                    chunkReference.child(DBConstants.FIREBASE_C_KEY_SPACE).setValue(newSpace);
 
                     SimpleDateFormat df = new SimpleDateFormat(DBConstants.DATE_FORMAT,Locale.US);
-                    Date date = new Date();
+                    newDate = new Date();
                     Calendar c = Calendar.getInstance();
-                    c.setTime(date);
+                    c.setTime(newDate);
                     c.add(Calendar.DATE, newSpace);
-                    date = c.getTime();
-                    nextDateOfReviewTV.setText(String.format(Locale.getDefault(),"%s",df.format(date)));
-                    chunkReference.child(DBConstants.FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW).setValue(df.format(date));
+                    newDate = c.getTime();
+                    nextDateOfReviewTV.setText(String.format(Locale.getDefault(), "%s", df.format(newDate)));
 
-                    if(finalScore >= DBConstants.MASTERED_MIN_THRESHOLD) {
-                        chunkReference.child(DBConstants.FIREBASE_C_MASTERED).setValue(true);
-                        for(int i=mChunk.getStartVerseNum();i<=mChunk.getEndVerseNum();i++) {
-                            userBibleReference.child(mChunk.getVersionID()).
-                                    child(mChunk.getBookName()).
-                                    child(String.valueOf(mChunk.getChapterNum())).
-                                    child(String.valueOf(i)).
-                                    child(DBConstants.FIREBASE_UB_KEY_MEMORY).
-                                    setValue(DBConstants.CODE_MEMORIZED);
+
+                    userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            versesMemorized = dataSnapshot.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED)
+                                    .getValue(Long.class);
+                            userReference.removeEventListener(this);
                         }
-                    }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d(TAG, databaseError.toString());
+                        }
+                    });
+
                 }
+                chunkReference.removeEventListener(this);
             }
 
             @Override
@@ -153,6 +164,34 @@ public class ResultActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                chunkReference = FirebaseDatabase.getInstance().
+                        getReference(DBConstants.FIREBASE_TABLE_CHUNKS).
+                        child(mAuth.getCurrentUser().getUid()).child(chunkID);
+                SimpleDateFormat df = new SimpleDateFormat(DBConstants.DATE_FORMAT, Locale.US);
+                chunkReference.child(DBConstants.FIREBASE_C_KEY_SPACE).setValue(newSpace);
+                chunkReference.child(DBConstants.FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW).setValue(df.format(newDate));
+
+                if (!mChunk.isMastered()) {
+                    userReference = FirebaseDatabase.getInstance().
+                            getReference(DBConstants.FIREBASE_TABLE_USERS).
+                            child(mAuth.getCurrentUser().getUid());
+                    userReference.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).
+                            setValue(versesMemorized + mChunk.getEndVerseNum() - mChunk.getStartVerseNum() + 1);
+                }
+
+                if (finalScore >= DBConstants.MASTERED_MIN_THRESHOLD) {
+                    chunkReference.child(DBConstants.FIREBASE_C_MASTERED).setValue(true);
+                    for (int i = mChunk.getStartVerseNum(); i <= mChunk.getEndVerseNum(); i++) {
+                        userBibleReference.child(mChunk.getVersionID()).
+                                child(mChunk.getBookName()).
+                                child(String.valueOf(mChunk.getChapterNum())).
+                                child(String.valueOf(i)).
+                                child(DBConstants.FIREBASE_UB_KEY_MEMORY).
+                                setValue(DBConstants.CODE_MEMORIZED);
+                    }
+                }
+
                 chunkReference = FirebaseDatabase.getInstance().
                         getReference(DBConstants.FIREBASE_TABLE_CHUNKS).child(mAuth.getCurrentUser().getUid());
                 chunkReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -170,7 +209,7 @@ public class ResultActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        if(sectionMemorized) {
+                        if (sectionMemorized && chunks.size() > 1) {
                             for(Chunk c: chunks) {
                                 chunkReference.child(c.getChunkID()).setValue(null);
                             }
@@ -225,8 +264,23 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        //Disabled Back Button
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.parentLayout), "Back Button is Disabled", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("GO HOME", new GoHomeListener());
+        snackbar.show();
+    }
+
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
+
+    public class GoHomeListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(ResultActivity.this, HomeActivity.class));
+        }
     }
 
 }

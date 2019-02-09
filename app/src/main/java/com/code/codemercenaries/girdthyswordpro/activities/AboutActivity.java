@@ -16,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +37,8 @@ public class AboutActivity extends AppCompatActivity
     ImageButton twitter;
     ImageButton wordpress;
     ImageButton linkedin;
+
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +147,16 @@ public class AboutActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
+
+        TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
+        ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
+
+        if (mAuth != null && mAuth.getCurrentUser() != null) {
+            displayName.setText(mAuth.getCurrentUser().getDisplayName());
+            Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
+        }
 
         ImageView settingsIcon = navigationView.getHeaderView(0).findViewById(R.id.settings_icon);
         settingsIcon.setOnClickListener(new View.OnClickListener() {

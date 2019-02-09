@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 public class SectionListAdapter extends ArrayAdapter<Section>{
 
-    Context context;
-    ArrayList<Section> sections;
+    private Context context;
+    private ArrayList<Section> sections;
     private int resource;
 
 

@@ -64,12 +64,14 @@
 
     <TextView
         android:id="@+id/responseMessage"
+        fontPath="@string/ashby_eb_font_path"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/continue_button"
         android:text="@string/you_aced_it"
         android:textAlignment="center"
-        android:textSize="25sp"/>
+        android:textSize="25sp"
+        tools:ignore="MissingPrefix" />
 
     <LinearLayout
         android:id="@+id/buttons"
@@ -85,7 +87,7 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_red_dark"
             android:text="@string/hard"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/easy"

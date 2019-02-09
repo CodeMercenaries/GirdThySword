@@ -1,13 +1,16 @@
 package com.code.codemercenaries.girdthyswordpro.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.adapters.BookRecycleListAdapter;
@@ -51,6 +55,7 @@ public class ProgressFragment extends Fragment {
     List<Version> versions;
     int currVersionPos;
     DisplayBooks task1;
+    FloatingActionButton restore;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -95,6 +100,7 @@ public class ProgressFragment extends Fragment {
         selectVersion = view.findViewById(R.id.selectVersion);
         bookList = view.findViewById(R.id.bookList);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        restore = view.findViewById(R.id.restore);
 
         final DBHandler dbHandler = new DBHandler(mActivity);
 
@@ -122,8 +128,35 @@ public class ProgressFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 bookWithStatsList.clear();
                 currVersionPos = position;
-                /*task1 = new DisplayBooks();
-                task1.execute();*/
+                restore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder;
+                        builder = new AlertDialog.Builder(mActivity, android.R.style.Theme_Material_Dialog_Alert);
+                        builder.setTitle("Restore Read Progress")
+                                .setMessage(String.format(
+                                        "Are you sure you want to restore progress in (%s)",
+                                        versions.get(currVersionPos).get_name()))
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dbHandler.setNotReadVersion(versions.get(currVersionPos).get_id());
+                                        Toast.makeText(
+                                                mActivity,
+                                                String.format(
+                                                        "Progress Restored (%s)",
+                                                        versions.get(currVersionPos).get_name()),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Do Nothing
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                });
 
                 swipeRefreshLayout.post(new Runnable() {
                     @Override
@@ -204,9 +237,12 @@ public class ProgressFragment extends Fragment {
             List<String> bookNames = dbHandler.getBookNames(versions.get(currVersionPos).get_id());
             bookWithStatsList.clear();
             for(int i=0;i<bookNames.size();i++) {
-                int totalChapters = dbHandler.getNumOfChap(versions.get(currVersionPos).get_id(),bookNames.get(i));
-                int readChapters = dbHandler.getTotalChaptersReadInBook(versions.get(currVersionPos).get_id(),bookNames.get(i));
-                BookWithStats bookWithStats = new BookWithStats(bookNames.get(i), readChapters*100 /totalChapters,readChapters,totalChapters);
+                int totalChapters = dbHandler.getNumOfChap(
+                        versions.get(currVersionPos).get_id(), bookNames.get(i));
+                int readChapters = dbHandler.getTotalChaptersReadInBook(
+                        versions.get(currVersionPos).get_id(), bookNames.get(i));
+                BookWithStats bookWithStats = new BookWithStats(
+                        bookNames.get(i), readChapters * 100 / totalChapters, readChapters, totalChapters);
                 bookWithStatsList.add(bookWithStats);
             }
             return null;

@@ -371,7 +371,7 @@ public class AddSectionActivity extends AppCompatActivity {
         }
 
         systemPreferences = getSharedPreferences(DBConstants.SETTINGS_PREF, 0);
-        chunkSize = systemPreferences.getInt(DBConstants.SET_CHUNK_SIZE,6);
+        chunkSize = systemPreferences.getInt(DBConstants.SET_CHUNK_SIZE, 3);
 
         List<Chunk> chunkList = chunkize(section,chunkSize);
         chunksReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_CHUNKS).

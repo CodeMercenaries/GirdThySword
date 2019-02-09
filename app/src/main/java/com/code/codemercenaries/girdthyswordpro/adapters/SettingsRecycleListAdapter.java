@@ -6,12 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.beans.local.SettingsItem;
+import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -22,14 +26,19 @@ import java.util.ArrayList;
 public class SettingsRecycleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_SWITCH = 0;
+    User user;
+    DatabaseReference userReference;
     private Activity activity;
     private ArrayList<SettingsItem> settingsItems;
     private int switchResource;
 
-    public SettingsRecycleListAdapter(Activity activity, ArrayList<SettingsItem> settingsItems) {
+    public SettingsRecycleListAdapter(Activity activity, ArrayList<SettingsItem> settingsItems, User user) {
         this.activity = activity;
         this.settingsItems = settingsItems;
         this.switchResource = R.layout.custom_switch_settings_list;
+        this.user = user;
+
+        userReference = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(user.getUuid());
     }
 
     @NonNull
@@ -45,7 +54,13 @@ public class SettingsRecycleListAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof VHSwitch) {
-
+            ((VHSwitch) holder).switchView.setChecked(user.isOptOutOfLB());
+            ((VHSwitch) holder).switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    userReference.child(DBConstants.FIREBASE_U_OPT_OUT_OF_LB).setValue(isChecked);
+                }
+            });
         }
     }
 

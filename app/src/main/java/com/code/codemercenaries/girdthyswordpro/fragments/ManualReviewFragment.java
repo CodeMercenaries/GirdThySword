@@ -241,7 +241,7 @@ public class ManualReviewFragment extends Fragment {
         switch(code) {
             case HARD_CODE:
                 totalScore += MANUAL_HARD_SCORE;
-                responseMessage.setText("Try Again Next Time");
+                responseMessage.setText("That's Alright! Try Again Next Time");
                 break;
             case EASY_CODE:
                 totalScore += MANUAL_EASY_SCORE;

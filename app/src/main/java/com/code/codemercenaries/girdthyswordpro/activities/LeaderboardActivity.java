@@ -2,6 +2,7 @@ package com.code.codemercenaries.girdthyswordpro.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -25,16 +26,21 @@ import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.adapters.LeaderboardRecycleListAdapter;
 import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
+import com.code.codemercenaries.girdthyswordpro.utilities.Algorithms;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
@@ -44,10 +50,17 @@ public class LeaderboardActivity extends AppCompatActivity
     private static final String TAG = "LeaderboardActivity";
     FontHelper fontHelper;
     RecyclerView list;
+    ImageView image;
+    TextView rank;
+    TextView name;
+    ImageView sword;
+    TextView versesMemorized;
     LeaderboardRecycleListAdapter adapter;
 
     FirebaseAuth mAuth;
+    DatabaseReference user;
     Query usersQuery;
+    User currentUser;
     ArrayList<User> users;
 
     @Override
@@ -71,14 +84,71 @@ public class LeaderboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mAuth = FirebaseAuth.getInstance();
+        user = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).child(mAuth.getCurrentUser().getUid());
 
         TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
         ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
+        image = findViewById(R.id.image);
+        name = findViewById(R.id.name);
+        versesMemorized = findViewById(R.id.versesMemorized);
+        sword = findViewById(R.id.sword);
+        rank = findViewById(R.id.rank);
 
         if(mAuth != null && mAuth.getCurrentUser() != null){
             displayName.setText(mAuth.getCurrentUser().getDisplayName());
             Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
         }
+
+        user.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                name.setText(mAuth.getCurrentUser().getDisplayName());
+                Glide.with(LeaderboardActivity.this).load(mAuth.getCurrentUser().getPhotoUrl()).into(image);
+                currentUser = dataSnapshot.getValue(User.class);
+                if (currentUser != null) {
+                    versesMemorized.setText(String.format(Locale.getDefault(), "%d", currentUser.getVersesMemorized()));
+                    if (currentUser.getEquippedSword() != null) {
+                        String swordPath;
+                        switch (currentUser.getEquippedSword()) {
+                            case DBConstants.BRONZE_SWORD:
+                                swordPath = "images/swords/bronze_sword.png";
+                                break;
+                            case DBConstants.SOLDIER_SWORD:
+                                swordPath = "images/swords/soldier_sword.png";
+                                break;
+                            case DBConstants.PIRATE_SWORD:
+                                swordPath = "images/swords/pirate_sword.png";
+                                break;
+                            case DBConstants.GLASS_SWORD:
+                                swordPath = "images/swords/glass_sword.png";
+                                break;
+                            case DBConstants.GOLD_SWORD:
+                                swordPath = "images/swords/gold_sword.png";
+                                break;
+                            case DBConstants.DIAMOND_SWORD:
+                                swordPath = "images/swords/diamond_sword.png";
+                                break;
+                            default:
+                                swordPath = "images/swords/bronze_sword.png";
+                        }
+                        InputStream inputStream = null;
+                        try {
+                            inputStream = getAssets().open(swordPath);
+                            Drawable drawable = Drawable.createFromStream(inputStream, null);
+                            sword.setImageDrawable(drawable);
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         ImageView settingsIcon = navigationView.getHeaderView(0).findViewById(R.id.settings_icon);
         settingsIcon.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +184,9 @@ public class LeaderboardActivity extends AppCompatActivity
                 }
                 Collections.reverse(users);
                 adapter.notifyDataSetChanged();
+                Algorithms algorithms = new Algorithms();
+                int currentUserRank = algorithms.searchUser(users, mAuth.getCurrentUser().getUid()) + 1;
+                rank.setText(String.format(Locale.getDefault(), "%d", currentUserRank));
             }
 
             @Override
