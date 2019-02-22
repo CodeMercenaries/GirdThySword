@@ -58,7 +58,7 @@ public class SettingsRecycleListAdapter extends RecyclerView.Adapter<RecyclerVie
             ((VHSwitch) holder).switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    userReference.child(DBConstants.FIREBASE_U_OPT_OUT_OF_LB).setValue(isChecked);
+                    userReference.child(DBConstants.FIREBASE_U_KEY_OPT_OUT_OF_LB).setValue(isChecked);
                 }
             });
         }

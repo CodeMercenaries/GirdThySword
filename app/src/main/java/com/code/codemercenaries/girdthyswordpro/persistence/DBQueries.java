@@ -6,6 +6,8 @@ package com.code.codemercenaries.girdthyswordpro.persistence;
 
 public class DBQueries {
 
+    public static final String GET_VERSION = "SELECT * FROM " + DBConstants.TABLE_VERSION
+            + " WHERE " + DBConstants.V_KEY_ID + " LIKE " + '"' + "%s" + '"';
     static final String GET_ALL_VERSIONS = "SELECT * FROM " + DBConstants.TABLE_VERSION;
     static final String GET_ALL_BOOK_NAMES = "SELECT DISTINCT " + DBConstants.B_KEY_BOOK_NAME
             + " FROM " + "%s";

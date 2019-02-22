@@ -24,6 +24,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.HomeActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -58,10 +59,12 @@
         </activity>
         <activity
             android:name=".activities.StatsActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_stats"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RemoveSectionActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_remove_section"
             android:parentActivityName=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -71,23 +74,28 @@
         </activity>
         <activity
             android:name=".activities.LeaderboardActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_leaderboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.TavernActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_tavern"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SettingsActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.AboutActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SelectReviewTypeActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_select_review_type"
             android:parentActivityName=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -97,6 +105,7 @@
         </activity>
         <activity
             android:name=".activities.ReviewActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_review"
             android:parentActivityName=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -106,8 +115,9 @@
         </activity>
         <activity
             android:name=".activities.ResultActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_result"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

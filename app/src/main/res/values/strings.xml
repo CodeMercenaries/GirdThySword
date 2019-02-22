@@ -178,5 +178,14 @@
     <string name="next_date_of_review">Next Date of Review</string>
     <string name="done">Done</string>
     <string name="press_and_speak"><![CDATA[Press & Speak]]></string>
+    <string name="your_input">Your Input</string>
+
+    <string name="hard_response_message">That\'s Alright! Try Again Next Time</string>
+    <string name="easy_response_message">Good Job Soldier!</string>
+    <string name="mastered_response_message">Way to Go Soldier!!</string>
+    <string name="speech_prompt">Speak the verse now</string>
+    <string name="speech_not_supported">Speech is not supported in your Device</string>
+    <string name="accuracy_90">Accuracy: 90%</string>
+    <string name="accuracy_w_percentage">Accuracy: %1$f%%</string>
 
 </resources>

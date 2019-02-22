@@ -267,7 +267,7 @@ public class ResultActivity extends AppCompatActivity {
     public void onBackPressed() {
         //Disabled Back Button
         Snackbar snackbar = Snackbar.make(findViewById(R.id.parentLayout), "Back Button is Disabled", Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("GO HOME", new GoHomeListener());
+        snackbar.setAction("CANCEL REVIEW", new GoHomeListener());
         snackbar.show();
     }
 

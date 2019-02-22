@@ -162,7 +162,7 @@ public class ManualReviewFragment extends Fragment {
             builder.append(chunk.getChapterNum());
             builder.append(":");
             builder.append(chunk.getStartVerseNum() + currentVersePos);
-            chunkVerseTitle.setText(builder.toString());
+            chunkVerseTitle.setText(builder.toString().toUpperCase());
 
 
             DBHandler dbHandler = new DBHandler(mActivity);
@@ -241,15 +241,15 @@ public class ManualReviewFragment extends Fragment {
         switch(code) {
             case HARD_CODE:
                 totalScore += MANUAL_HARD_SCORE;
-                responseMessage.setText("That's Alright! Try Again Next Time");
+                responseMessage.setText(R.string.hard_response_message);
                 break;
             case EASY_CODE:
                 totalScore += MANUAL_EASY_SCORE;
-                responseMessage.setText("Good Job Soldier!");
+                responseMessage.setText(R.string.easy_response_message);
                 break;
             case MASTERED_CODE:
                 totalScore += MANUAL_MASTERED_SCORE;
-                responseMessage.setText("Way to Go Soldier!!");
+                responseMessage.setText(R.string.mastered_response_message);
                 break;
             default:
                 break;

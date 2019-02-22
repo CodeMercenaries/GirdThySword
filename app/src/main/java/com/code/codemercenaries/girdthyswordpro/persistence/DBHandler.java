@@ -38,6 +38,7 @@ public class DBHandler extends SQLiteAssetHelper{
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
+
                 versions.add(new Version(cursor.getString(0),
                         cursor.getString(1), cursor.getString(2)));
             } while (cursor.moveToNext());
@@ -45,6 +46,21 @@ public class DBHandler extends SQLiteAssetHelper{
         cursor.close();
         Log.d("getAllVersions:", "Left");
         return versions;
+    }
+
+    public Version getVersion(String versionID) {
+        Log.d("getVersion:", "Entered");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format(DBQueries.GET_VERSION, versionID);
+        Cursor cursor = db.rawQuery(query, null);
+        Version version = null;
+        if (cursor.moveToFirst()) {
+            version = new Version(cursor.getString(0),
+                    cursor.getString(1), cursor.getString(2));
+        }
+        cursor.close();
+        Log.d("getVersion:", "Left");
+        return version;
     }
 
     public ArrayList<String> getBookNames(String version) {

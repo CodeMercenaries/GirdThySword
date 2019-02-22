@@ -54,7 +54,7 @@ public class ReviewActivity extends AppCompatActivity
             fragmentTransaction.commit();
             Log.d(TAG, "ManualReviewFragment Set");
         } else if(Objects.equals(reviewType, DBConstants.SPEECH_REVIEW_TYPE)) {
-            SpeechReviewFragment speechReviewFragment = new SpeechReviewFragment();
+            SpeechReviewFragment speechReviewFragment = SpeechReviewFragment.newInstance(chunkID);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_holder, speechReviewFragment);
             fragmentTransaction.commit();

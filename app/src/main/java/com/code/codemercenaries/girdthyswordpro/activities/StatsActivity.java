@@ -402,7 +402,13 @@ public class StatsActivity extends AppCompatActivity
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Hey, check out this cool Bible Memorization app that I found. It uses advanced algorithms and speech recognition to help you memorize Bible verses. It also has a leaderboard where you can compare your progress with other users. And guess what, it's absolutely free!!\n\nhttps://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en");
+                        new StringBuilder()
+                                .append("Hey, check out this cool Bible Memorization app that I found.")
+                                .append("It uses advanced algorithms and speech recognition to help you memorize Bible verses.")
+                                .append("It also has a leaderboard where you can compare your progress with other users.")
+                                .append("And guess what, it's absolutely free!!\n\n")
+                                .append("https://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en")
+                                .toString());
                 shareIntent.setType("text/plain");
                 startActivity(shareIntent);
                 break;

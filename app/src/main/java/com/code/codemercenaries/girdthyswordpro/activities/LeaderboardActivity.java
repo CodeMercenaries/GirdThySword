@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
@@ -56,6 +58,7 @@ public class LeaderboardActivity extends AppCompatActivity
     ImageView sword;
     TextView versesMemorized;
     LeaderboardRecycleListAdapter adapter;
+    RelativeLayout yourProfile;
 
     FirebaseAuth mAuth;
     DatabaseReference user;
@@ -93,53 +96,58 @@ public class LeaderboardActivity extends AppCompatActivity
         versesMemorized = findViewById(R.id.versesMemorized);
         sword = findViewById(R.id.sword);
         rank = findViewById(R.id.rank);
+        yourProfile = findViewById(R.id.yourProfile);
 
         if(mAuth != null && mAuth.getCurrentUser() != null){
             displayName.setText(mAuth.getCurrentUser().getDisplayName());
             Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
+            name.setText(mAuth.getCurrentUser().getDisplayName());
+            Glide.with(LeaderboardActivity.this).load(mAuth.getCurrentUser().getPhotoUrl()).into(image);
         }
 
         user.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                name.setText(mAuth.getCurrentUser().getDisplayName());
-                Glide.with(LeaderboardActivity.this).load(mAuth.getCurrentUser().getPhotoUrl()).into(image);
                 currentUser = dataSnapshot.getValue(User.class);
                 if (currentUser != null) {
-                    versesMemorized.setText(String.format(Locale.getDefault(), "%d", currentUser.getVersesMemorized()));
-                    if (currentUser.getEquippedSword() != null) {
-                        String swordPath;
-                        switch (currentUser.getEquippedSword()) {
-                            case DBConstants.BRONZE_SWORD:
-                                swordPath = "images/swords/bronze_sword.png";
-                                break;
-                            case DBConstants.SOLDIER_SWORD:
-                                swordPath = "images/swords/soldier_sword.png";
-                                break;
-                            case DBConstants.PIRATE_SWORD:
-                                swordPath = "images/swords/pirate_sword.png";
-                                break;
-                            case DBConstants.GLASS_SWORD:
-                                swordPath = "images/swords/glass_sword.png";
-                                break;
-                            case DBConstants.GOLD_SWORD:
-                                swordPath = "images/swords/gold_sword.png";
-                                break;
-                            case DBConstants.DIAMOND_SWORD:
-                                swordPath = "images/swords/diamond_sword.png";
-                                break;
-                            default:
-                                swordPath = "images/swords/bronze_sword.png";
+                    if (!currentUser.isOptOutOfLB()) {
+                        versesMemorized.setText(String.format(Locale.getDefault(), "%d", currentUser.getVersesMemorized()));
+                        if (currentUser.getEquippedSword() != null) {
+                            String swordPath;
+                            switch (currentUser.getEquippedSword()) {
+                                case DBConstants.BRONZE_SWORD:
+                                    swordPath = "images/swords/bronze_sword.png";
+                                    break;
+                                case DBConstants.SOLDIER_SWORD:
+                                    swordPath = "images/swords/soldier_sword.png";
+                                    break;
+                                case DBConstants.PIRATE_SWORD:
+                                    swordPath = "images/swords/pirate_sword.png";
+                                    break;
+                                case DBConstants.GLASS_SWORD:
+                                    swordPath = "images/swords/glass_sword.png";
+                                    break;
+                                case DBConstants.GOLD_SWORD:
+                                    swordPath = "images/swords/gold_sword.png";
+                                    break;
+                                case DBConstants.DIAMOND_SWORD:
+                                    swordPath = "images/swords/diamond_sword.png";
+                                    break;
+                                default:
+                                    swordPath = "images/swords/bronze_sword.png";
+                            }
+                            InputStream inputStream = null;
+                            try {
+                                inputStream = getAssets().open(swordPath);
+                                Drawable drawable = Drawable.createFromStream(inputStream, null);
+                                sword.setImageDrawable(drawable);
+                                inputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        InputStream inputStream = null;
-                        try {
-                            inputStream = getAssets().open(swordPath);
-                            Drawable drawable = Drawable.createFromStream(inputStream, null);
-                            sword.setImageDrawable(drawable);
-                            inputStream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    } else {
+                        yourProfile.setVisibility(View.GONE);
                     }
                 }
             }
@@ -171,7 +179,8 @@ public class LeaderboardActivity extends AppCompatActivity
         list.setHasFixedSize(true);
         list.setAdapter(adapter);
 
-        usersQuery = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS).orderByChild(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED);
+        usersQuery = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_USERS)
+                .orderByChild(DBConstants.FIREBASE_U_KEY_OPT_OUT_OF_LB).equalTo(false);
 
         usersQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -182,11 +191,18 @@ public class LeaderboardActivity extends AppCompatActivity
                     users.add(user);
                     Log.d(TAG, "Downloaded User " + user.getUuid());
                 }
-                Collections.reverse(users);
+                Collections.sort(users, new Comparator<User>() {
+                    @Override
+                    public int compare(User o1, User o2) {
+                        return o2.getVersesMemorized().compareTo(o1.getVersesMemorized());
+                    }
+                });
                 adapter.notifyDataSetChanged();
-                Algorithms algorithms = new Algorithms();
-                int currentUserRank = algorithms.searchUser(users, mAuth.getCurrentUser().getUid()) + 1;
-                rank.setText(String.format(Locale.getDefault(), "%d", currentUserRank));
+                if (!currentUser.isOptOutOfLB()) {
+                    Algorithms algorithms = new Algorithms();
+                    int currentUserRank = algorithms.searchUser(users, mAuth.getCurrentUser().getUid()) + 1;
+                    rank.setText(String.format(Locale.getDefault(), "%d", currentUserRank));
+                }
             }
 
             @Override
@@ -253,7 +269,13 @@ public class LeaderboardActivity extends AppCompatActivity
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Hey, check out this cool Bible Memorization app that I found. It uses advanced algorithms and speech recognition to help you memorize Bible verses. It also has a leaderboard where you can compare your progress with other users. And guess what, it's absolutely free!!\n\nhttps://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en");
+                        new StringBuilder()
+                                .append("Hey, check out this cool Bible Memorization app that I found.")
+                                .append("It uses advanced algorithms and speech recognition to help you memorize Bible verses.")
+                                .append("It also has a leaderboard where you can compare your progress with other users.")
+                                .append("And guess what, it's absolutely free!!\n\n")
+                                .append("https://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en")
+                                .toString());
                 shareIntent.setType("text/plain");
                 startActivity(shareIntent);
                 break;

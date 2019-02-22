@@ -5,70 +5,124 @@
     android:layout_height="match_parent"
     tools:context="com.code.codemercenaries.girdthyswordpro.fragments.SpeechReviewFragment">
 
-    <LinearLayout
-        android:id="@+id/chunk_verse"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="120dp">
 
-        <TextView
-            android:id="@+id/verses_completed"
+        <LinearLayout
+            android:id="@+id/chunk_verse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/verses_completed"
-            android:textAlignment="center"
-            android:textSize="15sp" />
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/chunk_verse_title"
-            fontPath="@string/modia_non_commercial_font_path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/default_chunk_verse_title"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            tools:ignore="MissingPrefix" />
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="5dp">
-
-            <ScrollView
+            <TextView
+                android:id="@+id/verses_completed"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="@string/verses_completed"
+                android:textAlignment="center"
+                android:textSize="15sp" />
 
-                <LinearLayout
+            <TextView
+                android:id="@+id/chunk_verse_title"
+                fontPath="@string/default_font_path"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/default_chunk_verse_title"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                tools:ignore="MissingPrefix" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="5dp">
+
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/chunk_verse_text"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/default_chunk_verse_text" />
+                        android:layout_height="wrap_content">
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/chunk_verse_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/default_chunk_verse_text" />
 
-            </ScrollView>
+                    </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+                </ScrollView>
 
-    </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/yourInput"
+                fontPath="@string/default_font_path"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/your_input"
+                android:textAlignment="center"
+                android:textSize="17sp"
+                tools:ignore="MissingPrefix" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="5dp">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/your_input_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="" />
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/responseMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/continue_button"
+        android:layout_above="@+id/accuracy"
         android:text="@string/you_aced_it"
         android:textAlignment="center"
         android:textSize="25sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/accuracy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/continue_button"
+        android:text="@string/accuracy_w_percentage"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:visibility="gone" />
 
     <Button
