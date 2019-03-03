@@ -1,8 +1,10 @@
 package com.code.codemercenaries.girdthyswordpro.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -79,7 +81,7 @@ public class BlogActivity extends AppCompatActivity
         webView = findViewById(R.id.web_view);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("https://joelkingsley.wordpress.com");
+        webView.loadUrl("https://joelkingsley.wordpress.com/blog/");
     }
 
     @Override
@@ -112,8 +114,26 @@ public class BlogActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
             webView.reload();
+            return true;
+        } else if (id == R.id.action_go_to_blog_index) {
+            webView.loadUrl("https://joelkingsley.wordpress.com/blog/");
+            return true;
+        } else if (id == R.id.action_rate_app) {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            // To count with Play market backstack, After pressing back button,
+            // to taken back to our application, we need to add following flags to intent.
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+            }
             return true;
         }
 
@@ -146,19 +166,14 @@ public class BlogActivity extends AppCompatActivity
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        new StringBuilder()
-                                .append("Hey, check out this cool Bible Memorization app that I found.")
-                                .append("It uses advanced algorithms and speech recognition to help you memorize Bible verses.")
-                                .append("It also has a leaderboard where you can compare your progress with other users.")
-                                .append("And guess what, it's absolutely free!!\n\n")
-                                .append("https://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en")
-                                .toString());
+                        getString(R.string.share_message));
                 shareIntent.setType("text/plain");
                 startActivity(shareIntent);
                 break;
             case R.id.nav_blog:
                 break;
             case R.id.nav_help:
+                startActivity(new Intent(BlogActivity.this, HelpActivity.class));
                 break;
             case R.id.nav_about:
                 startActivity(new Intent(BlogActivity.this,AboutActivity.class));

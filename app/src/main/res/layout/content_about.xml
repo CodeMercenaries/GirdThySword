@@ -16,35 +16,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/developedBy"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/girdthysword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="@string/developed_by"/>
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                android:src="@drawable/common_google_signin_btn_icon_dark" />
+
+            <TextView
+                android:id="@+id/developedBy"
+                fontPath="@string/modia_non_commercial_font_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/girdthysword"
+                android:layout_centerHorizontal="true"
+                android:text="@string/developed_by"
+                android:textSize="15sp"
+                tools:ignore="MissingPrefix" />
 
             <TextView
                 android:id="@+id/codemercenariesTextLogo"
-                fontPath="@string/asket_cdeb_font_path"
+                fontPath="@string/modia_non_commercial_font_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/developedBy"
                 android:layout_centerHorizontal="true"
-                android:text="@string/codemercenaries"
+                android:text="@string/girdthysword_inc"
                 android:textColor="@color/colorAccent"
                 android:textSize="30sp"
                 tools:ignore="MissingPrefix" />
 
             <TextView
                 android:id="@+id/joelkingsley"
-                fontPath="@string/qualio_font_path"
+                fontPath="@string/modia_non_commercial_font_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/codemercenariesTextLogo"
                 android:layout_centerHorizontal="true"
                 android:text="@string/joel_kingsley"
+                android:textColor="@color/colorAccent"
                 android:textSize="25sp"
                 tools:ignore="MissingPrefix" />
 
@@ -55,7 +68,7 @@
                 android:layout_height="100dp"
                 android:layout_below="@+id/joelkingsley"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 app:srcCompat="@mipmap/defalt_profile_image" />
 
             <LinearLayout
@@ -115,6 +128,10 @@
 
 
             </LinearLayout>
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
         </RelativeLayout>
 

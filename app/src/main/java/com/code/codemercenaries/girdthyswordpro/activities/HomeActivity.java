@@ -1,5 +1,6 @@
 package com.code.codemercenaries.girdthyswordpro.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -245,7 +246,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.actions, menu);
         return true;
     }
 
@@ -257,7 +258,23 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+            startActivity(new Intent(HomeActivity.this, HelpActivity.class));
+            return true;
+        } else if (id == R.id.action_rate_app) {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            // To count with Play market backstack, After pressing back button,
+            // to taken back to our application, we need to add following flags to intent.
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+            }
             return true;
         }
 
@@ -289,13 +306,7 @@ public class HomeActivity extends AppCompatActivity
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        new StringBuilder()
-                                .append("Hey, check out this cool Bible Memorization app that I found.")
-                                .append("It uses advanced algorithms and speech recognition to help you memorize Bible verses.")
-                                .append("It also has a leaderboard where you can compare your progress with other users.")
-                                .append("And guess what, it's absolutely free!!\n\n")
-                                .append("https://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en")
-                                .toString());
+                        getString(R.string.share_message));
                 shareIntent.setType("text/plain");
                 startActivity(shareIntent);
                 break;
@@ -303,6 +314,7 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(HomeActivity.this,BlogActivity.class));
                 break;
             case R.id.nav_help:
+                startActivity(new Intent(HomeActivity.this, HelpActivity.class));
                 break;
             case R.id.nav_about:
                 startActivity(new Intent(HomeActivity.this,AboutActivity.class));

@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,42 +14,53 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.code.codemercenaries.girdthyswordpro.R;
-import com.code.codemercenaries.girdthyswordpro.adapters.ViewPagerAdapter;
-import com.code.codemercenaries.girdthyswordpro.fragments.ProgressFragment;
-import com.code.codemercenaries.girdthyswordpro.fragments.ReaderFragment;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class ReadActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        ReaderFragment.OnFragmentInteractionListener,
-        ProgressFragment.OnFragmentInteractionListener {
+public class HelpActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    List<String> FAQS = Arrays.asList(
+            "What does this app do?",
+            "I'm confused. Where do I get an overview",
+            "How do I add new sections to memorize",
+            "How do I know when to review a particular chunk",
+            "How do I report a bug or request a feature?");
+
+    FirebaseAuth mAuth;
+    TextView displayName;
+    ImageView displayImage;
 
     FontHelper fontHelper;
-    ViewPager viewPager;
-    TabLayout tabLayout;
-
-    ReaderFragment readerFragment;
-    ProgressFragment progressFragment;
+    ListView questionsList;
+    ArrayAdapter<String> questionsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         fontHelper = new FontHelper();
         fontHelper.initialize(this);
-
-        setContentView(R.layout.activity_read);
+        setContentView(R.layout.activity_help);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,12 +71,12 @@ public class ReadActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
-        TextView displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
-        ImageView displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
+        displayName = navigationView.getHeaderView(0).findViewById(R.id.display_name);
+        displayImage = navigationView.getHeaderView(0).findViewById(R.id.display_image);
 
-        if(mAuth != null && mAuth.getCurrentUser() != null){
+        if (mAuth != null && mAuth.getCurrentUser() != null) {
             displayName.setText(mAuth.getCurrentUser().getDisplayName());
             Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(displayImage);
         }
@@ -76,29 +85,21 @@ public class ReadActivity extends AppCompatActivity
         settingsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ReadActivity.this,SettingsActivity.class));
+                startActivity(new Intent(HelpActivity.this, SettingsActivity.class));
             }
         });
 
-        viewPager = findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(2);
-        setupViewPager(viewPager);
-        tabLayout = findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-    }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        readerFragment = new ReaderFragment();
-        progressFragment = new ProgressFragment();
-        adapter.addFragment(readerFragment, getString(R.string.title_fragment_reader));
-        adapter.addFragment(progressFragment, getString(R.string.title_fragment_progress));
-        viewPager.setAdapter(adapter);
-    }
+        questionsList = findViewById(R.id.questions);
+        questionsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, FAQS);
+        questionsList.setAdapter(questionsAdapter);
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+        questionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(HelpActivity.this, HelpAnswerActivity.class).putExtra("FAQ_POS", position));
+            }
+        });
     }
 
     @Override
@@ -114,7 +115,7 @@ public class ReadActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.actions, menu);
+        getMenuInflater().inflate(R.menu.help, menu);
         return true;
     }
 
@@ -126,10 +127,7 @@ public class ReadActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_help) {
-            startActivity(new Intent(this, HelpActivity.class));
-            return true;
-        } else if (id == R.id.action_rate_app) {
+        if (id == R.id.action_rate_app) {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
             // To count with Play market backstack, After pressing back button,
@@ -155,20 +153,21 @@ public class ReadActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch(id) {
+        switch (id) {
             case R.id.nav_home:
-                startActivity(new Intent(ReadActivity.this,HomeActivity.class));
+                startActivity(new Intent(HelpActivity.this, HomeActivity.class));
                 break;
             case R.id.nav_stats:
-                startActivity(new Intent(ReadActivity.this,StatsActivity.class));
+                startActivity(new Intent(HelpActivity.this, StatsActivity.class));
                 break;
             case R.id.nav_read:
+                startActivity(new Intent(HelpActivity.this, ReadActivity.class));
                 break;
             case R.id.nav_leaderboard:
-                startActivity(new Intent(ReadActivity.this,LeaderboardActivity.class));
+                startActivity(new Intent(HelpActivity.this, LeaderboardActivity.class));
                 break;
             case R.id.nav_tavern:
-                startActivity(new Intent(ReadActivity.this,TavernActivity.class));
+                startActivity(new Intent(HelpActivity.this, TavernActivity.class));
                 break;
             case R.id.nav_share:
                 Intent shareIntent = new Intent();
@@ -179,13 +178,12 @@ public class ReadActivity extends AppCompatActivity
                 startActivity(shareIntent);
                 break;
             case R.id.nav_blog:
-                startActivity(new Intent(ReadActivity.this,BlogActivity.class));
+                startActivity(new Intent(HelpActivity.this, BlogActivity.class));
                 break;
             case R.id.nav_help:
-                startActivity(new Intent(ReadActivity.this, HelpActivity.class));
                 break;
             case R.id.nav_about:
-                startActivity(new Intent(ReadActivity.this,AboutActivity.class));
+                startActivity(new Intent(HelpActivity.this, AboutActivity.class));
                 break;
         }
 
@@ -194,9 +192,8 @@ public class ReadActivity extends AppCompatActivity
         return true;
     }
 
-
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 }

@@ -17,9 +17,17 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        /*debug {
+            debuggable true
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }*/
     }
     externalNativeBuild {
         cmake {
@@ -77,23 +85,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 apply plugin: 'com.google.gms.google-services'

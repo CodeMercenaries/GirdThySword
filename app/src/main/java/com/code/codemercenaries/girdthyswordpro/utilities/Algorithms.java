@@ -1,5 +1,6 @@
 package com.code.codemercenaries.girdthyswordpro.utilities;
 
+import com.code.codemercenaries.girdthyswordpro.beans.local.Version;
 import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
 
 import java.util.ArrayList;
@@ -13,6 +14,15 @@ public class Algorithms {
     public int searchUser(ArrayList<User> users, String uuid) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int searchVersion(ArrayList<Version> versions, String versionID) {
+        for (int i = 0; i < versions.size(); i++) {
+            if (versions.get(i).get_id().equals(versionID)) {
                 return i;
             }
         }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GirdThySword Pro</string>
     <string name="logo_cd">Logo that says Gird Thy Sword</string>
-    <string name="logo_path">logo_new.png</string>
+    <string name="logo_path">logo_new_pro.png</string>
     <string name="login_tagline">Before you go out and live the Christian Life</string>
     <string name="title_activity_home">Home</string>
 
@@ -161,7 +161,7 @@
     <string name="title_activity_review">Review</string>
     <string name="title_fragment_speech_review">Speech Review</string>
     <string name="title_fragment_manual_review">Manual Review</string>
-    <string name="default_chunk_title">Jeremiah 1:1-10</string>
+    <string name="default_chunk_title">Jeremiah 1:1&#8211;10</string>
     <string name="default_chunk_verse_title">Jeremiah 1:1</string>
     <string name="default_chunk_verse_text">And I sought for a man among them, that should make up the hedge, and stand in the gap before me for the land, that I should not destroy it: but I found none.</string>
     <string name="hard">Hard</string>
@@ -173,7 +173,7 @@
     <string name="title_activity_result">Result</string>
     <string name="final_score_num">97</string>
     <string name="final_score">Final Score</string>
-    <string name="genesis_1_1_7">Genesis 1:1-7</string>
+    <string name="genesis_1_1_7">Genesis 1:1&#8211;7</string>
     <string name="calculated_space">Calculated Space</string>
     <string name="next_date_of_review">Next Date of Review</string>
     <string name="done">Done</string>
@@ -187,5 +187,66 @@
     <string name="speech_not_supported">Speech is not supported in your Device</string>
     <string name="accuracy_90">Accuracy: 90%</string>
     <string name="accuracy_w_percentage">Accuracy: %1$f%%</string>
+
+    <string name="what_can_this_app_do">What can this app do?</string>
+    <string name="what_can_this_app_do_answer">
+        First and foremost, welcome to GirdThySword Pro! We are glad that you are here.
+        GirdThySword Pro is a Bible memorization App that uses a memorization technique called
+        spaced repetition based on cognitive science, for effective scheduling of time of review of Bible verses.
+        \nThe main purpose of this app is to enable users to memorize the Bible, and at the same time retain what they memorize forever.
+        \n\nHere is a list of things that you can do in this app:
+        \n1. Add Bible sections to commit to memory from 8 different languages that are
+        built-in to the app. Click the + icon in the \'Home\' screen and click on \'Add Section\' to add sections.
+        \n2. Review Bible verses through manual feedback or speech. Click on a list
+        item(chunk) in the Dailies tab of the \'Home\' screen to review that chunk"
+        \n3. Forge new virtual Swords by memorizing Bible verses, and equip the sword
+        of your choice which is then displayed in the Leaderboard along with your name and number of verses memorized.
+        \n4. Unlock badges in the 'Stats' screen which you can share in any social media
+        of your choice once you've crossed a milestone.
+        \n5. Chat with the global community inorder to network with other like-minded GirdThySword soldiers.
+        Directly chat with the Administrator of the app regarding bugs, feature requests or simply to say Hi.
+        \n6. Read the Bible in one of the coolest Bible readers in the world, with parallel reading support.
+        This means that you can read any two versions of the Bible at the same time. The page navigation is super easy and insanely fast for
+        the amount of power it provides."
+    </string>
+    <string name="im_confused_where_do_i_get_an_overview">I\'m confused. Where do I get an overview?</string>
+    <string name="im_confused_where_do_i_get_an_overview_answer">
+        Bible memorization is a fairly straightforward process. You pick a chapter or a verse, start from the beginning,
+        keep repeating the words in your mind, and the verses start to stick. The same principle is used in this app.
+        \n1. You start by adding a section to memorize, let\'s say Psalms 23. Since the chapter has 6 verses
+        it is divided into 2 chunks of 3 verses each by default.
+        \n2. You are now first scheduled with the first chunk for review today. You can review it manually or through speech recognition.
+        If you found it easy, then it means you\'ve mastered, which then lets the app know that you\'ve memorized it.
+        \n3. All the chunks(including memorized verses) will be rescheduled after review to a future date(which is dependent on the review score).
+
+        TL;DR Add sections to memorize, review the verses that come up in your dailies.
+    </string>
+
+    <string name="how_do_i_add_new_sections_to_memorize">How do I add new sections to memorize?</string>
+    <string name="how_do_i_add_new_sections_to_memorize_answer">
+        Press the round + button in the bottom right corner of the home screen.
+        Two options \'Add Section\' and \'Remove Section\' would appear. Press \'Add Section\' and select the section that you want to add.
+        Once done, the section would be broken into chunks of an equal size and the first chunk would appear in your dailies.
+    </string>
+
+    <string name="how_do_i_know_when_to_review_a_particular_chunk">How do I know when to review a particular chunk?</string>
+    <string name="how_do_i_know_when_to_review_a_particular_chunk_answer">
+        All chunks that you have to review show up in your dailies tab. If you want to see when all the
+        chunks are scheduled to, you can take a look at the calendar in the \'Overview\' tab in the Home Screen.
+    </string>
+
+    <string name="how_do_i_report_a_bug_or_request_a_feature">How do I report a bug or request a feature?</string>
+    <string name="how_do_i_report_a_bug_or_request_a_feature_answer">
+        You can send a mail to codemercenaries@gmail.com or send a message to the ADMIN in the \'Tavern\'.
+        And of course you can contact the Lead Developer through the social links in the \'About\' screen.
+    </string>
+    <string name="share_message">
+        Hey, check out this cool Bible Memorization app that I found.
+        It uses advanced algorithms and speech recognition to help you memorize Bible verses. It also has a leaderboard where you can compare your progress with other users. And guess what, it\'s absolutely free!!\\n\\n\ <![CDATA[https://play.google.com/store/apps/details?id=com.code.codemercenaries.girdthysword&hl=en]]></string>
+    <string name="action_rate_app">Rate This App</string>
+    <string name="action_help">Help</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_go_to_blog_index">Go to Blog Index</string>
+    <string name="girdthysword_inc">GirdThySword, Inc</string>
 
 </resources>

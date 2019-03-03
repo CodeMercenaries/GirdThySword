@@ -172,6 +172,7 @@ public class SpeechReviewFragment extends Fragment {
 
             DBHandler dbHandler = new DBHandler(mActivity);
             chunkVerseText.setText(dbHandler.getVerse(chunk.getVersionID(), chunk.getBookName(), chunk.getChapterNum(), chunk.getStartVerseNum() + currentVersePos));
+            yourInputText.setText("");
 
             record.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -203,20 +204,28 @@ public class SpeechReviewFragment extends Fragment {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        if (chunk.getVersionID().equals(DBConstants.TABLE_EN_KJV)) {
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en");
-        } else if (chunk.getVersionID().equals(DBConstants.TABLE_TAM_ORG)) {
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ta");
-        } else if (chunk.getVersionID().equals(DBConstants.TABLE_TELUGU)) {
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "te");
-        } else if (chunk.getVersionID().equals(DBConstants.TABLE_ORIYA)) {
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "or");
-        } else if (chunk.getVersionID().equals(DBConstants.TABLE_GREEK)) {
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "el");
-        } else if (chunk.getVersionID().equals(DBConstants.TABLE_SPANISH)) {
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es");
-        } else if (chunk.getVersionID().equals(DBConstants.TABLE_FRENCH)) {
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fr");
+        switch (chunk.getVersionID()) {
+            case DBConstants.TABLE_EN_KJV:
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en");
+                break;
+            case DBConstants.TABLE_TAM_ORG:
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ta");
+                break;
+            case DBConstants.TABLE_TELUGU:
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "te");
+                break;
+            case DBConstants.TABLE_ORIYA:
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "or");
+                break;
+            case DBConstants.TABLE_GREEK:
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "el");
+                break;
+            case DBConstants.TABLE_SPANISH:
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es");
+                break;
+            case DBConstants.TABLE_FRENCH:
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fr");
+                break;
         }
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                 getString(R.string.speech_prompt));

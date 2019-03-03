@@ -90,4 +90,5 @@ public class DBConstants {
 
     public static final List<String> LANGUAGES_SUPPORTING_SPEECH_REVIEW = Arrays.asList(
             "en", "es", "el", "fr", "ta");
+
 }
