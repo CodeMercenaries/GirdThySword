@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -204,15 +205,22 @@ public class ChapterFragment extends Fragment{
     private void setupList() {
         Log.d("setupList:","Entered");
 
+        for (int i = 1; i <= numOfVerse; i++) {
+            verses.add(new Verse(version, bookName, chapNum, i));
+        }
+
         verseRecycleListAdapter = new VerseRecycleListAdapter(mActivity, verses);
+
+        verseList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                verseList.getContext(), linearLayoutManager.getOrientation());
+        verseList.addItemDecoration(dividerItemDecoration);
+        verseList.setLayoutManager(linearLayoutManager);
 
         verseList.setLayoutManager(new LinearLayoutManager(mActivity));
         verseList.setHasFixedSize(true);
         verseList.setAdapter(verseRecycleListAdapter);
-
-        for (int i = 1; i <= numOfVerse; i++) {
-            verses.add(new Verse(version, bookName, chapNum, i));
-        }
 
         task1 = new UpdateVerseTexts();
         task1.execute();

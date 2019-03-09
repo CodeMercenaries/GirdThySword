@@ -50,8 +50,7 @@ import java.util.Locale;
 public class OverviewFragment extends Fragment {
 
     private static final String TAG = "OverviewFragment";
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     Activity mActivity;
@@ -69,25 +68,14 @@ public class OverviewFragment extends Fragment {
     ArrayList<String> months;
     Date selectedDate;
     SimpleDateFormat df;
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public OverviewFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OverviewFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static OverviewFragment newInstance(String param1, String param2) {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
@@ -172,7 +160,8 @@ public class OverviewFragment extends Fragment {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                date.setText(getString(R.string.date,firstDayOfNewMonth.getDate(),months.get(firstDayOfNewMonth.getMonth()),firstDayOfNewMonth.getYear()+1900));
+                date.setText(getString(R.string.date, firstDayOfNewMonth.getDate(),
+                        months.get(firstDayOfNewMonth.getMonth()), firstDayOfNewMonth.getYear() + 1900));
                 chunksOfSelectedDate.clear();
                 for(Chunk chunk: allChunks) {
                     if(chunk.getNextDateOfReview().equals(df.format(firstDayOfNewMonth))) {
@@ -202,7 +191,9 @@ public class OverviewFragment extends Fragment {
             }
         });
 
-        chunksQuery = FirebaseDatabase.getInstance().getReference(DBConstants.FIREBASE_TABLE_CHUNKS).child(mAuth.getCurrentUser().getUid()).orderByChild(DBConstants.FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW);
+        chunksQuery = FirebaseDatabase.getInstance().
+                getReference(DBConstants.FIREBASE_TABLE_CHUNKS).child(mAuth.getCurrentUser().getUid()).
+                orderByChild(DBConstants.FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW);
 
         chunksQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -216,7 +207,8 @@ public class OverviewFragment extends Fragment {
 
                     try {
                         if(chunk != null) {
-                            compactCalendarView.addEvent(new Event(Color.BLUE, df.parse(chunk.getNextDateOfReview()).getTime()));
+                            compactCalendarView.addEvent(
+                                    new Event(Color.BLUE, df.parse(chunk.getNextDateOfReview()).getTime()));
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -236,12 +228,12 @@ public class OverviewFragment extends Fragment {
         });
 
         compactCalendarView.setCurrentDate(currDate);
-        date.setText(getString(R.string.date,currDate.getDate(),months.get(currDate.getMonth()),currDate.getYear()+1900));
+        date.setText(getString(R.string.date, currDate.getDate(),
+                months.get(currDate.getMonth()), currDate.getYear() + 1900));
         radioGroup.check(R.id.showOfDate);
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -265,18 +257,7 @@ public class OverviewFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

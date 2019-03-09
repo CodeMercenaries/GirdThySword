@@ -6,10 +6,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,10 +23,18 @@ import android.widget.TextView;
 import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.adapters.VerseRecycleListAdapter;
 import com.code.codemercenaries.girdthyswordpro.beans.local.Verse;
+import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBHandler;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,29 +46,36 @@ import java.util.List;
  */
 public class DualChapterFragment extends Fragment {
 
+    private static final String TAG = "DualChapterFragment";
+
     private static final String ARG_PARAM1 = "version1";
     private static final String ARG_PARAM2 = "version2";
     private static final String ARG_PARAM3 = "bookName1";
     private static final String ARG_PARAM4 = "bookName2";
     private static final String ARG_PARAM5 = "chapNum";
-    Activity mActivity;
-    TextView chapterTitle;
-    RecyclerView verseList;
-    VerseRecycleListAdapter verseRecycleListAdapter;
-    ProgressDialog progressDialog;
-    FloatingActionButton fab;
-    FloatingActionButton fabNot;
-    DisplayPrimaryVerses task1;
-    DisplaySecondaryVerses task2;
-    List<Verse> verses1;
-    List<Verse> verses2;
-    int numOfVerse;
-    // TODO: Rename and change types of parameters
+
     private String version1;
     private String version2;
     private String bookName1;
     private String bookName2;
     private int chapNum;
+
+    private Activity mActivity;
+    private TextView chapterTitle;
+    private RecyclerView verseList;
+    private VerseRecycleListAdapter verseRecycleListAdapter;
+    private ProgressDialog progressDialog;
+    private FloatingActionButton fab;
+    private FloatingActionButton fabNot;
+    private UpdatePrimaryVerseTexts task1;
+    private UpdateSecondaryVerseTexts task2;
+    private List<Verse> verses1;
+    private List<Verse> verses2;
+    private int numOfVerse;
+
+    private DatabaseReference userBibleReference1;
+    private DatabaseReference userBibleReference2;
+    private FirebaseAuth mAuth;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,15 +83,6 @@ public class DualChapterFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DualChapterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DualChapterFragment newInstance(String param1, String param2, String param3, String param4, int param5) {
         DualChapterFragment fragment = new DualChapterFragment();
         Bundle args = new Bundle();
@@ -112,6 +120,7 @@ public class DualChapterFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mActivity = getActivity();
+        mAuth = FirebaseAuth.getInstance();
 
         chapterTitle = view.findViewById(R.id.chapterTitle);
         verseList = view.findViewById(R.id.verseList);
@@ -178,13 +187,80 @@ public class DualChapterFragment extends Fragment {
     private void setupList() {
         Log.d("setupList:","Entered");
 
-        task1 = new DisplayPrimaryVerses();
+        for (int i = 1; i <= numOfVerse; i++) {
+            verses1.add(new Verse(version1, bookName1, chapNum, i));
+            verses2.add(new Verse(version2, bookName2, chapNum, i));
+        }
+
+        verseRecycleListAdapter = new VerseRecycleListAdapter(mActivity, verses1, verses2);
+
+        verseList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                verseList.getContext(), linearLayoutManager.getOrientation());
+        verseList.addItemDecoration(dividerItemDecoration);
+        verseList.setLayoutManager(linearLayoutManager);
+
+        verseList.setLayoutManager(new LinearLayoutManager(mActivity));
+        verseList.setHasFixedSize(true);
+        verseList.setAdapter(verseRecycleListAdapter);
+
+        task1 = new UpdatePrimaryVerseTexts();
         task1.execute();
+
+        userBibleReference1 = FirebaseDatabase.getInstance().
+                getReference(DBConstants.FIREBASE_TABLE_USER_BIBLE).
+                child(mAuth.getCurrentUser().getUid()).child(version1).child(bookName1).
+                child(String.format(Locale.getDefault(), "%d", chapNum));
+        userBibleReference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    int verseNum = Integer.parseInt(snapshot.getKey());
+                    Integer memoryCode = snapshot.child(DBConstants.FIREBASE_UB_KEY_MEMORY).getValue(int.class);
+                    if (memoryCode != null) {
+                        Verse verse = verses1.get(verseNum - 1);
+                        verse.set_memory(memoryCode);
+                        verses1.set(verseNum - 1, verse);
+                    }
+                }
+                verseRecycleListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, databaseError.toString());
+            }
+        });
+
+        userBibleReference2 = FirebaseDatabase.getInstance().
+                getReference(DBConstants.FIREBASE_TABLE_USER_BIBLE).
+                child(mAuth.getCurrentUser().getUid()).child(version2).child(bookName2).
+                child(String.format(Locale.getDefault(), "%d", chapNum));
+        userBibleReference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    int verseNum = Integer.parseInt(snapshot.getKey());
+                    Integer memoryCode = snapshot.child(DBConstants.FIREBASE_UB_KEY_MEMORY).getValue(int.class);
+                    if (memoryCode != null) {
+                        Verse verse = verses2.get(verseNum - 1);
+                        verse.set_memory(memoryCode);
+                        verses2.set(verseNum - 1, verse);
+                    }
+                }
+                verseRecycleListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, databaseError.toString());
+            }
+        });
 
         Log.d("setupList:","Left");
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -208,43 +284,33 @@ public class DualChapterFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
-    private class DisplayPrimaryVerses extends AsyncTask<Void, Void, Void> {
+    private class UpdatePrimaryVerseTexts extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.d("DisplayPrimaryVerses:","onPreExecute entered");
+            Log.d("UpdatePrimaryVTexts:", "onPreExecute entered");
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage("Loading Chapter");
             progressDialog.show();
-            Log.d("DisplayPrimaryVerses:","onPreExecute left");
+            Log.d("UpdatePrimaryVTexts:", "onPreExecute left");
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Log.d("DisplayPrimaryVerses:","doInBackground entered");
-            Log.d("DisplayPrimaryVerses:",version1 + " " + bookName1 + " " + chapNum);
+            Log.d("UpdatePrimaryVTexts:", "doInBackground entered");
+            Log.d("UpdatePrimaryVTexts:", version1 + " " + bookName1 + " " + chapNum);
             DBHandler dbHandler = new DBHandler(mActivity);
 
             ArrayList<String> versesText1 = dbHandler.getAllVersesOfChap(version1,bookName1,chapNum);
-            for(int i=1;i<=numOfVerse;i++){
-                verses1.add(new Verse(version1,bookName1,chapNum,i,versesText1.get(i-1)));
-                Log.d("DisplayPrimaryVerses:",verses1.get(i-1).get_verse_text());
+            for (int i = 0; i < verses1.size(); i++) {
+                Verse verse = verses1.get(i);
+                verse.set_verse_text(versesText1.get(i));
+                verses1.set(i, verse);
             }
             return null;
         }
@@ -252,53 +318,48 @@ public class DualChapterFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.d("DisplayPrimaryVerses:","onPostExecute entered");
-            task2 = new DisplaySecondaryVerses();
+            Log.d("UpdatePrimaryVTexts:", "onPostExecute entered");
+            task2 = new UpdateSecondaryVerseTexts();
             task2.execute();
-            Log.d("DisplayPrimaryVerses:","onPostExecute left");
+            Log.d("UpdatePrimaryVTexts:", "onPostExecute left");
         }
     }
 
-    public class DisplaySecondaryVerses extends AsyncTask<Void, Void, Void> {
+    public class UpdateSecondaryVerseTexts extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.d("DisplaySecondaryVerses:","onPreExecute entered");
+            Log.d("UpdateSecondaryVTexts:", "onPreExecute entered");
 
-            Log.d("DisplaySecondaryVerses:","onPreExecute left");
+            Log.d("UpdateSecondaryVTexts:", "onPreExecute left");
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Log.d("DisplaySecondaryVerses:","doInBackground entered");
-            Log.d("DisplaySecondaryVerses:",version2 + " " + bookName2 + " " + chapNum);
+            Log.d("UpdateSecondaryVTexts:", "doInBackground entered");
+            Log.d("UpdateSecondaryVTexts:", version2 + " " + bookName2 + " " + chapNum);
 
             DBHandler dbHandler = new DBHandler(mActivity);
 
-            Log.d("DisplaySecondaryVerses:",version2 + " " + bookName2 + " " + chapNum);
+            Log.d("UpdateSecondaryVTexts:", version2 + " " + bookName2 + " " + chapNum);
             ArrayList<String> versesText2 = dbHandler.getAllVersesOfChap(version2,bookName2,chapNum);
-            for(int i=1;i<=numOfVerse;i++){
-                verses2.add(new Verse(version2,bookName2,chapNum,i,versesText2.get(i-1)));
-                Log.d("DisplaySecondaryVerses:",verses2.get(i-1).get_verse_text());
+            for (int i = 0; i < verses2.size(); i++) {
+                Verse verse = verses2.get(i);
+                verse.set_verse_text(versesText2.get(i));
+                verses2.set(i, verse);
             }
-            Log.d("DisplaySecondaryVerses:","doInBackground left");
+            Log.d("UpdateSecondaryVTexts:", "doInBackground left");
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.d("DisplaySecondaryVerses:","onPostExecute entered");
+            Log.d("UpdateSecondaryVTexts:", "onPostExecute entered");
             progressDialog.dismiss();
-
-            verseRecycleListAdapter = new VerseRecycleListAdapter(mActivity, verses1, verses2);
-
-            verseList.setLayoutManager(new LinearLayoutManager(mActivity));
-            verseList.setHasFixedSize(true);
-            verseList.setAdapter(verseRecycleListAdapter);
-
-            Log.d("DisplaySecondaryVerses:","onPostExecute left");
+            verseRecycleListAdapter.notifyDataSetChanged();
+            Log.d("UpdateSecondaryVTexts:", "onPostExecute left");
         }
     }
 }

@@ -72,7 +72,34 @@ public class VerseRecycleListAdapter extends RecyclerView.Adapter<VerseRecycleLi
             Log.d("VRecycleListAdapter:","verses1 size:" + verses1.size());
             Log.d("VRecycleListAdapter:","verses2 size:" + verses2.size());
             holder.verseText1.setText(verses1.get(position).get_verse_text());
+            int memoryCode = verses1.get(position).get_memory();
+            switch (memoryCode) {
+                case DBConstants.CODE_NOT_ADDED:
+                    holder.verseText1.setBackgroundColor(mActivity.getResources().getColor(R.color.notAddedHighlightColor));
+                    break;
+                case DBConstants.CODE_ADDED:
+                    holder.verseText1.setBackgroundColor(mActivity.getResources().getColor(R.color.addedHighlightColor));
+                    break;
+                case DBConstants.CODE_MEMORIZED:
+                    holder.verseText1.setBackgroundColor(mActivity.getResources().getColor(R.color.memorizedHighlightColor));
+                    break;
+                default:
+            }
+
             holder.verseText2.setText(verses2.get(position).get_verse_text());
+            memoryCode = verses2.get(position).get_memory();
+            switch (memoryCode) {
+                case DBConstants.CODE_NOT_ADDED:
+                    holder.verseText2.setBackgroundColor(mActivity.getResources().getColor(R.color.notAddedHighlightColor));
+                    break;
+                case DBConstants.CODE_ADDED:
+                    holder.verseText2.setBackgroundColor(mActivity.getResources().getColor(R.color.addedHighlightColor));
+                    break;
+                case DBConstants.CODE_MEMORIZED:
+                    holder.verseText2.setBackgroundColor(mActivity.getResources().getColor(R.color.memorizedHighlightColor));
+                    break;
+                default:
+            }
         }
     }
 
