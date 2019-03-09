@@ -33,6 +33,16 @@ public class Verse {
         this._read = 0;
     }
 
+    public Verse(String _version, String _book_name, int _chap_num, int _verse_num) {
+        this._version = _version;
+        this._book_name = _book_name;
+        this._chap_num = _chap_num;
+        this._verse_num = _verse_num;
+        this._verse_text = "";
+        this._memory = 0;
+        this._read = 0;
+    }
+
     public String get_version() {
         return _version;
     }

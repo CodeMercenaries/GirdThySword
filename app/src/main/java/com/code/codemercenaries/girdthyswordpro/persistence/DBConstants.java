@@ -38,8 +38,13 @@ public class DBConstants {
     public static final int CODE_NOT_READ = 0;
     public static final int CODE_READ = 1;
 
-    public static final int MASTERED_MIN_THRESHOLD = 85;
-    public static final int MAINTAIN_MIN_THRESHOLD = 65;
+    public static final int MASTERED_MIN_THRESHOLD_SCORE = 85;
+    public static final int MAINTAIN_MIN_THRESHOLD_SCORE = 65;
+
+    public static final int INITIAL_DEFAULT_SPACE = 1;
+    public static final int MASTERED_MIN_THRESHOLD_SPACE = 2;
+
+    public static final String NEXT_DATE_OF_REVIEW_NA = "NA";
 
     //Remote Database
     public static final String FIREBASE_TABLE_USERS = "users";
@@ -90,5 +95,4 @@ public class DBConstants {
 
     public static final List<String> LANGUAGES_SUPPORTING_SPEECH_REVIEW = Arrays.asList(
             "en", "es", "el", "fr", "ta");
-
 }

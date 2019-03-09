@@ -292,7 +292,7 @@ public class DualChapterFragment extends Fragment {
             Log.d("DisplaySecondaryVerses:","onPostExecute entered");
             progressDialog.dismiss();
 
-            verseRecycleListAdapter = new VerseRecycleListAdapter(verses1,verses2);
+            verseRecycleListAdapter = new VerseRecycleListAdapter(mActivity, verses1, verses2);
 
             verseList.setLayoutManager(new LinearLayoutManager(mActivity));
             verseList.setHasFixedSize(true);

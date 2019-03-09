@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#9E9E9E</color>
     <color name="colorAccent">#424242</color>
     <color name="defaultText">#424242</color>
+
+    <color name="memorizedHighlightColor">#5aff91</color>
+    <color name="addedHighlightColor">#eedd39</color>
+    <color name="notAddedHighlightColor">#ffffff</color>
 </resources>

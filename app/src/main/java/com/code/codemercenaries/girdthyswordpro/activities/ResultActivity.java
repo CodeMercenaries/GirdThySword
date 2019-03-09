@@ -17,6 +17,7 @@ import com.code.codemercenaries.girdthyswordpro.R;
 import com.code.codemercenaries.girdthyswordpro.beans.remote.Chunk;
 import com.code.codemercenaries.girdthyswordpro.beans.remote.Section;
 import com.code.codemercenaries.girdthyswordpro.persistence.DBConstants;
+import com.code.codemercenaries.girdthyswordpro.utilities.Algorithms;
 import com.code.codemercenaries.girdthyswordpro.utilities.FontHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -122,12 +125,14 @@ public class ResultActivity extends AppCompatActivity {
                     builder.append(mChunk.getEndVerseNum());
                     chunkTitle.setText(builder.toString());
 
+                    // Compute new space
                     newSpace = mChunk.getSpace() * calculateSpaceMultiplyingFactor();
                     if(newSpace < 1){
                         newSpace = 1;
                     }
                     spaceTV.setText(String.format(Locale.getDefault(),"%d",newSpace));
 
+                    // Compute new next date of review
                     SimpleDateFormat df = new SimpleDateFormat(DBConstants.DATE_FORMAT,Locale.US);
                     newDate = new Date();
                     Calendar c = Calendar.getInstance();
@@ -137,6 +142,7 @@ public class ResultActivity extends AppCompatActivity {
                     nextDateOfReviewTV.setText(String.format(Locale.getDefault(), "%s", df.format(newDate)));
 
 
+                    // Fetch previous versesMemorizedCount
                     userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -172,15 +178,9 @@ public class ResultActivity extends AppCompatActivity {
                 chunkReference.child(DBConstants.FIREBASE_C_KEY_SPACE).setValue(newSpace);
                 chunkReference.child(DBConstants.FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW).setValue(df.format(newDate));
 
-                if (!mChunk.isMastered()) {
-                    userReference = FirebaseDatabase.getInstance().
-                            getReference(DBConstants.FIREBASE_TABLE_USERS).
-                            child(mAuth.getCurrentUser().getUid());
-                    userReference.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).
-                            setValue(versesMemorized + mChunk.getEndVerseNum() - mChunk.getStartVerseNum() + 1);
-                }
-
-                if (finalScore >= DBConstants.MASTERED_MIN_THRESHOLD) {
+                // If chunk is now memorized, set chunk to mastered and update user Bible
+                if (finalScore >= DBConstants.MASTERED_MIN_THRESHOLD_SCORE) {
+                    // Set chunk status to memorized
                     chunkReference.child(DBConstants.FIREBASE_C_MASTERED).setValue(true);
                     for (int i = mChunk.getStartVerseNum(); i <= mChunk.getEndVerseNum(); i++) {
                         userBibleReference.child(mChunk.getVersionID()).
@@ -190,13 +190,48 @@ public class ResultActivity extends AppCompatActivity {
                                 child(DBConstants.FIREBASE_UB_KEY_MEMORY).
                                 setValue(DBConstants.CODE_MEMORIZED);
                     }
+
+                    // If chunk was not already mastered before, increase versesMemorized count for user
+                    if (!mChunk.isMastered()) {
+                        userReference = FirebaseDatabase.getInstance().
+                                getReference(DBConstants.FIREBASE_TABLE_USERS).
+                                child(mAuth.getCurrentUser().getUid());
+                        userReference.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).
+                                setValue(versesMemorized + (mChunk.getEndVerseNum() - mChunk.getStartVerseNum() + 1));
+                    }
+                }
+                // If chunk is not memorized now, check if space is less than minimum mastered threshold space
+                else {
+                    if (newSpace < DBConstants.MASTERED_MIN_THRESHOLD_SPACE) {
+                        // Set chunk status to added
+                        chunkReference.child(DBConstants.FIREBASE_C_MASTERED).setValue(false);
+                        for (int i = mChunk.getStartVerseNum(); i <= mChunk.getEndVerseNum(); i++) {
+                            userBibleReference.child(mChunk.getVersionID()).
+                                    child(mChunk.getBookName()).
+                                    child(String.valueOf(mChunk.getChapterNum())).
+                                    child(String.valueOf(i)).
+                                    child(DBConstants.FIREBASE_UB_KEY_MEMORY).
+                                    setValue(DBConstants.CODE_ADDED);
+                        }
+
+                        // If chunk was already mastered before, decrease versesMemorized count for user
+                        if (mChunk.isMastered()) {
+                            userReference = FirebaseDatabase.getInstance().
+                                    getReference(DBConstants.FIREBASE_TABLE_USERS).
+                                    child(mAuth.getCurrentUser().getUid());
+                            userReference.child(DBConstants.FIREBASE_U_KEY_VERSES_MEMORIZED).
+                                    setValue(versesMemorized - (mChunk.getEndVerseNum() - mChunk.getStartVerseNum() + 1));
+                        }
+                    }
                 }
 
+                // Merging Chunks
                 chunkReference = FirebaseDatabase.getInstance().
                         getReference(DBConstants.FIREBASE_TABLE_CHUNKS).child(mAuth.getCurrentUser().getUid());
                 chunkReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        // Get all chunks, check if section memorized
                         boolean sectionMemorized = true;
                         ArrayList<Chunk> chunks = new ArrayList<>();
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
@@ -205,15 +240,42 @@ public class ResultActivity extends AppCompatActivity {
                                 chunks.add(chunk);
                                 if(!chunk.isMastered()) {
                                     sectionMemorized = false;
-                                    break;
                                 }
                             }
                         }
+
+                        // Update next chunk's next date of review from NA to current date
+                        if (finalScore >= DBConstants.MASTERED_MIN_THRESHOLD_SCORE) {
+                            Collections.sort(chunks, new Comparator<Chunk>() {
+                                @Override
+                                public int compare(Chunk c1, Chunk c2) {
+                                    return Integer.compare(c1.getSequenceNum(), c2.getSequenceNum());
+                                }
+                            });
+
+                            Algorithms algorithms = new Algorithms();
+                            int indexOfNextChunk = algorithms.searchChunk(chunks, mChunk.getChunkID()) + 1;
+
+                            if (indexOfNextChunk != -1
+                                    && indexOfNextChunk < chunks.size()
+                                    && chunks.get(indexOfNextChunk).getNextDateOfReview().equals(DBConstants.NEXT_DATE_OF_REVIEW_NA)) {
+
+                                SimpleDateFormat df = new SimpleDateFormat(DBConstants.DATE_FORMAT, Locale.US);
+                                String newDate = df.format(new Date());
+
+                                chunkReference.child(chunks.get(indexOfNextChunk).getChunkID()).
+                                        child(DBConstants.FIREBASE_C_KEY_NEXT_DATE_OF_REVIEW).setValue(newDate);
+                            }
+                        }
+
+                        // If section memorized, merge all chunks of section
                         if (sectionMemorized && chunks.size() > 1) {
                             for(Chunk c: chunks) {
+                                // Delete chunks
                                 chunkReference.child(c.getChunkID()).setValue(null);
                             }
 
+                            // Add new master chunk
                             String newChunkID = chunkReference.push().getKey();
                             SimpleDateFormat df = new SimpleDateFormat(DBConstants.DATE_FORMAT,Locale.US);
                             Date date = new Date();
@@ -252,9 +314,9 @@ public class ResultActivity extends AppCompatActivity {
     private int calculateSpaceMultiplyingFactor() {
         int factor;
 
-        if(finalScore >= DBConstants.MASTERED_MIN_THRESHOLD) {
+        if (finalScore >= DBConstants.MASTERED_MIN_THRESHOLD_SCORE) {
             factor = 2;
-        } else if(finalScore >= DBConstants.MAINTAIN_MIN_THRESHOLD) {
+        } else if (finalScore >= DBConstants.MAINTAIN_MIN_THRESHOLD_SCORE) {
             factor = 1;
         } else {
             factor = 1/2;

@@ -1,6 +1,7 @@
 package com.code.codemercenaries.girdthyswordpro.utilities;
 
 import com.code.codemercenaries.girdthyswordpro.beans.local.Version;
+import com.code.codemercenaries.girdthyswordpro.beans.remote.Chunk;
 import com.code.codemercenaries.girdthyswordpro.beans.remote.User;
 
 import java.util.ArrayList;
@@ -23,6 +24,15 @@ public class Algorithms {
     public int searchVersion(ArrayList<Version> versions, String versionID) {
         for (int i = 0; i < versions.size(); i++) {
             if (versions.get(i).get_id().equals(versionID)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int searchChunk(ArrayList<Chunk> chunks, String chunkID) {
+        for (int i = 0; i < chunks.size(); i++) {
+            if (chunks.get(i).getChunkID().equals(chunkID)) {
                 return i;
             }
         }
